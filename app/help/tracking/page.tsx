@@ -1,7 +1,8 @@
+export const dynamic = 'force-dynamic'
 import Link from 'next/link'
 import { Package, Clock, CheckCircle, Truck, MapPin } from 'lucide-react'
 
-export const metadata = { title: 'Track My Order — zip.tt' }
+export const metadata = { title: 'Track My Order â zip.tt' }
 
 export default function TrackingPage() {
   const statuses = [
@@ -9,7 +10,7 @@ export default function TrackingPage() {
     { icon: Package,      color: 'text-blue-400',    bg: 'bg-blue-400/10 border-blue-400/20',     label: 'Processing', desc: 'The vendor has confirmed your order and is preparing it for dispatch.' },
     { icon: Truck,        color: 'text-purple-400',  bg: 'bg-purple-400/10 border-purple-400/20', label: 'Shipped',    desc: 'Your order has been handed to the courier and is on its way.' },
     { icon: MapPin,       color: 'text-orange-400',  bg: 'bg-orange-400/10 border-orange-400/20', label: 'Out for Delivery', desc: 'The courier is in your area and will deliver your order today.' },
-    { icon: CheckCircle,  color: 'text-green-400',   bg: 'bg-green-400/10 border-green-400/20',   label: 'Delivered',  desc: 'Your order has been delivered. Enjoy! 🎉' },
+    { icon: CheckCircle,  color: 'text-green-400',   bg: 'bg-green-400/10 border-green-400/20',   label: 'Delivered',  desc: 'Your order has been delivered. Enjoy! ð' },
   ]
 
   return (
@@ -57,11 +58,11 @@ export default function TrackingPage() {
       <div className="bg-[#111111] border border-[#C9A84C]/15 rounded-2xl p-5 space-y-4 text-sm">
         <p className="font-semibold text-[#F5F0E8]">Common Questions</p>
         <div>
-          <p className="text-[#F5F0E8] font-medium">My order is still Pending after several hours — is that normal?</p>
+          <p className="text-[#F5F0E8] font-medium">My order is still Pending after several hours â is that normal?</p>
           <p className="text-[#9A8F7A] mt-1">Vendors usually confirm within a few hours during business hours. If it's been more than 24 hours, <Link href="/help/contact" className="text-[#C9A84C] hover:underline">contact us</Link> and we'll follow up with the vendor.</p>
         </div>
         <div>
-          <p className="text-[#F5F0E8] font-medium">My estimated delivery time has passed — what should I do?</p>
+          <p className="text-[#F5F0E8] font-medium">My estimated delivery time has passed â what should I do?</p>
           <p className="text-[#9A8F7A] mt-1">Check your order status in My Orders first. If it's still showing "Shipped" past the estimated date, <Link href="/help/contact" className="text-[#C9A84C] hover:underline">contact us</Link> with your order number.</p>
         </div>
         <div>
