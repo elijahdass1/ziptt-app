@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -9,7 +10,7 @@ import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 
 export default function CartPage() {
-  // Prevent hydration mismatch — Zustand reads from localStorage only on client
+  // Prevent hydration mismatch â Zustand reads from localStorage only on client
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
 
@@ -45,7 +46,7 @@ export default function CartPage() {
           </div>
         ) : items.length === 0 ? (
           <div className="text-center py-20">
-            <div className="text-7xl mb-4">🛒</div>
+            <div className="text-7xl mb-4">ð</div>
             <h2 className="text-xl font-bold text-[#F5F0E8] mb-2">Your cart is empty</h2>
             <p className="text-[#9A8F7A] mb-6">Browse our marketplace and add some items!</p>
             <Link href="/products" className="btn-primary">Start Shopping</Link>
@@ -57,7 +58,7 @@ export default function CartPage() {
               {Object.entries(byVendor).map(([vendorId, { name, items: vendorItems }]) => (
                 <div key={vendorId} className="bg-[#111111] border border-[#C9A84C]/10 rounded-2xl overflow-hidden">
                   <div className="bg-[#1A1A1A] border-b border-[#C9A84C]/10 px-4 py-2.5">
-                    <p className="text-sm font-semibold text-[#F5F0E8]">🏪 {name}</p>
+                    <p className="text-sm font-semibold text-[#F5F0E8]">ðª {name}</p>
                   </div>
                   <div className="divide-y divide-[#C9A84C]/10">
                     {vendorItems.map((item) => (
@@ -118,7 +119,7 @@ export default function CartPage() {
                       <span>Total</span>
                       <span className="text-[#C9A84C]">{formatTTD(grandTotal)}</span>
                     </div>
-                    <p className="text-xs text-[#9A8F7A]/60 mt-0.5">TTD • Inclusive of all fees</p>
+                    <p className="text-xs text-[#9A8F7A]/60 mt-0.5">TTD â¢ Inclusive of all fees</p>
                   </div>
                 </div>
                 <Link href="/checkout"
@@ -130,9 +131,9 @@ export default function CartPage() {
               <div className="bg-[#111111] border border-[#C9A84C]/15 rounded-2xl p-4">
                 <h3 className="text-sm font-semibold text-[#F5F0E8] mb-3">Payment Methods</h3>
                 <div className="space-y-2 text-sm text-[#9A8F7A]">
-                  <p>💵 Cash on Delivery</p>
-                  <p>💳 Linx Card</p>
-                  <p>🏦 Online Banking</p>
+                  <p>ðµ Cash on Delivery</p>
+                  <p>ð³ Linx Card</p>
+                  <p>ð¦ Online Banking</p>
                 </div>
               </div>
             </div>
