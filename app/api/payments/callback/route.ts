@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import { redirect } from 'next/navigation'
 import prisma from '@/lib/prisma'
@@ -38,7 +39,7 @@ export async function GET(req: NextRequest) {
   const expectedHash = crypto.createHash('md5').update(hashInput).digest('hex')
 
   if (receivedHash !== expectedHash) {
-    console.warn('[ziptt] WiPay hash mismatch — possible tampered callback')
+    console.warn('[ziptt] WiPay hash mismatch â possible tampered callback')
     redirect('/checkout?payment=failed')
   }
 
