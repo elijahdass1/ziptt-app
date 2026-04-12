@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { redirect } from 'next/navigation'
@@ -35,8 +36,8 @@ export default async function VendorDigitalPage() {
       </div>
       {products.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '80px', color: '#9A8F7A' }}>
-          <div style={{ fontSize: '48px', marginBottom: '16px' }}>⚡</div>
-          <p>No digital products yet. <Link href="/vendor/digital/new" style={{ color: '#C9A84C' }}>Add your first one →</Link></p>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}>â¡</div>
+          <p>No digital products yet. <Link href="/vendor/digital/new" style={{ color: '#C9A84C' }}>Add your first one â</Link></p>
         </div>
       ) : (
         <div style={{ overflowX: 'auto' }}>
