@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import prisma from '@/lib/prisma'
 import { formatDate } from '@/lib/utils'
 import { VendorActions } from '@/components/admin/VendorActions'
@@ -20,7 +21,7 @@ export default async function AdminVendorsPage({
   const skip = (page - 1) * limit
   const activeTab = searchParams.status ?? 'All'
 
-  // Fetch ALL vendors — filtering happens in UI
+  // Fetch ALL vendors â filtering happens in UI
   const vendors = await prisma.vendor.findMany({
     include: {
       user: {
@@ -117,10 +118,10 @@ export default async function AdminVendorsPage({
                       ) : vendor.idDocumentUrl ? (
                         <span className="inline-flex px-2 py-0.5 rounded text-xs font-medium bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">Pending</span>
                       ) : (
-                        <span className="text-[#555] text-xs">—</span>
+                        <span className="text-[#555] text-xs">â</span>
                       )}
                     </td>
-                    <td className="px-5 py-3 text-[#888] text-xs">{vendor.region ?? '—'}</td>
+                    <td className="px-5 py-3 text-[#888] text-xs">{vendor.region ?? 'â'}</td>
                     <td className="px-5 py-3">
                       <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium ${STATUS_COLOR[vendor.status] ?? 'bg-[#333] text-[#888]'}`}>
                         {vendor.status}
