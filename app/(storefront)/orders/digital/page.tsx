@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { redirect } from 'next/navigation'
@@ -20,8 +21,8 @@ export default async function DigitalOrdersPage() {
         <h1 style={{ fontFamily: 'Georgia, serif', fontSize: '28px', marginBottom: '32px' }}>My Digital Orders</h1>
         {orders.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '80px 0', color: '#9A8F7A' }}>
-            <div style={{ fontSize: '48px', marginBottom: '16px' }}>⚡</div>
-            <p>No digital orders yet. <a href="/digital" style={{ color: '#C9A84C' }}>Browse digital products →</a></p>
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>â¡</div>
+            <p>No digital orders yet. <a href="/digital" style={{ color: '#C9A84C' }}>Browse digital products â</a></p>
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -34,7 +35,7 @@ export default async function DigitalOrdersPage() {
                   </div>
                   <div style={{ textAlign: 'right' }}>
                     <span style={{ background: order.status === 'delivered' ? '#052e16' : '#1c1917', color: order.status === 'delivered' ? '#4ade80' : '#9A8F7A', padding: '4px 12px', borderRadius: '12px', fontSize: '12px' }}>
-                      {order.status === 'delivered' ? '✅ Delivered' : '⏳ Pending'}
+                      {order.status === 'delivered' ? 'â Delivered' : 'â³ Pending'}
                     </span>
                     <p style={{ fontSize: '14px', color: '#C9A84C', marginTop: '8px' }}>${order.pricePaid.toFixed(2)} TTD</p>
                   </div>
