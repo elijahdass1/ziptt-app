@@ -1,10 +1,16 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Noto_Color_Emoji } from 'next/font/google'
 import './globals.css'
 import { Providers } from '@/components/Providers'
 import { ZipChatWidget } from '@/components/chat/ZipChatWidget'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
+const notoEmoji = Noto_Color_Emoji({
+  weight: '400',
+  subsets: ['emoji'],
+  variable: '--font-emoji',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: {
@@ -27,7 +33,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.variable} ${notoEmoji.variable}`} style={{ fontFamily: "var(--font-inter), 'Noto Color Emoji', sans-serif" }}>
         <Providers>
           {children}
           <ZipChatWidget />

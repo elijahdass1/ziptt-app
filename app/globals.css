@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Ensure emojis render correctly cross-platform (including flag emojis on Linux/Vercel) */
+body {
+  font-family: var(--font-inter), 'Segoe UI Emoji', 'Apple Color Emoji',
+    'Noto Color Emoji', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
 @layer base {
   :root {
     /* zip.tt Black & Gold Theme */
