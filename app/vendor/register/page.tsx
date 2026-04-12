@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 'use client'
 
 import { useState } from 'react'
@@ -117,7 +118,7 @@ export default function VendorRegisterPage() {
         toast({ title: data.error ?? 'Failed to register', variant: 'destructive' })
         return
       }
-      toast({ title: 'Application submitted!', description: 'Our team will review your application within 24–48 hours.' })
+      toast({ title: 'Application submitted!', description: 'Our team will review your application within 24â48 hours.' })
       router.push('/vendor')
     } finally {
       setLoading(false)
@@ -130,7 +131,7 @@ export default function VendorRegisterPage() {
       <div className="max-w-2xl mx-auto px-4 py-12">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="text-5xl mb-3">🏪</div>
+          <div className="text-5xl mb-3">ðª</div>
           <h1 className="text-3xl font-bold text-[#F5F0E8]">Start Selling on zip.tt</h1>
           <p className="text-[#9A8F7A] mt-2">Join our community of Trinbagonian vendors and reach customers across T&T</p>
         </div>
@@ -138,9 +139,9 @@ export default function VendorRegisterPage() {
         {/* Benefits */}
         <div className="grid grid-cols-3 gap-4 mb-8">
           {[
-            { icon: '✅', title: 'Free to List', desc: 'No upfront costs' },
-            { icon: '💰', title: '10% Commission', desc: 'Only on sales' },
-            { icon: '📅', title: 'Weekly Payouts', desc: 'Every Friday' },
+            { icon: 'â', title: 'Free to List', desc: 'No upfront costs' },
+            { icon: 'ð°', title: '10% Commission', desc: 'Only on sales' },
+            { icon: 'ð', title: 'Weekly Payouts', desc: 'Every Friday' },
           ].map((f) => (
             <div key={f.title} className="bg-[#111111] border border-[#C9A84C]/15 rounded-xl p-4 text-center">
               <div className="text-2xl mb-1">{f.icon}</div>
@@ -236,7 +237,7 @@ export default function VendorRegisterPage() {
                   type="submit"
                   className="w-full py-3 bg-[#C9A84C] hover:bg-[#F0C040] text-[#0A0A0A] font-bold rounded-xl transition-colors"
                 >
-                  Continue to Identity Verification →
+                  Continue to Identity Verification â
                 </button>
               </form>
             </>
@@ -302,7 +303,7 @@ export default function VendorRegisterPage() {
                       ) : (
                         <div className="text-center">
                           <Upload className="h-5 w-5 text-[#C9A84C] mx-auto mb-1" />
-                          <p className="text-sm text-[#9A8F7A]">Front of ID (JPG, PNG — max 5MB)</p>
+                          <p className="text-sm text-[#9A8F7A]">Front of ID (JPG, PNG â max 5MB)</p>
                         </div>
                       )}
                       <input type="file" accept="image/*" onChange={e => handleFileChange(e, setIdFile, setIdPreview)} className="hidden" />
@@ -383,7 +384,7 @@ export default function VendorRegisterPage() {
                     onClick={() => setStep(1)}
                     className="flex-1 py-3 border border-[#C9A84C]/30 text-[#C9A84C] hover:bg-[#C9A84C]/8 font-semibold rounded-xl transition-colors text-sm"
                   >
-                    ← Back
+                    â Back
                   </button>
                   <button
                     type="submit"
