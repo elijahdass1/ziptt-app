@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import prisma from '@/lib/prisma'
 import { formatDate, formatTTD } from '@/lib/utils'
 import { AdminDisputeActions } from '@/components/admin/AdminDisputeActions'
@@ -96,7 +97,7 @@ export default async function AdminDisputesPage({
                     {STATUS_LABEL[dispute.status] ?? dispute.status}
                   </span>
                   <span className="text-xs text-[#555]">#{dispute.id.slice(0, 8).toUpperCase()}</span>
-                  <span className="text-xs text-[#555]">• {formatDate(dispute.createdAt)}</span>
+                  <span className="text-xs text-[#555]">â¢ {formatDate(dispute.createdAt)}</span>
                 </div>
 
                 <h3 className="font-semibold text-[#F5F0E8] mb-1">{dispute.subject}</h3>
