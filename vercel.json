@@ -1,0 +1,6 @@
+{
+  "buildCommand": "npx prisma generate && next build",
+  "env": {
+    "NEXTAUTH_URL": "https://zip.tt"
+  }
+}
