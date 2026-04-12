@@ -1,14 +1,15 @@
+export const dynamic = 'force-dynamic'
 import Link from 'next/link'
 import { Truck, Clock, MapPin, Phone } from 'lucide-react'
 
-export const metadata = { title: 'Delivery Info — zip.tt' }
+export const metadata = { title: 'Delivery Info â zip.tt' }
 
 export default function DeliveryInfoPage() {
   const zones = [
-    { area: 'Port of Spain & West', detail: 'Woodbrook, Newtown, St. Clair, St. James, Maraval, Westmoorings, Diego Martin, Carenage', eta: '1–2 business days' },
-    { area: 'East–West Corridor', detail: 'Champ Fleurs, Mt. Hope, Valsayn, Curepe, St. Joseph, Tunapuna, Tacarigua, Trincity, Piarco, Arima', eta: '2–3 business days' },
-    { area: 'Central Trinidad', detail: 'Chaguanas, Endeavour, Couva, Preysal, Claxton Bay', eta: '2–3 business days' },
-    { area: 'South Trinidad', detail: 'San Fernando, Pleasantville, La Romaine, Gulf City, Corinth', eta: '2–3 business days' },
+    { area: 'Port of Spain & West', detail: 'Woodbrook, Newtown, St. Clair, St. James, Maraval, Westmoorings, Diego Martin, Carenage', eta: '1â2 business days' },
+    { area: 'EastâWest Corridor', detail: 'Champ Fleurs, Mt. Hope, Valsayn, Curepe, St. Joseph, Tunapuna, Tacarigua, Trincity, Piarco, Arima', eta: '2â3 business days' },
+    { area: 'Central Trinidad', detail: 'Chaguanas, Endeavour, Couva, Preysal, Claxton Bay', eta: '2â3 business days' },
+    { area: 'South Trinidad', detail: 'San Fernando, Pleasantville, La Romaine, Gulf City, Corinth', eta: '2â3 business days' },
   ]
 
   return (
@@ -29,7 +30,7 @@ export default function DeliveryInfoPage() {
 
       {/* Free delivery banner */}
       <div className="bg-[#C9A84C]/10 border border-[#C9A84C]/30 rounded-2xl p-5 flex items-center gap-4">
-        <span className="text-3xl">🎉</span>
+        <span className="text-3xl">ð</span>
         <div>
           <p className="font-semibold text-[#F5F0E8]">Free Delivery on Orders Over TTD $500</p>
           <p className="text-sm text-[#9A8F7A] mt-0.5">Standard delivery fee is TTD $50 for orders under $500.</p>
@@ -49,7 +50,7 @@ export default function DeliveryInfoPage() {
                 <p className="text-xs text-[#9A8F7A] mt-0.5">{z.detail}</p>
               </div>
               <span className="shrink-0 text-sm font-semibold text-[#C9A84C] bg-[#C9A84C]/10 border border-[#C9A84C]/20 px-3 py-1 rounded-full whitespace-nowrap">
-                🚚 {z.eta}
+                ð {z.eta}
               </span>
             </div>
           ))}
@@ -82,10 +83,10 @@ export default function DeliveryInfoPage() {
       {/* Notes */}
       <div className="bg-[#111111] border border-[#C9A84C]/15 rounded-2xl p-5 space-y-2 text-sm text-[#9A8F7A]">
         <p className="font-semibold text-[#F5F0E8] mb-2">Good to know</p>
-        <p>• Delivery times are business days (Monday–Friday, excluding public holidays).</p>
-        <p>• Large or bulky items may require additional time to dispatch.</p>
-        <p>• You can track your order status in <Link href="/orders" className="text-[#C9A84C] hover:underline">My Orders</Link>.</p>
-        <p>• Need delivery to an area not listed? <Link href="/help/contact" className="text-[#C9A84C] hover:underline">Contact us</Link> for special arrangements.</p>
+        <p>â¢ Delivery times are business days (MondayâFriday, excluding public holidays).</p>
+        <p>â¢ Large or bulky items may require additional time to dispatch.</p>
+        <p>â¢ You can track your order status in <Link href="/orders" className="text-[#C9A84C] hover:underline">My Orders</Link>.</p>
+        <p>â¢ Need delivery to an area not listed? <Link href="/help/contact" className="text-[#C9A84C] hover:underline">Contact us</Link> for special arrangements.</p>
       </div>
     </div>
   )
