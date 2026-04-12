@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import { createRouteHandler } from 'uploadthing/next'
 import { ourFileRouter } from './core'
 
