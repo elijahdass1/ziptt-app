@@ -1,4 +1,5 @@
-export const metadata = { title: 'Terms of Service — zip.tt' }
+export const dynamic = 'force-dynamic'
+export const metadata = { title: 'Terms of Service â zip.tt' }
 
 export default function TermsPage() {
   return (
@@ -19,7 +20,7 @@ export default function TermsPage() {
         },
         {
           title: '3. Buying on zip.tt',
-          body: 'When you place an order, you are entering into a contract with the vendor — not with zip.tt directly. zip.tt facilitates the transaction but is not the seller. Prices are listed in Trinidad & Tobago Dollars (TTD). Orders are subject to vendor confirmation and product availability.',
+          body: 'When you place an order, you are entering into a contract with the vendor â not with zip.tt directly. zip.tt facilitates the transaction but is not the seller. Prices are listed in Trinidad & Tobago Dollars (TTD). Orders are subject to vendor confirmation and product availability.',
         },
         {
           title: '4. Returns & Refunds',
