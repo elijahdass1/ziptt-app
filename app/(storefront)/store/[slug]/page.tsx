@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { Star, MapPin, Package, ShoppingBag, ArrowLeft, Store } from 'lucide-react'
@@ -101,7 +102,7 @@ export default async function VendorStorePage({ params }: PageProps) {
         {/* Products */}
         {totalProducts === 0 ? (
           <div className="text-center py-24">
-            <div className="text-5xl mb-4">📦</div>
+            <div className="text-5xl mb-4">ð¦</div>
             <h3 className="text-lg font-semibold text-[#F5F0E8] mb-1">No products yet</h3>
             <p className="text-sm text-[#9A8F7A]">This vendor hasn&apos;t listed any products yet.</p>
           </div>
