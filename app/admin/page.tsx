@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { redirect } from 'next/navigation'
@@ -81,7 +82,7 @@ export default async function AdminOverviewPage() {
               href="/admin/vendors?status=PENDING"
               className="flex items-center gap-3 p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-xl hover:bg-yellow-500/15 transition-colors"
             >
-              <span className="text-yellow-400 text-lg">⏳</span>
+              <span className="text-yellow-400 text-lg">â³</span>
               <span className="text-sm font-medium text-yellow-300">
                 {stats.pendingVendors} vendor application{stats.pendingVendors > 1 ? 's' : ''} awaiting review
               </span>
@@ -92,7 +93,7 @@ export default async function AdminOverviewPage() {
               href="/admin/disputes?status=OPEN"
               className="flex items-center gap-3 p-3 bg-red-500/10 border border-red-500/30 rounded-xl hover:bg-red-500/15 transition-colors"
             >
-              <span className="text-red-400 text-lg">⚠</span>
+              <span className="text-red-400 text-lg">â </span>
               <span className="text-sm font-medium text-red-300">
                 {stats.openDisputes} open dispute{stats.openDisputes > 1 ? 's' : ''} need attention
               </span>
@@ -115,7 +116,7 @@ export default async function AdminOverviewPage() {
           </div>
         ))}
 
-        {/* GMV — full width */}
+        {/* GMV â full width */}
         <div className="col-span-2 lg:col-span-4 bg-[#111111] border border-[#C9A84C]/20 rounded-xl p-5">
           <p className="text-xs text-[#888] mb-1">Gross Merchandise Value (all time)</p>
           <p className="text-3xl font-bold text-[#C9A84C]">{formatTTD(stats.gmv)}</p>
@@ -175,13 +176,13 @@ export default async function AdminOverviewPage() {
                 stats.recentOrders.map((order) => (
                   <tr key={order.id} className="border-b border-[#1a1a1a] hover:bg-[#0A0A0A] transition-colors">
                     <td className="px-5 py-3 font-mono text-xs text-[#555]">
-                      {order.id.slice(0, 8)}…
+                      {order.id.slice(0, 8)}â¦
                     </td>
                     <td className="px-5 py-3">
                       <p className="font-medium text-[#F5F0E8]">{order.customer.name}</p>
                       <p className="text-xs text-[#555]">{order.customer.email}</p>
                     </td>
-                    <td className="px-5 py-3 text-[#888]">{order.vendor?.storeName ?? '—'}</td>
+                    <td className="px-5 py-3 text-[#888]">{order.vendor?.storeName ?? 'â'}</td>
                     <td className="px-5 py-3 font-medium text-[#F5F0E8]">{formatTTD(order.total)}</td>
                     <td className="px-5 py-3">
                       <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium ${STATUS_COLOR[order.status] ?? 'bg-[#333] text-[#888]'}`}>
