@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
@@ -19,9 +20,9 @@ export async function POST(req: NextRequest) {
       return Response.json({ error: 'orderId and total are required' }, { status: 400 })
     }
 
-    // Dev fallback — no WiPay keys configured
+    // Dev fallback â no WiPay keys configured
     if (!process.env.WIPAY_API_KEY || !process.env.WIPAY_ACCOUNT_NUMBER) {
-      console.warn('[ziptt] WiPay not configured — returning mock payment URL')
+      console.warn('[ziptt] WiPay not configured â returning mock payment URL')
       const mockUrl = `${process.env.NEXTAUTH_URL ?? 'http://localhost:3001'}/api/payments/callback?status=success&order_id=${orderId}&mock=true`
       return Response.json({ paymentUrl: mockUrl, mock: true })
     }
