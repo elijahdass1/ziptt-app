@@ -1,28 +1,29 @@
+export const dynamic = 'force-dynamic'
 import { CreditCard, Banknote, Building2, ShieldCheck } from 'lucide-react'
 
-export const metadata = { title: 'Payment Options — zip.tt' }
+export const metadata = { title: 'Payment Options â zip.tt' }
 
 export default function PaymentsPage() {
   const methods = [
     {
       icon: Banknote,
-      emoji: '💵',
+      emoji: 'ðµ',
       title: 'Cash on Delivery',
       subtitle: 'Pay when you receive',
-      desc: 'Our most popular payment method. Pay in cash when the courier delivers your order — no card or bank account needed. Available on all orders across our delivery zones.',
+      desc: 'Our most popular payment method. Pay in cash when the courier delivers your order â no card or bank account needed. Available on all orders across our delivery zones.',
       notes: ['Pay in TTD cash at your door', 'No minimum order amount', 'Available on all delivery areas'],
     },
     {
       icon: CreditCard,
-      emoji: '💳',
+      emoji: 'ð³',
       title: 'Linx / WiPay',
       subtitle: 'Local debit card',
       desc: 'Pay securely online using your Linx debit card through WiPay, Trinidad\'s leading local payment gateway. Your card details are never stored by zip.tt.',
-      notes: ['All major local bank cards accepted', 'Powered by WiPay — local & trusted', 'Instant payment confirmation'],
+      notes: ['All major local bank cards accepted', 'Powered by WiPay â local & trusted', 'Instant payment confirmation'],
     },
     {
       icon: Building2,
-      emoji: '🏦',
+      emoji: 'ð¦',
       title: 'Online Banking',
       subtitle: 'Direct bank transfer',
       desc: 'Transfer directly from your online banking account. Once your transfer is confirmed, your order is processed immediately.',
@@ -41,7 +42,7 @@ export default function PaymentsPage() {
           <h1 className="text-3xl font-black text-[#F5F0E8]">Payment Options</h1>
         </div>
         <p className="text-[#9A8F7A] leading-relaxed">
-          zip.tt offers three convenient ways to pay — all secure, all local.
+          zip.tt offers three convenient ways to pay â all secure, all local.
         </p>
       </div>
 
