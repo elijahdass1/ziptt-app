@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import prisma from '@/lib/prisma'
 import { formatTTD } from '@/lib/utils'
 import { AdminProductActions } from '@/components/admin/AdminProductActions'
@@ -62,7 +63,7 @@ export default async function AdminProductsPage({
           <input
             name="q"
             defaultValue={searchParams.q}
-            placeholder="Search product or vendor…"
+            placeholder="Search product or vendorâ¦"
             className="w-full pl-9 pr-4 py-2 text-sm bg-[#0A0A0A] border border-[#333] text-[#F5F0E8] focus:border-[#C9A84C] focus:outline-none rounded placeholder:text-[#555]"
           />
         </div>
@@ -132,7 +133,7 @@ export default async function AdminProductsPage({
                         </div>
                       </td>
                       <td className="px-5 py-3 text-[#888]">{product.vendor.storeName}</td>
-                      <td className="px-5 py-3 text-xs text-[#888]">{product.category?.name ?? '—'}</td>
+                      <td className="px-5 py-3 text-xs text-[#888]">{product.category?.name ?? 'â'}</td>
                       <td className="px-5 py-3 font-medium text-[#F5F0E8]">{formatTTD(product.price)}</td>
                       <td className="px-5 py-3 text-[#888]">{product.stock}</td>
                       <td className="px-5 py-3">
