@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import prisma from '@/lib/prisma'
 import { formatDate } from '@/lib/utils'
 import { AdminUserActions } from '@/components/admin/AdminUserActions'
@@ -61,7 +62,7 @@ export default async function AdminUsersPage({
           <input
             name="q"
             defaultValue={searchParams.q}
-            placeholder="Search name or email…"
+            placeholder="Search name or emailâ¦"
             className="w-full pl-9 pr-4 py-2 text-sm bg-[#1A1A1A] border border-[#333] text-[#F5F0E8] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9A84C] placeholder-[#555]"
           />
         </div>
@@ -98,7 +99,7 @@ export default async function AdminUsersPage({
               ) : users.map((user) => (
                 <tr key={user.id} className="border-b border-[#1a1a1a] hover:bg-[#0A0A0A] transition-colors">
                   <td className="px-5 py-3">
-                    <p className="font-medium text-[#F5F0E8]">{user.name ?? '—'}</p>
+                    <p className="font-medium text-[#F5F0E8]">{user.name ?? 'â'}</p>
                     <p className="text-xs text-[#555]">{user.email}</p>
                   </td>
                   <td className="px-5 py-3">
@@ -112,7 +113,7 @@ export default async function AdminUsersPage({
                         )}
                       </div>
                     ) : (
-                      <span className="text-[#555] text-xs">—</span>
+                      <span className="text-[#555] text-xs">â</span>
                     )}
                   </td>
                   <td className="px-5 py-3">
@@ -148,7 +149,7 @@ export default async function AdminUsersPage({
                   <td className="px-5 py-3 text-[#555] text-xs">
                     {user.vendor ? (
                       <span>{user.vendor.storeName} <span className="text-[#444]">({user.vendor.status})</span></span>
-                    ) : '—'}
+                    ) : 'â'}
                   </td>
                   <td className="px-5 py-3 text-right">
                     <AdminUserActions userId={user.id} currentStatus={user.status} />
