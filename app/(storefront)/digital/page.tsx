@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import prisma from '@/lib/prisma'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -19,26 +20,26 @@ export default async function DigitalPage({ searchParams }: { searchParams: { ca
 
   const categories = [
     { key: '', label: 'All' },
-    { key: 'streaming', label: '📺 Streaming' },
-    { key: 'software', label: '💻 Software' },
-    { key: 'gaming', label: '🎮 Gaming' },
-    { key: 'education', label: '📚 Education' },
+    { key: 'streaming', label: 'ðº Streaming' },
+    { key: 'software', label: 'ð» Software' },
+    { key: 'gaming', label: 'ð® Gaming' },
+    { key: 'education', label: 'ð Education' },
   ]
 
   return (
     <div style={{ background: '#0A0A0A', minHeight: '100vh', color: '#F5F0E8' }}>
       {/* Hero */}
       <div style={{ padding: '60px 24px', textAlign: 'center', borderBottom: '1px solid #1A1A1A' }}>
-        <div style={{ fontSize: '14px', color: '#C9A84C', marginBottom: '12px', letterSpacing: '2px' }}>⚡ INSTANT DELIVERY</div>
+        <div style={{ fontSize: '14px', color: '#C9A84C', marginBottom: '12px', letterSpacing: '2px' }}>â¡ INSTANT DELIVERY</div>
         <h1 style={{ fontFamily: 'Georgia, serif', fontSize: '42px', fontWeight: 'bold', marginBottom: '16px' }}>
           Digital Products
         </h1>
         <p style={{ color: '#9A8F7A', fontSize: '18px', maxWidth: '500px', margin: '0 auto 32px' }}>
-          Netflix, Spotify, ChatGPT & more — paid in TTD, delivered instantly.
+          Netflix, Spotify, ChatGPT & more â paid in TTD, delivered instantly.
         </p>
         {/* Trust badges */}
         <div style={{ display: 'flex', gap: '24px', justifyContent: 'center', flexWrap: 'wrap' }}>
-          {['⚡ Instant Delivery', '🔐 Secure Checkout', '📧 Email Delivery', '🇹🇹 TTD Prices'].map(b => (
+          {['â¡ Instant Delivery', 'ð Secure Checkout', 'ð§ Email Delivery', 'ð¹ð¹ TTD Prices'].map(b => (
             <span key={b} style={{ background: '#1A1A1A', border: '1px solid #2A2A2A', borderRadius: '20px', padding: '6px 16px', fontSize: '13px', color: '#9A8F7A' }}>{b}</span>
           ))}
         </div>
@@ -70,7 +71,7 @@ export default async function DigitalPage({ searchParams }: { searchParams: { ca
                     <Image src={product.thumbnail} alt={product.name} fill style={{ objectFit: 'cover' }} />
                   )}
                   <span style={{ position: 'absolute', top: '12px', left: '12px', background: '#C9A84C', color: '#0A0A0A', fontSize: '11px', fontWeight: 'bold', padding: '3px 8px', borderRadius: '4px' }}>
-                    ⚡ INSTANT
+                    â¡ INSTANT
                   </span>
                 </div>
                 <div style={{ padding: '16px' }}>
@@ -87,7 +88,7 @@ export default async function DigitalPage({ searchParams }: { searchParams: { ca
                       )}
                       <span style={{ fontSize: '11px', color: '#9A8F7A', display: 'block' }}>TTD</span>
                     </div>
-                    <span style={{ background: '#C9A84C', color: '#0A0A0A', fontSize: '12px', fontWeight: 'bold', padding: '6px 14px', borderRadius: '6px' }}>Buy →</span>
+                    <span style={{ background: '#C9A84C', color: '#0A0A0A', fontSize: '12px', fontWeight: 'bold', padding: '6px 14px', borderRadius: '6px' }}>Buy â</span>
                   </div>
                 </div>
               </div>
