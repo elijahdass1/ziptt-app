@@ -11,7 +11,7 @@ import { toast } from '@/components/ui/use-toast'
 import { TrinidadDeliveryMap } from '@/components/storefront/TrinidadDeliveryMap'
 import { IdVerificationGate } from '@/components/checkout/IdVerificationGate'
 import Link from 'next/link'
-import { MapPin, Shield, Clock } from 'lucide-react'
+import { MapPin, Shield, Clock, Lock } from 'lucide-react'
 
 interface Props {
   userIdVerified: boolean
@@ -105,7 +105,9 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
         <Navbar />
         <main className="flex-1 flex items-center justify-center p-8">
           <div className="text-center">
-            <div className="text-6xl mb-4">🔐</div>
+            <div className="flex items-center justify-center mb-4">
+              <Lock size={48} className="text-[#C9A84C]" strokeWidth={1.2} />
+            </div>
             <h2 className="text-xl font-bold mb-2 text-[#F5F0E8]">Sign in to checkout</h2>
             <p className="text-[#9A8F7A] mb-6">You need to be logged in to place an order.</p>
             <Link href="/auth/login?callbackUrl=/checkout" className="btn-primary">Sign In</Link>
@@ -266,12 +268,12 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
                           value: 'CASH_ON_DELIVERY',
                           label: 'Cash on Delivery',
                           desc: userTotalOrders === 0 ? 'Pay when you receive your order' : 'Pay when you receive your order',
-                          icon: '💵',
+                          icon: 'COD',
                           badge: userTotalOrders === 0 ? 'Recommended for new customers' : null,
                         },
-                        { value: 'LINX', label: 'Linx Card', desc: 'Local debit card payment', icon: '💳', badge: null },
-                        { value: 'ONLINE_BANKING', label: 'Online Banking', desc: 'Scotiabank, RBC, Republic Bank etc.', icon: '🏦', badge: null },
-                        { value: 'WIPAY', label: 'Pay with WiPay', desc: 'Secure card or Linx payment via WiPay', icon: '🔒', badge: null },
+                        { value: 'LINX', label: 'Linx Card', desc: 'Local debit card payment', icon: 'LINX', badge: null },
+                        { value: 'ONLINE_BANKING', label: 'Online Banking', desc: 'Scotiabank, RBC, Republic Bank etc.', icon: 'BANK', badge: null },
+                        { value: 'WIPAY', label: 'Pay with WiPay', desc: 'Secure card or Linx payment via WiPay', icon: 'WIPAY', badge: null },
                       ].map((method) => (
                         <label
                           key={method.value}
@@ -288,7 +290,7 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
                             onChange={() => setForm({ ...form, paymentMethod: method.value as typeof form.paymentMethod })}
                             className="hidden"
                           />
-                          <span className="text-2xl">{method.icon}</span>
+                          <span className="text-xs font-bold text-[#C9A84C] bg-[#C9A84C]/10 px-2 py-1 rounded">{method.icon}</span>
                           <div className="flex-1">
                             <div className="flex items-center gap-2">
                               <p className="font-semibold text-[#F5F0E8] text-sm">{method.label}</p>
@@ -358,7 +360,7 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
                         disabled={loading}
                         className="flex-1 py-3 bg-[#C9A84C] hover:bg-[#F0C040] disabled:bg-[#333] disabled:text-[#555] text-[#0A0A0A] font-bold rounded-xl transition-colors"
                       >
-                        {loading ? 'Placing Order...' : '✓ Place Order'}
+                        {loading ? 'Placing Order...' : 'Place Order'}
                       </button>
                     </div>
                   </div>
@@ -379,7 +381,7 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
                     <div className="flex justify-between text-[#9A8F7A] text-sm">
                       <span>Delivery</span>
                       <span className={deliveryFee === 0 ? 'text-green-400 font-medium' : 'text-[#F5F0E8]'}>
-                        {deliveryFee === 0 ? 'FREE ✨' : formatTTD(deliveryFee)}
+                        {deliveryFee === 0 ? 'FREE' : formatTTD(deliveryFee)}
                       </span>
                     </div>
                     {subtotal < 500 && (

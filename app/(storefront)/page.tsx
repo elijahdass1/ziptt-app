@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic'
 import Link from 'next/link'
-import { ArrowRight, Star, Truck, Shield, HeadphonesIcon, CreditCard, Store } from 'lucide-react'
+import { ArrowRight, Star, Truck, Shield, HeadphonesIcon, CreditCard, Store, Smartphone, Home, Sparkles, Tag, Wine, MapPin } from 'lucide-react'
 import prisma from '@/lib/prisma'
 import { ProductCard } from '@/components/storefront/ProductCard'
 import { formatTTD } from '@/lib/utils'
@@ -43,6 +43,15 @@ async function getFeaturedDigitalProducts() {
   })
 }
 
+const HERO_CATEGORIES = [
+  { Icon: Smartphone, label: 'Electronics', href: '/products?category=electronics' },
+  { Icon: Home, label: 'Home & Garden', href: '/products?category=home-garden' },
+  { Icon: Sparkles, label: 'Carnival', href: '/products?category=carnival' },
+  { Icon: Tag, label: 'Streetwear', href: '/products?category=urban-fashion' },
+  { Icon: Star, label: 'Toys', href: '/products?category=toys' },
+  { Icon: Wine, label: 'Rum & Spirits', href: '/products?category=rum-spirits' },
+]
+
 export default async function HomePage() {
   const [featured, categories, vendors, digitalProducts] = await Promise.all([
     getFeaturedProducts(),
@@ -62,7 +71,8 @@ export default async function HomePage() {
           <div className="grid md:grid-cols-2 gap-10 items-center">
             <div className="space-y-6">
               <div className="inline-flex items-center gap-2 bg-[#C9A84C]/10 border border-[#C9A84C]/30 text-[#C9A84C] text-xs font-semibold px-3 py-1.5 rounded-full tracking-wide">
-                ð¹ð¹ Trinidad & Tobago&apos;s #1 Marketplace
+                <span className="inline-flex items-center justify-center bg-[#C9A84C] text-[#0A0A0A] text-[9px] font-black px-1 py-0.5 rounded leading-none">TT</span>
+                Trinidad &amp; Tobago&apos;s #1 Marketplace
               </div>
               <h1 className="text-4xl md:text-5xl font-black leading-tight text-[#F5F0E8]">
                 Shop Local.<br />
@@ -70,7 +80,7 @@ export default async function HomePage() {
                 Live Good.
               </h1>
               <p className="text-base text-[#9A8F7A] leading-relaxed max-w-md">
-                Discover thousands of products from local vendors â from shadow beni to Samsung phones.
+                Discover thousands of products from local vendors — from shadow beni to Samsung phones.
                 Free delivery on orders over TTD $500.
               </p>
               <div className="flex flex-wrap gap-3">
@@ -83,17 +93,12 @@ export default async function HomePage() {
               </div>
             </div>
             <div className="hidden md:grid grid-cols-2 gap-3">
-              {[
-                { emoji: 'ð±', label: 'Electronics', href: '/products?category=electronics' },
-                { emoji: 'ð ', label: 'Home & Garden', href: '/products?category=home-garden' },
-                { emoji: 'ð­', label: 'Carnival', href: '/products?category=carnival' },
-                { emoji: 'ð§¢', label: 'Streetwear', href: '/products?category=urban-fashion' },
-                { emoji: 'ð§¸', label: 'Toys', href: '/products?category=toys' },
-                { emoji: 'ð¥', label: 'Rum & Spirits', href: '/products?category=rum-spirits' },
-              ].map((item) => (
+              {HERO_CATEGORIES.map((item) => (
                 <Link key={item.href} href={item.href}
                   className="bg-[#C9A84C]/8 hover:bg-[#C9A84C]/15 border border-[#C9A84C]/15 hover:border-[#C9A84C]/35 backdrop-blur-sm rounded-2xl p-5 text-center transition-all group">
-                  <div className="text-3xl mb-2">{item.emoji}</div>
+                  <div className="flex items-center justify-center mb-2">
+                    <item.Icon size={32} strokeWidth={1.2} className="text-[#C9A84C]" />
+                  </div>
                   <div className="text-sm font-semibold text-[#F5F0E8] group-hover:text-[#C9A84C] transition-colors">{item.label}</div>
                 </Link>
               ))}
@@ -141,7 +146,6 @@ export default async function HomePage() {
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20" />
               <div className="absolute bottom-0 left-0 right-0 p-3">
-                <div className="text-2xl mb-0.5">{cat.icon}</div>
                 <div className="text-sm font-semibold text-[#F5F0E8] group-hover:text-[#C9A84C] transition-colors">{cat.name}</div>
               </div>
             </Link>
@@ -154,7 +158,7 @@ export default async function HomePage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-2xl font-bold text-[#F5F0E8]">Featured Products</h2>
-            <p className="text-sm text-[#9A8F7A] mt-0.5">Handpicked by our team ð¹ð¹</p>
+            <p className="text-sm text-[#9A8F7A] mt-0.5">Handpicked by our team</p>
           </div>
           <Link href="/products?sort=featured" className="text-sm text-[#C9A84C] hover:text-[#F0C040] font-medium flex items-center gap-1 transition-colors">
             View all <ArrowRight className="h-3.5 w-3.5" />
@@ -191,10 +195,12 @@ export default async function HomePage() {
                   <p className="font-semibold text-[#F5F0E8] group-hover:text-[#C9A84C] transition-colors truncate">{vendor.storeName}</p>
                   <div className="flex items-center gap-1 mt-0.5">
                     <Star className="h-3 w-3 fill-[#F0C040] text-[#F0C040]" />
-                    <span className="text-xs text-[#9A8F7A]">{vendor.rating.toFixed(1)} Â· {vendor._count.products} products</span>
+                    <span className="text-xs text-[#9A8F7A]">{vendor.rating.toFixed(1)} &middot; {vendor._count.products} products</span>
                   </div>
                   {vendor.region && (
-                    <p className="text-xs text-[#9A8F7A] mt-0.5 truncate">ð {vendor.region}</p>
+                    <p className="text-xs text-[#9A8F7A] mt-0.5 truncate flex items-center gap-1">
+                      <MapPin size={10} strokeWidth={1.5} />{vendor.region}
+                    </p>
                   )}
                 </div>
                 <ArrowRight className="h-4 w-4 text-[#9A8F7A] group-hover:text-[#C9A84C] shrink-0 transition-colors" />
@@ -210,11 +216,11 @@ export default async function HomePage() {
           <div className="max-w-7xl mx-auto px-4">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '32px' }}>
               <div>
-                <div style={{ fontSize: '13px', color: '#C9A84C', marginBottom: '8px', letterSpacing: '2px' }}>â¡ INSTANT DELIVERY</div>
+                <div style={{ fontSize: '13px', color: '#C9A84C', marginBottom: '8px', letterSpacing: '2px' }}>INSTANT DELIVERY</div>
                 <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '32px', color: '#F5F0E8' }}>Digital Products</h2>
-                <p style={{ color: '#9A8F7A', marginTop: '8px' }}>Netflix, Spotify, ChatGPT & more â paid in TTD</p>
+                <p style={{ color: '#9A8F7A', marginTop: '8px' }}>Netflix, Spotify, ChatGPT &amp; more — paid in TTD</p>
               </div>
-              <a href="/digital" style={{ color: '#C9A84C', textDecoration: 'none', fontSize: '14px' }}>See all â</a>
+              <a href="/digital" style={{ color: '#C9A84C', textDecoration: 'none', fontSize: '14px' }}>See all</a>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '16px' }}>
               {digitalProducts.map((dp) => (
@@ -222,7 +228,7 @@ export default async function HomePage() {
                   <div style={{ background: '#111111', border: '1px solid #1A1A1A', borderRadius: '10px', overflow: 'hidden' }}>
                     <div style={{ height: '120px', background: '#1A1A1A', position: 'relative' }}>
                       {dp.thumbnail && <img src={dp.thumbnail} alt={dp.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
-                      <span style={{ position: 'absolute', top: '8px', left: '8px', background: '#C9A84C', color: '#0A0A0A', fontSize: '10px', fontWeight: 'bold', padding: '2px 6px', borderRadius: '3px' }}>â¡</span>
+                      <span style={{ position: 'absolute', top: '8px', left: '8px', background: '#C9A84C', color: '#0A0A0A', fontSize: '10px', fontWeight: 'bold', padding: '2px 6px', borderRadius: '3px' }}>INSTANT</span>
                     </div>
                     <div style={{ padding: '12px' }}>
                       <p style={{ fontSize: '13px', fontWeight: '600', marginBottom: '4px', lineHeight: '1.3', color: '#F5F0E8' }}>{dp.name}</p>
@@ -240,7 +246,9 @@ export default async function HomePage() {
       <section className="bg-gradient-to-r from-[#0A0A0A] via-[#111111] to-[#0A0A0A] border-t border-b border-[#C9A84C]/15">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
           <div className="text-center space-y-4">
-            <div className="text-4xl">ðª</div>
+            <div className="flex items-center justify-center">
+              <Store className="h-10 w-10 text-[#C9A84C]" strokeWidth={1.2} />
+            </div>
             <h2 className="text-3xl font-bold text-[#F5F0E8]">Start Selling on zip.tt Today</h2>
             <p className="text-[#9A8F7A] max-w-xl mx-auto">
               Join hundreds of Trinbagonian vendors reaching customers across Trinidad.

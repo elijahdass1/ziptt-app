@@ -203,7 +203,7 @@ export function VendorDashboardClient({ vendor, products, totalRevenue, totalOrd
               { label: 'Total Products', value: productList.length, sub: 'Listed products' },
               { label: 'Total Orders', value: totalOrders, sub: 'All time' },
               { label: 'Total Revenue', value: `TTD $${Number(totalRevenue).toFixed(2)}`, sub: 'Gross sales' },
-              { label: 'Store Rating', value: `${vendor.rating.toFixed(1)} ★`, sub: 'Average rating' },
+              { label: 'Store Rating', value: `${vendor.rating.toFixed(1)} / 5.0`, sub: 'Average rating' },
             ].map(stat => (
               <div key={stat.label} style={{ background: card, border: `1px solid ${border}`, borderRadius: '12px', padding: '20px' }}>
                 <p style={{ fontSize: '11px', color: muted, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>{stat.label}</p>

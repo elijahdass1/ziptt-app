@@ -38,7 +38,7 @@ export default async function OrdersPage() {
 
         {orders.length === 0 ? (
           <div className="text-center py-20">
-            <div className="text-7xl mb-4">ð¦</div>
+            <div className="flex items-center justify-center mb-4"><Package className="h-16 w-16 text-gray-300" strokeWidth={1.2} /></div>
             <h2 className="text-xl font-bold text-gray-900 mb-2">No orders yet</h2>
             <p className="text-gray-500 mb-6">When you place an order, it&apos;ll show up here.</p>
             <Link href="/products" className="btn-primary">Start Shopping</Link>
@@ -82,7 +82,7 @@ export default async function OrdersPage() {
                           />
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium text-gray-900 truncate">{item.product.name}</p>
-                            <p className="text-xs text-gray-500">Qty: {item.quantity} Ã {formatTTD(item.price)}</p>
+                            <p className="text-xs text-gray-500">Qty: {item.quantity} x {formatTTD(item.price)}</p>
                           </div>
                           <p className="text-sm font-semibold text-gray-900 shrink-0">{formatTTD(item.total)}</p>
                         </div>

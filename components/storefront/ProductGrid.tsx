@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Search } from 'lucide-react'
 import { ProductCard } from './ProductCard'
 
 interface Product {
@@ -30,7 +30,9 @@ export function ProductGrid({ products, total, pages, currentPage, searchParams 
   if (products.length === 0) {
     return (
       <div className="text-center py-20">
-        <div className="text-6xl mb-4">🔍</div>
+        <div className="flex items-center justify-center mb-4">
+          <Search size={48} className="text-gray-300" strokeWidth={1.2} />
+        </div>
         <h2 className="text-xl font-bold text-gray-900 mb-2">No products found</h2>
         <p className="text-gray-500 mb-6">Try adjusting your search or filters</p>
         <Link href="/products" className="btn-primary">Browse All Products</Link>

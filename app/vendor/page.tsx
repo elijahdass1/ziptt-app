@@ -17,13 +17,13 @@ export default async function VendorDashboard() {
     return (
       <div style={{ minHeight: '100vh', background: '#0A0A0A', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '32px' }}>
         <div style={{ textAlign: 'center', maxWidth: '480px' }}>
-          <div style={{ fontSize: '64px', marginBottom: '16px' }}>â³</div>
+          <div style={{ fontSize: '14px', color: '#9A8F7A', marginBottom: '16px' }}>PENDING REVIEW</div>
           <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: '#F5F0E8', fontFamily: 'Georgia, serif', marginBottom: '16px' }}>Application Under Review</h1>
           <div style={{ border: '1px solid #C9A84C', borderRadius: '12px', padding: '24px', background: '#111111', marginBottom: '16px' }}>
             <p style={{ color: '#9A8F7A', marginBottom: '8px' }}>
               Your vendor application for <strong style={{ color: '#C9A84C' }}>{vendor.storeName}</strong> is being reviewed.
             </p>
-            <p style={{ color: '#9A8F7A', fontSize: '14px' }}>Typically takes 1â2 business days.</p>
+            <p style={{ color: '#9A8F7A', fontSize: '14px' }}>Typically takes 1-2 business days.</p>
           </div>
           <p style={{ fontSize: '14px', color: '#9A8F7A' }}>
             Questions? Email <a href="mailto:support@zip.tt" style={{ color: '#C9A84C' }}>support@zip.tt</a>
@@ -37,7 +37,7 @@ export default async function VendorDashboard() {
     return (
       <div style={{ minHeight: '100vh', background: '#0A0A0A', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '32px' }}>
         <div style={{ textAlign: 'center', maxWidth: '480px' }}>
-          <div style={{ fontSize: '64px', marginBottom: '16px' }}>ð«</div>
+          <div style={{ fontSize: '14px', color: '#D62828', marginBottom: '16px' }}>APPLICATION NOT APPROVED</div>
           <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: '#F5F0E8', fontFamily: 'Georgia, serif', marginBottom: '16px' }}>Store Suspended</h1>
           <div style={{ border: '1px solid #ef4444', borderRadius: '12px', padding: '24px', background: '#1a0000', marginBottom: '16px' }}>
             <p style={{ color: '#fca5a5' }}>Your store has been suspended. Please contact support for assistance.</p>
@@ -77,7 +77,7 @@ export default async function VendorDashboard() {
     <div style={{ padding: '32px', color: '#F5F0E8' }}>
       <div style={{ marginBottom: '32px' }}>
         <h1 style={{ fontFamily: 'Georgia, serif', fontSize: '28px', marginBottom: '4px' }}>
-          Welcome back, {session.user.name?.split(' ')[0] ?? 'Vendor'} ð
+          Welcome back, {session.user.name?.split(' ')[0] ?? 'Vendor'}
         </h1>
         <p style={{ color: '#9A8F7A', fontSize: '14px' }}>{vendor.storeName} Dashboard</p>
       </div>
@@ -97,7 +97,7 @@ export default async function VendorDashboard() {
       <div style={{ background: '#111111', border: '1px solid #1A1A1A', borderRadius: '12px', overflow: 'hidden' }}>
         <div style={{ padding: '20px 24px', borderBottom: '1px solid #1A1A1A', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <h2 style={{ fontSize: '18px', fontWeight: '600' }}>Recent Orders</h2>
-          <a href="/vendor/orders" style={{ fontSize: '13px', color: '#C9A84C', textDecoration: 'none' }}>View all â</a>
+          <a href="/vendor/orders" style={{ fontSize: '13px', color: '#C9A84C', textDecoration: 'none' }}>View all</a>
         </div>
         {recentOrders.length === 0 ? (
           <p style={{ padding: '32px', color: '#9A8F7A', textAlign: 'center' }}>No orders yet. Share your store to get started!</p>

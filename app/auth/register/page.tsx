@@ -171,7 +171,7 @@ export default function RegisterPage() {
           {step === 1 && (
             <>
               <h1 className="text-xl font-bold text-[#F5F0E8] mb-1">Create your account</h1>
-              <p className="text-sm text-[#9A8F7A] mb-6">Join thousands of shoppers on zip.tt Ã°ÂÂÂ¹Ã°ÂÂÂ¹</p>
+              <p className="text-sm text-[#9A8F7A] mb-6">Join thousands of shoppers on zip.tt</p>
               <form onSubmit={handleStep1} className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-[#F5F0E8] mb-1">Full Name</label>
@@ -188,13 +188,13 @@ export default function RegisterPage() {
                 <div>
                   <label className="block text-sm font-medium text-[#F5F0E8] mb-1">Phone Number</label>
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-base select-none">Ã°ÂÂÂ¹Ã°ÂÂÂ¹</span>
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-base select-none">868</span>
                     <input value={phone} onChange={e => setPhone(formatPhone(e.target.value))} required
                       placeholder="868-123-4567"
                       maxLength={8}
                       className="w-full bg-[#1A1A1A] border border-[#C9A84C]/20 rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#F5F0E8] placeholder-[#9A8F7A] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent" />
                   </div>
-                  <p className="text-xs text-[#9A8F7A] mt-1">e.g. 868-123-4567 Ã¢ÂÂ used for delivery &amp; verification</p>
+                  <p className="text-xs text-[#9A8F7A] mt-1">e.g. 868-123-4567 - used for delivery &amp; verification</p>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#F5F0E8] mb-1">Password</label>
@@ -227,7 +227,7 @@ export default function RegisterPage() {
                 <button type="submit" disabled={loading}
                   className="w-full py-3 bg-[#C9A84C] hover:bg-[#F0C040] disabled:bg-[#1A1A1A] disabled:text-[#9A8F7A] text-[#0A0A0A] font-bold rounded-xl transition-colors flex items-center justify-center gap-2">
                   {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-                  {loading ? 'Sending code...' : 'Send Verification Code Ã¢ÂÂ'}
+                  {loading ? 'Sending code...' : 'Send Verification Code'}
                 </button>
               </form>
             </>
@@ -260,7 +260,7 @@ export default function RegisterPage() {
                 <button type="submit" disabled={loading || otp.join('').length !== 6}
                   className="w-full py-3 bg-[#C9A84C] hover:bg-[#F0C040] disabled:bg-[#1A1A1A] disabled:text-[#9A8F7A] text-[#0A0A0A] font-bold rounded-xl transition-colors flex items-center justify-center gap-2">
                   {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-                  {loading ? 'Verifying...' : 'Verify Phone Ã¢ÂÂ'}
+                  {loading ? 'Verifying...' : 'Verify Phone'}
                 </button>
                 <div className="text-center">
                   {resendCountdown > 0 ? (
@@ -274,7 +274,7 @@ export default function RegisterPage() {
                 </div>
               </form>
               <button onClick={() => setStep(1)} className="mt-4 text-sm text-[#9A8F7A] hover:text-[#F5F0E8] w-full text-center">
-                Ã¢ÂÂ Change phone number
+                Change phone number
               </button>
             </>
           )}
@@ -282,7 +282,7 @@ export default function RegisterPage() {
           {/* Step 3 */}
           {step === 3 && (
             <div className="text-center py-8 space-y-4">
-              <div className="text-6xl">Ã°ÂÂÂ</div>
+              <div className="text-2xl font-bold text-[#C9A84C]">zip.tt</div>
               <h1 className="text-2xl font-bold text-[#F5F0E8]">Welcome to zip.tt!</h1>
               <p className="text-[#9A8F7A]">Your account is ready. Redirecting you now...</p>
               <div className="flex justify-center">

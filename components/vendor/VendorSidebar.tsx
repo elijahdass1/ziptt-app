@@ -53,7 +53,7 @@ export function VendorSidebar({ vendor }: { vendor: Vendor | null }) {
             </div>
             <div className="min-w-0">
               <p className="text-sm font-semibold text-[#F5F0E8] truncate">{vendor.storeName}</p>
-              <p className="text-xs text-[#C9A84C]">⭐ {vendor.rating.toFixed(1)} rating</p>
+              <p className="text-xs text-[#C9A84C]">{vendor.rating.toFixed(1)} rating</p>
             </div>
           </div>
         </div>

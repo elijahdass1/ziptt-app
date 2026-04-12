@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { Loader2, Eye, EyeOff } from 'lucide-react'
+import { Loader2, Eye, EyeOff, Smartphone, Sparkles, Wine, Star } from 'lucide-react'
 import { toast } from '@/components/ui/use-toast'
 
 export function LoginPageClient() {
@@ -47,8 +47,15 @@ export function LoginPageClient() {
             Trinidad & Tobago's premier online marketplace
           </p>
           <div className="grid grid-cols-2 gap-3 text-sm mt-8">
-            {['📱 Electronics', '🎭 Carnival', '🥃 Rum & Spirits', '🧸 Toys'].map((cat) => (
-              <div key={cat} className="bg-white/20 rounded-xl p-3 text-center">{cat}</div>
+            {[
+              { Icon: Smartphone, label: 'Electronics' },
+              { Icon: Sparkles, label: 'Carnival' },
+              { Icon: Wine, label: 'Rum & Spirits' },
+              { Icon: Star, label: 'Toys' },
+            ].map(({ Icon, label }) => (
+              <div key={label} className="bg-white/20 rounded-xl p-3 text-center flex items-center justify-center gap-1.5">
+                <Icon size={14} strokeWidth={1.5} />{label}
+              </div>
             ))}
           </div>
         </div>
@@ -124,15 +131,15 @@ export function LoginPageClient() {
             <div className="grid grid-cols-2 gap-2 mt-2 text-xs text-gray-500">
               <button onClick={() => { setEmail('customer@zip.tt'); setPassword('customer123') }}
                 className="border border-gray-200 rounded-lg px-2 py-1.5 hover:bg-gray-50 text-left">
-                🛒 Customer
+                Customer
               </button>
               <button onClick={() => { setEmail('trini.tech@zip.tt'); setPassword('vendor123') }}
                 className="border border-gray-200 rounded-lg px-2 py-1.5 hover:bg-gray-50 text-left">
-                🏪 Vendor
+                Vendor
               </button>
               <button onClick={() => { setEmail('admin@zip.tt'); setPassword('admin123') }}
                 className="border border-gray-200 rounded-lg px-2 py-1.5 hover:bg-gray-50 text-left">
-                ⚙️ Admin
+                Admin
               </button>
             </div>
           </div>
