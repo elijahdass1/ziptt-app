@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import prisma from '@/lib/prisma'
 import { formatDate } from '@/lib/utils'
 import { VerificationActions } from '@/components/admin/VerificationActions'
@@ -102,12 +103,12 @@ export default async function AdminVerificationsPage({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <p className="font-medium text-[#F5F0E8]">{user.name ?? '—'}</p>
+                        <p className="font-medium text-[#F5F0E8]">{user.name ?? 'â'}</p>
                         <p className="text-xs text-[#555]">{user.email}</p>
                         {user.phone && <p className="text-xs text-[#555]">{user.phone}</p>}
                         <div className="flex items-center gap-3 mt-2">
                           <span className="text-xs text-[#9A8F7A]">
-                            Doc: <span className="text-[#F5F0E8]">{user.idDocumentType ?? '—'}</span>
+                            Doc: <span className="text-[#F5F0E8]">{user.idDocumentType ?? 'â'}</span>
                           </span>
                           <span className="text-xs text-[#9A8F7A]">
                             Orders: <span className="text-[#F5F0E8]">{user.totalOrders}</span>
