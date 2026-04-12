@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { redirect } from 'next/navigation'
@@ -58,7 +59,7 @@ export default async function DisputesPage({
 
         {disputes.length === 0 ? (
           <div className="bg-[#111111] border border-[#1a1a1a] rounded-xl p-12 text-center">
-            <p className="text-4xl mb-3">📋</p>
+            <p className="text-4xl mb-3">ð</p>
             <p className="text-[#F5F0E8] font-semibold mb-1">No disputes opened yet</p>
             <p className="text-[#888] text-sm">
               If you have an issue with an order, open a dispute above.
@@ -90,7 +91,7 @@ export default async function DisputesPage({
                       {dispute.subject}
                     </p>
                     <p className="text-xs text-[#888] mb-2">
-                      Order #{dispute.order.orderNumber.slice(-8).toUpperCase()} •{' '}
+                      Order #{dispute.order.orderNumber.slice(-8).toUpperCase()} â¢{' '}
                       {dispute.vendor.storeName}
                     </p>
 
