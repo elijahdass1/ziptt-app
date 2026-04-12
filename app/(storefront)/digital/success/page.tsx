@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import prisma from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
@@ -21,7 +22,7 @@ export default async function DigitalSuccessPage({ searchParams }: { searchParam
   return (
     <div style={{ background: '#0A0A0A', minHeight: '100vh', color: '#F5F0E8', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 24px' }}>
       <div style={{ maxWidth: '500px', width: '100%', textAlign: 'center' }}>
-        <div style={{ fontSize: '64px', marginBottom: '16px' }}>🎉</div>
+        <div style={{ fontSize: '64px', marginBottom: '16px' }}>ð</div>
         <h1 style={{ fontFamily: 'Georgia, serif', fontSize: '32px', marginBottom: '8px' }}>Purchase Successful!</h1>
         <p style={{ color: '#9A8F7A', marginBottom: '40px' }}>{order.product.name}</p>
 
@@ -41,10 +42,10 @@ export default async function DigitalSuccessPage({ searchParams }: { searchParam
         )}
 
         <p style={{ fontSize: '13px', color: '#9A8F7A', marginBottom: '24px' }}>
-          💾 Your code is also saved in <a href="/orders/digital" style={{ color: '#C9A84C' }}>My Digital Orders</a>
+          ð¾ Your code is also saved in <a href="/orders/digital" style={{ color: '#C9A84C' }}>My Digital Orders</a>
         </p>
         <a href="/digital" style={{ display: 'inline-block', background: '#C9A84C', color: '#0A0A0A', padding: '12px 32px', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold' }}>
-          Shop more digital products →
+          Shop more digital products â
         </a>
       </div>
     </div>
