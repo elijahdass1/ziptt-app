@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import prisma from '@/lib/prisma'
 import { Star } from 'lucide-react'
 import { AdminReviewActions } from '@/components/admin/AdminReviewActions'
