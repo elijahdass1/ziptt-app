@@ -4,6 +4,7 @@ import { authOptions } from '@/lib/auth'
 import prisma from '@/lib/prisma'
 import { formatTTD, formatDate } from '@/lib/utils'
 import { VendorOrderActions } from '@/components/vendor/VendorOrderActions'
+import { firstImage } from '@/lib/parseImages'
 
 const STATUS_COLORS: Record<string, string> = {
   PENDING: 'badge-yellow', CONFIRMED: 'badge-blue', PROCESSING: 'badge-blue',
@@ -58,7 +59,7 @@ export default async function VendorOrdersPage() {
                   <div className="space-y-2">
                     {order.items.map((item) => (
                       <div key={item.id} className="flex items-center gap-3">
-                        <img src={item.product.images[0] ?? ''} alt={item.product.name}
+                        <img src={firstImage(item.product.images)} alt={item.product.name}
                           className="w-12 h-12 rounded-lg object-cover bg-gray-100 shrink-0" />
                         <div>
                           <p className="text-sm font-medium text-gray-900">{item.product.name}</p>

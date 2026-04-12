@@ -38,14 +38,21 @@ async function main() {
   })
 
   // ─── Vendor Users & Vendors ────────────────────────────────────────────────
-  const vendorPassword = await bcrypt.hash('vendor123', 10)
+  const [pw1, pw2, pw3, pw4, pw5, pw6] = await Promise.all([
+    bcrypt.hash('TechHub2026', 12),
+    bcrypt.hash('DmasCamp2026', 12),
+    bcrypt.hash('Gourmet2026', 12),
+    bcrypt.hash('Wvrldwide2026', 12),
+    bcrypt.hash('BestToys2026', 12),
+    bcrypt.hash('EliteHome2026', 12),
+  ])
 
-  const vendor1User = await prisma.user.upsert({ where: { email: 'trini.tech@zip.tt' }, update: {}, create: { name: 'Kamla Ramsaran', email: 'trini.tech@zip.tt', password: vendorPassword, role: 'VENDOR', emailVerified: new Date() } })
-  const vendor2User = await prisma.user.upsert({ where: { email: 'mas.camp@zip.tt' }, update: {}, create: { name: 'Dexter Williams', email: 'mas.camp@zip.tt', password: vendorPassword, role: 'VENDOR', emailVerified: new Date() } })
-  const vendor3User = await prisma.user.upsert({ where: { email: 'doubles.queen@zip.tt' }, update: {}, create: { name: 'Sasha Mohammed', email: 'doubles.queen@zip.tt', password: vendorPassword, role: 'VENDOR', emailVerified: new Date() } })
-  const vendor4User = await prisma.user.upsert({ where: { email: 'don.wvrldwide@zip.tt' }, update: {}, create: { name: 'Don Wvrldwide', email: 'don.wvrldwide@zip.tt', password: vendorPassword, role: 'VENDOR', emailVerified: new Date() } })
-  const vendor5User = await prisma.user.upsert({ where: { email: 'dbest.toys@zip.tt' }, update: {}, create: { name: 'D\'Best Toys TT', email: 'dbest.toys@zip.tt', password: vendorPassword, role: 'VENDOR', emailVerified: new Date() } })
-  const vendor6User = await prisma.user.upsert({ where: { email: 'elite.homedecor@zip.tt' }, update: {}, create: { name: 'Elite Home Decor', email: 'elite.homedecor@zip.tt', password: vendorPassword, role: 'VENDOR', emailVerified: new Date() } })
+  const vendor1User = await prisma.user.upsert({ where: { email: 'trini.tech@zip.tt' }, update: { password: pw1 }, create: { name: 'Kamla Ramsaran', email: 'trini.tech@zip.tt', password: pw1, role: 'VENDOR', emailVerified: new Date() } })
+  const vendor2User = await prisma.user.upsert({ where: { email: 'mas.camp@zip.tt' }, update: { password: pw2 }, create: { name: 'Dexter Williams', email: 'mas.camp@zip.tt', password: pw2, role: 'VENDOR', emailVerified: new Date() } })
+  const vendor3User = await prisma.user.upsert({ where: { email: 'doubles.queen@zip.tt' }, update: { password: pw3 }, create: { name: 'Sasha Mohammed', email: 'doubles.queen@zip.tt', password: pw3, role: 'VENDOR', emailVerified: new Date() } })
+  const vendor4User = await prisma.user.upsert({ where: { email: 'don.wvrldwide@zip.tt' }, update: { password: pw4 }, create: { name: 'Don Wvrldwide', email: 'don.wvrldwide@zip.tt', password: pw4, role: 'VENDOR', emailVerified: new Date() } })
+  const vendor5User = await prisma.user.upsert({ where: { email: 'dbest.toys@zip.tt' }, update: { password: pw5 }, create: { name: 'D\'Best Toys TT', email: 'dbest.toys@zip.tt', password: pw5, role: 'VENDOR', emailVerified: new Date() } })
+  const vendor6User = await prisma.user.upsert({ where: { email: 'elite.homedecor@zip.tt' }, update: { password: pw6 }, create: { name: 'Elite Home Decor', email: 'elite.homedecor@zip.tt', password: pw6, role: 'VENDOR', emailVerified: new Date() } })
 
   const vendor1 = await prisma.vendor.upsert({
     where: { userId: vendor1User.id }, update: {},

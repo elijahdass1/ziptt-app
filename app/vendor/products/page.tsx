@@ -6,6 +6,7 @@ import { formatTTD } from '@/lib/utils'
 import Link from 'next/link'
 import { PlusCircle, Edit, Package } from 'lucide-react'
 import { VendorProductActions } from '@/components/vendor/VendorProductActions'
+import { firstImage } from '@/lib/parseImages'
 
 const STATUS_COLORS: Record<string, string> = {
   ACTIVE: 'badge-green', DRAFT: 'badge-gray', OUT_OF_STOCK: 'badge-yellow', ARCHIVED: 'badge-gray',
@@ -59,7 +60,7 @@ export default async function VendorProductsPage() {
                 <tr key={product.id} className="hover:bg-gray-50/50 transition-colors">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
-                      <img src={product.images[0] ?? ''} alt={product.name}
+                      <img src={firstImage(product.images)} alt={product.name}
                         className="w-10 h-10 rounded-lg object-cover bg-gray-100 shrink-0" />
                       <div className="min-w-0">
                         <p className="font-medium text-gray-900 truncate max-w-[180px]">{product.name}</p>

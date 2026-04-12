@@ -7,6 +7,7 @@ import prisma from '@/lib/prisma'
 import { ProductDetail } from '@/components/storefront/ProductDetail'
 import { ProductCard } from '@/components/storefront/ProductCard'
 import { ReviewSection } from '@/components/storefront/ReviewSection'
+import { firstImage } from '@/lib/parseImages'
 
 interface PageProps { params: { slug: string } }
 
@@ -35,7 +36,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: product.name,
     description: product.description.substring(0, 160),
-    openGraph: { images: [product.images[0]] },
+    openGraph: { images: [firstImage(product.images)] },
   }
 }
 

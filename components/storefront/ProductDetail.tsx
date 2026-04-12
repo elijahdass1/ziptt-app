@@ -6,6 +6,7 @@ import { Star, ShoppingCart, Minus, Plus, Package, Truck, Shield, ChevronRight }
 import { formatTTD, getDeliveryEstimate } from '@/lib/utils'
 import { useCartStore } from '@/lib/store'
 import { toast } from '@/components/ui/use-toast'
+import { parseImages } from '@/lib/parseImages'
 
 interface Review {
   id: string; rating: number; title?: string | null; body?: string | null
@@ -15,9 +16,9 @@ interface Review {
 
 interface Product {
   id: string; name: string; slug: string; description: string
-  price: number; comparePrice?: number | null; images: string[]
+  price: number; comparePrice?: number | null; images: string | string[]
   stock: number; rating: number; reviewCount: number; soldCount: number
-  tags: string[]; vendorId: string; sku?: string | null
+  tags: string | string[]; vendorId: string; sku?: string | null
   vendor: { storeName: string; slug: string; rating: number; description?: string | null }
   category: { name: string; slug: string }
   reviews: Review[]
@@ -28,6 +29,9 @@ export function ProductDetail({ product }: { product: Product }) {
   const [quantity, setQuantity] = useState(1)
   const [tab, setTab] = useState<'desc' | 'reviews'>('desc')
   const addItem = useCartStore((s) => s.addItem)
+
+  const images = parseImages(product.images)
+  const tags = Array.isArray(product.tags) ? product.tags : (() => { try { return JSON.parse(product.tags as string) } catch { return [] } })()
 
   const discount = product.comparePrice
     ? Math.round(((product.comparePrice - product.price) / product.comparePrice) * 100)
@@ -40,7 +44,7 @@ export function ProductDetail({ product }: { product: Product }) {
         productId: product.id,
         name: product.name,
         price: product.price,
-        image: product.images[0] ?? '',
+        image: images[0] ?? 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600',
         vendorId: product.vendorId,
         vendorName: product.vendor.storeName,
         stock: product.stock,
@@ -68,15 +72,16 @@ export function ProductDetail({ product }: { product: Product }) {
         {/* Images */}
         <div className="space-y-3">
           <div className="aspect-square rounded-2xl overflow-hidden bg-[#1A1A1A] border border-[#C9A84C]/10">
-            {product.images[selectedImage] ? (
-              <img src={product.images[selectedImage]} alt={product.name} className="w-full h-full object-cover" />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center text-8xl">📦</div>
-            )}
+            <img
+              src={images[selectedImage] ?? 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600'}
+              alt={product.name}
+              className="w-full h-full object-cover"
+              onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600' }}
+            />
           </div>
-          {product.images.length > 1 && (
+          {images.length > 1 && (
             <div className="flex gap-2">
-              {product.images.map((img, i) => (
+              {images.map((img, i) => (
                 <button key={i} onClick={() => setSelectedImage(i)}
                   className={`w-16 h-16 rounded-lg overflow-hidden border-2 transition-colors ${i === selectedImage ? 'border-[#C9A84C]' : 'border-[#C9A84C]/10 hover:border-[#C9A84C]/40'}`}>
                   <img src={img} alt="" className="w-full h-full object-cover" />
@@ -183,9 +188,9 @@ export function ProductDetail({ product }: { product: Product }) {
           </div>
 
           {/* Tags */}
-          {product.tags.length > 0 && (
+          {tags.length > 0 && (
             <div className="flex flex-wrap gap-2">
-              {product.tags.map((tag) => (
+              {tags.map((tag: string) => (
                 <span key={tag} className="text-xs bg-[#1A1A1A] border border-[#C9A84C]/15 text-[#9A8F7A] px-2.5 py-1 rounded-full">{tag}</span>
               ))}
             </div>

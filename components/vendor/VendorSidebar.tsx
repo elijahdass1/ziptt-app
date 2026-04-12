@@ -18,6 +18,7 @@ interface Vendor {
 
 const navItems = [
   { href: '/vendor', label: 'Dashboard', icon: LayoutDashboard, exact: true },
+  { href: '/vendor/dashboard', label: 'New Dashboard', icon: LayoutDashboard, exact: false },
   { href: '/vendor/products', label: 'Products', icon: Package },
   { href: '/vendor/products/new', label: 'Add Product', icon: PlusCircle },
   { href: '/vendor/orders', label: 'Orders', icon: ShoppingBag },

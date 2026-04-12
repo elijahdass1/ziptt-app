@@ -5,6 +5,7 @@ import { Star, ShoppingCart } from 'lucide-react'
 import { formatTTD } from '@/lib/utils'
 import { useCartStore } from '@/lib/store'
 import { toast } from '@/components/ui/use-toast'
+import { firstImage, parseImages } from '@/lib/parseImages'
 
 interface ProductCardProps {
   product: {
@@ -13,7 +14,7 @@ interface ProductCardProps {
     slug: string
     price: number
     comparePrice?: number | null
-    images: string[]
+    images: string | string[]
     rating: number
     reviewCount: number
     stock: number
@@ -28,6 +29,8 @@ export function ProductCard({ product }: ProductCardProps) {
   const discount = product.comparePrice
     ? Math.round(((product.comparePrice - product.price) / product.comparePrice) * 100)
     : 0
+  const imgUrl = firstImage(product.images)
+  const allImages = parseImages(product.images)
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -36,7 +39,7 @@ export function ProductCard({ product }: ProductCardProps) {
       productId: product.id,
       name: product.name,
       price: product.price,
-      image: product.images[0] ?? '',
+      image: imgUrl,
       vendorId: product.vendorId,
       vendorName: product.vendor.storeName,
       stock: product.stock,
@@ -58,15 +61,12 @@ export function ProductCard({ product }: ProductCardProps) {
 
       {/* Image */}
       <div className="relative overflow-hidden aspect-square bg-[#1A1A1A]">
-        {product.images[0] ? (
-          <img
-            src={product.images[0]}
-            alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-5xl">📦</div>
-        )}
+        <img
+          src={imgUrl}
+          alt={product.name}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600' }}
+        />
         {discount > 0 && (
           <div className="absolute top-2 left-2 bg-[#C9A84C] text-[#0A0A0A] text-xs font-bold px-2 py-0.5 rounded-full">
             -{discount}%

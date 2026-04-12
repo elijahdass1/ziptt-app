@@ -6,7 +6,7 @@ import { ProductCard } from './ProductCard'
 
 interface Product {
   id: string; name: string; slug: string; price: number; comparePrice?: number | null
-  images: string[]; rating: number; reviewCount: number; stock: number
+  images: string | string[]; rating: number; reviewCount: number; stock: number
   vendorId: string; vendor: { storeName: string; slug: string }
   category: { name: string; slug: string }
 }

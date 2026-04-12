@@ -19,13 +19,23 @@ export default async function EditProductPage({ params }: { params: { id: string
 
   if (!product) redirect('/vendor/products')
 
+  // Parse JSON string fields for ProductForm
+  const parseJsonArr = (val: string): string[] => {
+    try { const p = JSON.parse(val); return Array.isArray(p) ? p : [] } catch { return [] }
+  }
+  const productForForm = {
+    ...product,
+    images: parseJsonArr(product.images),
+    tags: parseJsonArr(product.tags),
+  }
+
   return (
     <div>
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Edit Product</h1>
         <p className="text-sm text-gray-500 mt-1">Update your product listing</p>
       </div>
-      <ProductForm categories={categories} vendorId={vendor.id} product={product} />
+      <ProductForm categories={categories} vendorId={vendor.id} product={productForForm} />
     </div>
   )
 }
