@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import { Suspense } from 'react'
 import { ProductFilters } from '@/components/storefront/ProductFilters'
 import { ProductGrid } from '@/components/storefront/ProductGrid'
