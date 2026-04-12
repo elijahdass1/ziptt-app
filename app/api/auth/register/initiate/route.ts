@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import { z } from 'zod'
 import prisma from '@/lib/prisma'
@@ -66,7 +67,7 @@ export async function POST(req: NextRequest) {
         })
       } catch (smsError) {
         console.error('SMS failed:', smsError)
-        // Don't fail — OTP still printed to console
+        // Don't fail â OTP still printed to console
       }
     }
 
