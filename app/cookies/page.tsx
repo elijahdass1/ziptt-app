@@ -1,4 +1,5 @@
-export const metadata = { title: 'Cookie Policy — zip.tt' }
+export const dynamic = 'force-dynamic'
+export const metadata = { title: 'Cookie Policy â zip.tt' }
 
 export default function CookiesPage() {
   const cookieTypes = [
@@ -11,7 +12,7 @@ export default function CookiesPage() {
     {
       type: 'Analytics Cookies',
       required: false,
-      desc: 'These cookies help us understand how visitors use zip.tt so we can improve the experience. All data is anonymised — we cannot identify individual users from analytics data.',
+      desc: 'These cookies help us understand how visitors use zip.tt so we can improve the experience. All data is anonymised â we cannot identify individual users from analytics data.',
       examples: ['Pages visited', 'Time spent on pages', 'Device and browser type'],
     },
     {
