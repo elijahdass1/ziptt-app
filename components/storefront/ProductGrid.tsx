@@ -31,10 +31,10 @@ export function ProductGrid({ products, total, pages, currentPage, searchParams 
     return (
       <div className="text-center py-20">
         <div className="flex items-center justify-center mb-4">
-          <Search size={48} className="text-gray-300" strokeWidth={1.2} />
+          <Search size={48} className="text-[#9A8F7A]" strokeWidth={1.2} />
         </div>
-        <h2 className="text-xl font-bold text-gray-900 mb-2">No products found</h2>
-        <p className="text-gray-500 mb-6">Try adjusting your search or filters</p>
+        <h2 className="text-xl font-bold text-[#F5F0E8] mb-2">No products found</h2>
+        <p className="text-[#9A8F7A] mb-6">Try adjusting your search or filters</p>
         <Link href="/products" className="btn-primary">Browse All Products</Link>
       </div>
     )
@@ -52,7 +52,7 @@ export function ProductGrid({ products, total, pages, currentPage, searchParams 
       {pages > 1 && (
         <div className="flex items-center justify-center gap-2 mt-10">
           {currentPage > 1 && (
-            <Link href={buildPageUrl(currentPage - 1)} className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+            <Link href={buildPageUrl(currentPage - 1)} className="p-2 border border-[#C9A84C]/30 rounded-lg hover:bg-[#1A1A1A] text-[#9A8F7A] hover:text-[#F5F0E8] transition-colors">
               <ChevronLeft className="h-4 w-4" />
             </Link>
           )}
@@ -61,14 +61,16 @@ export function ProductGrid({ products, total, pages, currentPage, searchParams 
             return (
               <Link key={page} href={buildPageUrl(page)}
                 className={`w-9 h-9 flex items-center justify-center rounded-lg text-sm font-medium transition-colors ${
-                  page === currentPage ? 'bg-[#D62828] text-white' : 'border border-gray-300 hover:bg-gray-50 text-gray-700'
+                  page === currentPage
+                    ? 'bg-[#C9A84C] text-[#0A0A0A] font-bold'
+                    : 'border border-[#C9A84C]/20 text-[#9A8F7A] hover:bg-[#1A1A1A] hover:text-[#F5F0E8]'
                 }`}>
                 {page}
               </Link>
             )
           })}
           {currentPage < pages && (
-            <Link href={buildPageUrl(currentPage + 1)} className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+            <Link href={buildPageUrl(currentPage + 1)} className="p-2 border border-[#C9A84C]/30 rounded-lg hover:bg-[#1A1A1A] text-[#9A8F7A] hover:text-[#F5F0E8] transition-colors">
               <ChevronRight className="h-4 w-4" />
             </Link>
           )}

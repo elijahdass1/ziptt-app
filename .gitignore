@@ -4,3 +4,4 @@ prisma/dev.db
 *.tsbuildinfo
 .env.local
 .claude/
+.claude/

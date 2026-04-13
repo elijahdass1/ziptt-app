@@ -88,7 +88,7 @@ export function ProductCard({ product }: ProductCardProps) {
       <div className="p-3 flex flex-col gap-1.5 flex-1">
         {/* Vendor link — relative z-10 so it sits above the stretched product link */}
         <Link
-          href={`/store/${product.vendor.slug}`}
+          href={`/products?vendor=${product.vendor.slug}`}
           className="relative z-10 text-xs text-[#C9A84C] hover:text-[#F0C040] truncate transition-colors"
         >
           {product.vendor.storeName}

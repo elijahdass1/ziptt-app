@@ -7,13 +7,15 @@ import { ShoppingCart, Search, User, Package, ChevronDown, Menu, X, Store, Setti
 import { useCartStore } from '@/lib/store'
 
 const CATEGORIES = [
-  { label: 'Electronics', emoji: '📱', href: '/products?category=Electronics' },
-  { label: 'Fashion', emoji: '👗', href: '/products?category=Fashion+%26+Clothing' },
-  { label: 'Streetwear', emoji: '🧢', href: '/products?category=Urban+Fashion+%26+Streetwear' },
-  { label: 'Carnival & Mas', emoji: '🎭', href: '/products?category=Carnival+%26+Mas' },
-  { label: 'Toys & Kids', emoji: '🧸', href: '/products?category=Toys%2C+Games+%26+Kids' },
-  { label: 'Rum & Spirits', emoji: '🥃', href: '/products?category=Rum+%26+Spirits' },
-  { label: 'Home & Garden', emoji: '🏠', href: '/products?category=Home+%26+Garden' },
+  { label: 'Electronics',   slug: 'electronics',   icon: '⚡', color: '#4A9EFF' },
+  { label: 'Fashion',       slug: 'fashion',        icon: '◈', color: '#FF7EB3' },
+  { label: 'Streetwear',    slug: 'urban-fashion',  icon: '▲', color: '#C9A84C' },
+  { label: 'Carnival',      slug: 'carnival',       icon: '✦', color: '#FF6B35' },
+  { label: 'Toys & Kids',   slug: 'toys',           icon: '⬡', color: '#7EC8E3' },
+  { label: 'Rum & Spirits', slug: 'rum-spirits',    icon: '◇', color: '#B8860B' },
+  { label: 'Home & Garden', slug: 'home-garden',    icon: '⬢', color: '#4CAF82' },
+  { label: 'Appliances',    slug: 'appliances',     icon: '◉', color: '#9C88FF' },
+  { label: 'Groceries',     slug: 'groceries',      icon: '◆', color: '#E8B04B' },
 ]
 
 export function Navbar() {
@@ -148,24 +150,30 @@ export function Navbar() {
         </div>
 
         {/* Category nav */}
-        <nav className="hidden sm:flex items-center gap-1 pb-2 overflow-x-auto">
+        <nav className="hidden sm:flex items-center gap-0.5 pb-2 overflow-x-auto scrollbar-thin">
           {CATEGORIES.map((cat) => (
             <Link
-              key={cat.href}
-              href={cat.href}
-              className="flex items-center gap-1 px-3 py-1 text-xs font-medium text-[#9A8F7A] hover:text-[#C9A84C] hover:bg-[#C9A84C]/8 rounded-full whitespace-nowrap transition-colors"
+              key={cat.slug}
+              href={`/products?category=${encodeURIComponent(cat.slug)}`}
+              className="group flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-[#9A8F7A] hover:text-[#F5F0E8] hover:bg-[#1A1A1A] rounded-md whitespace-nowrap transition-all duration-150"
             >
-              <span className="emoji-icon">{cat.emoji}</span> {cat.label}
+              <span
+                className="inline-flex items-center justify-center w-4 h-4 rounded text-[10px] font-bold shrink-0 transition-transform group-hover:scale-110"
+                style={{ color: cat.color }}
+              >{cat.icon}</span>
+              <span className="tracking-wide">{cat.label}</span>
             </Link>
           ))}
+          <div className="w-px h-4 bg-[#C9A84C]/20 mx-1 shrink-0" />
           <Link
             href="/digital"
-            className="flex items-center gap-1 px-3 py-1 text-xs font-medium bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/30 rounded-full whitespace-nowrap hover:bg-[#C9A84C]/20 transition-colors"
+            className="group flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/25 rounded-md whitespace-nowrap hover:bg-[#C9A84C]/20 transition-all"
           >
-            <span className="emoji-icon">⚡</span> Digital
+            <span className="inline-flex items-center justify-center w-4 h-4 text-[10px] font-bold">⬟</span>
+            <span className="tracking-wide">Digital</span>
           </Link>
-          <Link href="/products" className="ml-auto px-3 py-1 text-xs font-medium text-[#C9A84C] hover:underline whitespace-nowrap">
-            All Categories
+          <Link href="/products" className="ml-auto px-2.5 py-1 text-xs font-medium text-[#9A8F7A] hover:text-[#C9A84C] whitespace-nowrap transition-colors">
+            All →
           </Link>
         </nav>
       </div>
@@ -182,11 +190,12 @@ export function Navbar() {
               </button>
             </div>
           </form>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-1.5">
             {CATEGORIES.map((cat) => (
-              <Link key={cat.href} href={cat.href} onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 px-3 py-2 text-sm text-[#9A8F7A] hover:text-[#C9A84C] hover:bg-[#C9A84C]/5 rounded-lg">
-                <span className="emoji-icon">{cat.emoji}</span> {cat.label}
+              <Link key={cat.slug} href={`/products?category=${encodeURIComponent(cat.slug)}`} onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-2 px-3 py-2 text-sm text-[#9A8F7A] hover:text-[#F5F0E8] hover:bg-[#1A1A1A] rounded-lg transition-colors">
+                <span className="text-sm font-bold shrink-0" style={{ color: cat.color }}>{cat.icon}</span>
+                <span className="text-xs">{cat.label}</span>
               </Link>
             ))}
           </div>
