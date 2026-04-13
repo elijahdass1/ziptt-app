@@ -32,6 +32,10 @@ interface Vendor {
   logo?: string | null
   status: string
   rating: number
+  description?: string | null
+  phone?: string | null
+  address?: string | null
+  region?: string | null
 }
 
 interface Props {
@@ -43,9 +47,9 @@ interface Props {
 }
 
 const CATEGORIES = [
-  'Groceries & Food', 'Electronics', 'Fashion & Clothing', 'Home & Garden',
-  'Beauty & Health', 'Services', 'Toys & Games', 'Sports & Fitness',
-  'Carnival & Culture', 'Urban Fashion', 'Rum & Spirits', 'Books & Stationery', 'Other'
+  'Electronics', 'Fashion & Clothing', 'Urban Fashion & Streetwear',
+  'Toys Games & Kids', 'Carnival & Mas', 'Groceries & Food',
+  'Home & Garden', 'Appliances & Home', 'Rum & Spirits', 'Beauty & Health',
 ]
 
 const STATUS_OPTS = ['PENDING', 'CONFIRMED', 'PREPARING', 'READY', 'DELIVERED']
@@ -55,7 +59,7 @@ function slugify(str: string) {
 }
 
 export function VendorDashboardClient({ vendor, products, totalRevenue, totalOrders, recentOrders }: Props) {
-  const [tab, setTab] = useState<'overview' | 'products' | 'orders'>('overview')
+  const [tab, setTab] = useState<'overview' | 'products' | 'orders' | 'settings'>('overview')
   const [productList, setProductList] = useState<Product[]>(products)
   const [orderList, setOrderList] = useState<Order[]>(recentOrders)
 
@@ -68,6 +72,19 @@ export function VendorDashboardClient({ vendor, products, totalRevenue, totalOrd
   })
   const [formSaving, setFormSaving] = useState(false)
   const [formError, setFormError] = useState('')
+
+  // Settings state
+  const [settings, setSettings] = useState({
+    storeName: vendor.storeName,
+    description: vendor.description ?? '',
+    phone: vendor.phone ?? '',
+    address: vendor.address ?? '',
+    region: vendor.region ?? '',
+  })
+  const [settingsSaving, setSettingsSaving] = useState(false)
+  const [settingsMsg, setSettingsMsg] = useState('')
+
+  const pendingOrders = orderList.filter(o => o.status === 'PENDING').length
 
   function openAddForm() {
     setEditingProduct(null)
@@ -134,8 +151,8 @@ export function VendorDashboardClient({ vendor, products, totalRevenue, totalOrd
         setProductList(pl => [created, ...pl])
       }
       setShowForm(false)
-    } catch (err: any) {
-      setFormError(err.message || 'Save failed')
+    } catch (err: unknown) {
+      setFormError(err instanceof Error ? err.message : 'Save failed')
     } finally {
       setFormSaving(false)
     }
@@ -160,19 +177,48 @@ export function VendorDashboardClient({ vendor, products, totalRevenue, totalOrd
     } catch {}
   }
 
+  async function saveSettings() {
+    setSettingsSaving(true)
+    setSettingsMsg('')
+    try {
+      const res = await fetch('/api/vendor/settings', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(settings)
+      })
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data.error || 'Save failed')
+      }
+      setSettingsMsg('Settings saved successfully!')
+    } catch (err: unknown) {
+      setSettingsMsg(err instanceof Error ? err.message : 'Save failed')
+    } finally {
+      setSettingsSaving(false)
+    }
+  }
+
   const gold = '#C9A84C'
   const bg = '#0A0A0A'
   const card = '#111111'
   const text = '#F5F0E8'
   const muted = '#9A8F7A'
   const border = '#C9A84C33'
+  const inputBg = '#1A1A1A'
+  const inputBorder = '#2A2A2A'
+
+  const inputStyle: React.CSSProperties = {
+    width: '100%', background: inputBg, border: `1px solid ${inputBorder}`,
+    borderRadius: '8px', padding: '10px 12px', color: text, fontSize: '14px',
+    boxSizing: 'border-box', outline: 'none',
+  }
 
   return (
-    <div style={{ minHeight: '100vh', background: bg, color: text, padding: '32px', maxWidth: '1100px' }}>
+    <div style={{ minHeight: '100vh', background: bg, color: text, padding: '24px', maxWidth: '1100px', margin: '0 auto', boxSizing: 'border-box' }}>
       {/* Header */}
-      <div style={{ marginBottom: '28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
+      <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
         <div>
-          <h1 style={{ fontFamily: 'Georgia, serif', fontSize: '26px', marginBottom: '4px' }}>{vendor.storeName}</h1>
+          <h1 style={{ fontFamily: 'Georgia, serif', fontSize: '24px', marginBottom: '2px' }}>{vendor.storeName}</h1>
           <p style={{ color: muted, fontSize: '13px' }}>Vendor Dashboard</p>
         </div>
         <a href={`/store/${vendor.slug}`} target="_blank" rel="noopener noreferrer"
@@ -182,15 +228,19 @@ export function VendorDashboardClient({ vendor, products, totalRevenue, totalOrd
       </div>
 
       {/* Tabs */}
-      <div style={{ display: 'flex', gap: '4px', marginBottom: '28px', borderBottom: `1px solid ${border}`, paddingBottom: '0' }}>
-        {(['overview', 'products', 'orders'] as const).map(t => (
+      <div style={{ display: 'flex', gap: '4px', marginBottom: '24px', borderBottom: `1px solid ${border}`, overflowX: 'auto' }}>
+        {(['overview', 'products', 'orders', 'settings'] as const).map(t => (
           <button key={t} onClick={() => setTab(t)} style={{
-            padding: '8px 20px', fontSize: '14px', fontWeight: '600', cursor: 'pointer',
+            padding: '8px 18px', fontSize: '14px', fontWeight: '600', cursor: 'pointer',
             background: 'none', border: 'none', color: tab === t ? gold : muted,
             borderBottom: tab === t ? `2px solid ${gold}` : '2px solid transparent',
-            marginBottom: '-1px', transition: 'color 0.15s', textTransform: 'capitalize'
+            marginBottom: '-1px', transition: 'color 0.15s', textTransform: 'capitalize',
+            whiteSpace: 'nowrap'
           }}>
-            {t === 'overview' ? 'Overview' : t === 'products' ? `Products (${productList.length})` : `Orders (${orderList.length})`}
+            {t === 'overview' ? 'Overview'
+              : t === 'products' ? `Products (${productList.length})`
+              : t === 'orders' ? `Orders (${orderList.length})`
+              : 'Settings'}
           </button>
         ))}
       </div>
@@ -202,8 +252,8 @@ export function VendorDashboardClient({ vendor, products, totalRevenue, totalOrd
             {[
               { label: 'Total Products', value: productList.length, sub: 'Listed products' },
               { label: 'Total Orders', value: totalOrders, sub: 'All time' },
-              { label: 'Total Revenue', value: `TTD $${Number(totalRevenue).toFixed(2)}`, sub: 'Gross sales' },
-              { label: 'Store Rating', value: `${vendor.rating.toFixed(1)} / 5.0`, sub: 'Average rating' },
+              { label: 'Revenue (TTD)', value: `$${Number(totalRevenue).toFixed(2)}`, sub: 'Gross sales' },
+              { label: 'Pending Orders', value: pendingOrders, sub: 'Awaiting action' },
             ].map(stat => (
               <div key={stat.label} style={{ background: card, border: `1px solid ${border}`, borderRadius: '12px', padding: '20px' }}>
                 <p style={{ fontSize: '11px', color: muted, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>{stat.label}</p>
@@ -223,7 +273,7 @@ export function VendorDashboardClient({ vendor, products, totalRevenue, totalOrd
               <p style={{ padding: '24px', color: muted, textAlign: 'center' }}>No orders yet. Share your store to get started!</p>
             ) : (
               orderList.slice(0, 5).map(order => (
-                <div key={order.id} style={{ padding: '12px 20px', borderBottom: `1px solid ${border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div key={order.id} style={{ padding: '12px 20px', borderBottom: `1px solid ${border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
                   <div>
                     <p style={{ fontSize: '14px', fontWeight: '500', marginBottom: '2px' }}>{order.user?.name || 'Customer'}</p>
                     <p style={{ fontSize: '12px', color: muted }}>{order.items.slice(0, 2).map(i => i.product?.name).join(', ')}</p>
@@ -242,18 +292,18 @@ export function VendorDashboardClient({ vendor, products, totalRevenue, totalOrd
       {/* PRODUCTS TAB */}
       {tab === 'products' && (
         <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
             <h2 style={{ fontSize: '18px', fontWeight: '600' }}>Your Products</h2>
             <button onClick={openAddForm} style={{
               background: gold, color: '#0A0A0A', border: 'none', borderRadius: '8px',
               padding: '8px 18px', fontSize: '14px', fontWeight: '600', cursor: 'pointer'
-            }}>+ Add Product</button>
+            }}>+ Add New Product</button>
           </div>
 
           {/* Product Form Modal */}
           {showForm && (
             <div style={{
-              position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 50,
+              position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', zIndex: 50,
               display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px'
             }}>
               <div style={{ background: card, border: `1px solid ${border}`, borderRadius: '16px', padding: '28px', width: '100%', maxWidth: '500px', maxHeight: '90vh', overflowY: 'auto' }}>
@@ -273,21 +323,19 @@ export function VendorDashboardClient({ vendor, products, totalRevenue, totalOrd
                     <label style={{ fontSize: '13px', color: muted, display: 'block', marginBottom: '5px' }}>Product Name *</label>
                     <input value={formData.name} onChange={e => setFormData(f => ({ ...f, name: e.target.value }))}
                       placeholder="e.g. iPhone 15 Case"
-                      style={{ width: '100%', background: '#1A1A1A', border: `1px solid ${border}`, borderRadius: '8px', padding: '10px 12px', color: text, fontSize: '14px', boxSizing: 'border-box' }} />
+                      style={inputStyle} />
                   </div>
 
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                     <div>
-                      <label style={{ fontSize: '13px', color: muted, display: 'block', marginBottom: '5px' }}>Price (TTD) *</label>
+                      <label style={{ fontSize: '13px', color: muted, display: 'block', marginBottom: '5px' }}>Price TTD *</label>
                       <input type="number" step="0.01" value={formData.price} onChange={e => setFormData(f => ({ ...f, price: e.target.value }))}
-                        placeholder="0.00"
-                        style={{ width: '100%', background: '#1A1A1A', border: `1px solid ${border}`, borderRadius: '8px', padding: '10px 12px', color: text, fontSize: '14px', boxSizing: 'border-box' }} />
+                        placeholder="0.00" style={inputStyle} />
                     </div>
                     <div>
                       <label style={{ fontSize: '13px', color: muted, display: 'block', marginBottom: '5px' }}>Compare Price (optional)</label>
                       <input type="number" step="0.01" value={formData.comparePrice} onChange={e => setFormData(f => ({ ...f, comparePrice: e.target.value }))}
-                        placeholder="0.00"
-                        style={{ width: '100%', background: '#1A1A1A', border: `1px solid ${border}`, borderRadius: '8px', padding: '10px 12px', color: text, fontSize: '14px', boxSizing: 'border-box' }} />
+                        placeholder="0.00" style={inputStyle} />
                     </div>
                   </div>
 
@@ -295,13 +343,12 @@ export function VendorDashboardClient({ vendor, products, totalRevenue, totalOrd
                     <div>
                       <label style={{ fontSize: '13px', color: muted, display: 'block', marginBottom: '5px' }}>Stock Quantity</label>
                       <input type="number" value={formData.stock} onChange={e => setFormData(f => ({ ...f, stock: e.target.value }))}
-                        placeholder="0"
-                        style={{ width: '100%', background: '#1A1A1A', border: `1px solid ${border}`, borderRadius: '8px', padding: '10px 12px', color: text, fontSize: '14px', boxSizing: 'border-box' }} />
+                        placeholder="0" style={inputStyle} />
                     </div>
                     <div>
                       <label style={{ fontSize: '13px', color: muted, display: 'block', marginBottom: '5px' }}>Status</label>
                       <select value={formData.status} onChange={e => setFormData(f => ({ ...f, status: e.target.value }))}
-                        style={{ width: '100%', background: '#1A1A1A', border: `1px solid ${border}`, borderRadius: '8px', padding: '10px 12px', color: text, fontSize: '14px', boxSizing: 'border-box' }}>
+                        style={inputStyle}>
                         <option value="ACTIVE">Active</option>
                         <option value="DRAFT">Draft</option>
                         <option value="OUT_OF_STOCK">Out of Stock</option>
@@ -312,25 +359,25 @@ export function VendorDashboardClient({ vendor, products, totalRevenue, totalOrd
                   <div>
                     <label style={{ fontSize: '13px', color: muted, display: 'block', marginBottom: '5px' }}>Category</label>
                     <select value={formData.category} onChange={e => setFormData(f => ({ ...f, category: e.target.value }))}
-                      style={{ width: '100%', background: '#1A1A1A', border: `1px solid ${border}`, borderRadius: '8px', padding: '10px 12px', color: text, fontSize: '14px', boxSizing: 'border-box' }}>
+                      style={inputStyle}>
                       {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
                     </select>
                   </div>
 
                   <div>
-                    <label style={{ fontSize: '13px', color: muted, display: 'block', marginBottom: '5px' }}>Description</label>
+                    <label style={{ fontSize: '13px', color: muted, display: 'block', marginBottom: '5px' }}>Description (optional)</label>
                     <textarea value={formData.description} onChange={e => setFormData(f => ({ ...f, description: e.target.value }))}
                       placeholder="Describe your product..."
                       rows={3}
-                      style={{ width: '100%', background: '#1A1A1A', border: `1px solid ${border}`, borderRadius: '8px', padding: '10px 12px', color: text, fontSize: '14px', boxSizing: 'border-box', resize: 'vertical' }} />
+                      style={{ ...inputStyle, resize: 'vertical' }} />
                   </div>
 
                   <div>
                     <label style={{ fontSize: '13px', color: muted, display: 'block', marginBottom: '5px' }}>Product Image URL</label>
                     <input type="url" value={formData.imageUrl} onChange={e => setFormData(f => ({ ...f, imageUrl: e.target.value }))}
                       placeholder="https://..."
-                      style={{ width: '100%', background: '#1A1A1A', border: `1px solid ${border}`, borderRadius: '8px', padding: '10px 12px', color: text, fontSize: '14px', boxSizing: 'border-box' }} />
-                    <p style={{ fontSize: '11px', color: muted, marginTop: '4px' }}>Paste any image URL from the web (Unsplash, product CDN, etc.)</p>
+                      style={inputStyle} />
+                    <p style={{ fontSize: '11px', color: muted, marginTop: '4px' }}>Paste any image URL (Unsplash, product CDN, etc.)</p>
                     {formData.imageUrl && (
                       <img src={formData.imageUrl} alt="preview" style={{ marginTop: '8px', width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px', border: `1px solid ${border}` }}
                         onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }} />
@@ -370,7 +417,7 @@ export function VendorDashboardClient({ vendor, products, totalRevenue, totalOrd
                   <thead>
                     <tr style={{ borderBottom: `1px solid ${border}`, background: '#0f0f0f' }}>
                       <th style={{ textAlign: 'left', padding: '12px 16px', color: muted, fontWeight: '600', fontSize: '12px' }}>Product</th>
-                      <th style={{ textAlign: 'left', padding: '12px 16px', color: muted, fontWeight: '600', fontSize: '12px' }}>Price</th>
+                      <th style={{ textAlign: 'left', padding: '12px 16px', color: muted, fontWeight: '600', fontSize: '12px' }}>Price TTD</th>
                       <th style={{ textAlign: 'left', padding: '12px 16px', color: muted, fontWeight: '600', fontSize: '12px' }}>Stock</th>
                       <th style={{ textAlign: 'left', padding: '12px 16px', color: muted, fontWeight: '600', fontSize: '12px' }}>Status</th>
                       <th style={{ textAlign: 'left', padding: '12px 16px', color: muted, fontWeight: '600', fontSize: '12px' }}>Actions</th>
@@ -382,15 +429,15 @@ export function VendorDashboardClient({ vendor, products, totalRevenue, totalOrd
                         <td style={{ padding: '12px 16px' }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                             <img src={firstImage(p.images)} alt={p.name}
-                              style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '6px', background: '#1A1A1A' }}
+                              style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '6px', background: '#1A1A1A', flexShrink: 0 }}
                               onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=100' }} />
-                            <div>
+                            <div style={{ minWidth: 0 }}>
                               <p style={{ fontWeight: '500', maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</p>
                               <p style={{ fontSize: '11px', color: muted }}>{p.soldCount} sold</p>
                             </div>
                           </div>
                         </td>
-                        <td style={{ padding: '12px 16px', color: gold, fontWeight: '600' }}>TTD ${p.price.toFixed(2)}</td>
+                        <td style={{ padding: '12px 16px', color: gold, fontWeight: '600' }}>${p.price.toFixed(2)}</td>
                         <td style={{ padding: '12px 16px', color: p.stock === 0 ? '#ef4444' : p.stock <= 5 ? '#f97316' : text }}>{p.stock}</td>
                         <td style={{ padding: '12px 16px' }}>
                           <span style={{
@@ -435,9 +482,10 @@ export function VendorDashboardClient({ vendor, products, totalRevenue, totalOrd
               {orderList.map(order => (
                 <div key={order.id} style={{ background: card, border: `1px solid ${border}`, borderRadius: '12px', padding: '16px 20px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px' }}>
-                    <div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px', flexWrap: 'wrap' }}>
                         <span style={{ fontSize: '13px', fontWeight: '600', color: gold }}>#{order.id.slice(-8).toUpperCase()}</span>
+                        <span style={{ fontSize: '12px', color: muted }}>· {new Date(order.createdAt).toLocaleDateString()}</span>
                         <span style={{ fontSize: '12px', color: muted }}>· {order.user?.name || 'Customer'}</span>
                       </div>
                       <p style={{ fontSize: '13px', color: muted, marginBottom: '4px' }}>
@@ -446,12 +494,13 @@ export function VendorDashboardClient({ vendor, products, totalRevenue, totalOrd
                       </p>
                       <p style={{ fontSize: '15px', fontWeight: 'bold', color: text }}>TTD ${order.total?.toFixed(2)}</p>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div>
+                      <label style={{ fontSize: '11px', color: muted, display: 'block', marginBottom: '4px' }}>Status</label>
                       <select
                         value={order.status}
                         onChange={e => updateOrderStatus(order.id, e.target.value)}
                         style={{
-                          background: '#1A1A1A', border: `1px solid ${border}`, borderRadius: '8px',
+                          background: inputBg, border: `1px solid ${inputBorder}`, borderRadius: '8px',
                           padding: '6px 10px', color: text, fontSize: '13px', cursor: 'pointer'
                         }}>
                         {STATUS_OPTS.map(s => <option key={s} value={s}>{s}</option>)}
@@ -462,6 +511,96 @@ export function VendorDashboardClient({ vendor, products, totalRevenue, totalOrd
               ))}
             </div>
           )}
+        </div>
+      )}
+
+      {/* SETTINGS TAB */}
+      {tab === 'settings' && (
+        <div>
+          <h2 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '20px' }}>Store Settings</h2>
+          <div style={{ background: card, border: `1px solid ${border}`, borderRadius: '12px', padding: '24px', maxWidth: '560px' }}>
+            {settingsMsg && (
+              <div style={{
+                padding: '10px 14px', borderRadius: '8px', marginBottom: '16px', fontSize: '13px',
+                background: settingsMsg.includes('success') ? '#14532d' : '#2a0000',
+                color: settingsMsg.includes('success') ? '#4ade80' : '#fca5a5',
+                border: `1px solid ${settingsMsg.includes('success') ? '#166534' : '#8B2222'}`
+              }}>
+                {settingsMsg}
+              </div>
+            )}
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div>
+                <label style={{ fontSize: '13px', color: muted, display: 'block', marginBottom: '6px', fontWeight: '500' }}>Store Name *</label>
+                <input
+                  value={settings.storeName}
+                  onChange={e => setSettings(s => ({ ...s, storeName: e.target.value }))}
+                  placeholder="Your store name"
+                  style={inputStyle}
+                />
+              </div>
+
+              <div>
+                <label style={{ fontSize: '13px', color: muted, display: 'block', marginBottom: '6px', fontWeight: '500' }}>Description</label>
+                <textarea
+                  value={settings.description}
+                  onChange={e => setSettings(s => ({ ...s, description: e.target.value }))}
+                  placeholder="Tell customers about your store..."
+                  rows={3}
+                  style={{ ...inputStyle, resize: 'vertical' }}
+                />
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <div>
+                  <label style={{ fontSize: '13px', color: muted, display: 'block', marginBottom: '6px', fontWeight: '500' }}>Phone</label>
+                  <input
+                    value={settings.phone}
+                    onChange={e => setSettings(s => ({ ...s, phone: e.target.value }))}
+                    placeholder="+1 (868) 000-0000"
+                    style={inputStyle}
+                  />
+                </div>
+                <div>
+                  <label style={{ fontSize: '13px', color: muted, display: 'block', marginBottom: '6px', fontWeight: '500' }}>Region</label>
+                  <select
+                    value={settings.region}
+                    onChange={e => setSettings(s => ({ ...s, region: e.target.value }))}
+                    style={inputStyle}
+                  >
+                    <option value="">Select region...</option>
+                    {['Port of Spain', 'San Fernando', 'Chaguanas', 'Arima', 'Point Fortin', 'Tobago', 'Other'].map(r => (
+                      <option key={r} value={r}>{r}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label style={{ fontSize: '13px', color: muted, display: 'block', marginBottom: '6px', fontWeight: '500' }}>Address</label>
+                <input
+                  value={settings.address}
+                  onChange={e => setSettings(s => ({ ...s, address: e.target.value }))}
+                  placeholder="Store address"
+                  style={inputStyle}
+                />
+              </div>
+
+              <button
+                onClick={saveSettings}
+                disabled={settingsSaving}
+                style={{
+                  padding: '12px', background: gold, color: '#0A0A0A', border: 'none',
+                  borderRadius: '10px', fontWeight: '700', fontSize: '15px',
+                  cursor: settingsSaving ? 'not-allowed' : 'pointer',
+                  opacity: settingsSaving ? 0.75 : 1, marginTop: '8px'
+                }}
+              >
+                {settingsSaving ? 'Saving...' : 'Save Settings'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { Loader2, Eye, EyeOff, Smartphone, Sparkles, Wine, Star } from 'lucide-react'
+import { Loader2, Eye, EyeOff } from 'lucide-react'
 import { toast } from '@/components/ui/use-toast'
 
 export function LoginPageClient() {
@@ -34,52 +34,51 @@ export function LoginPageClient() {
 
   const handleGoogle = () => signIn('google', { callbackUrl })
 
+  const gold = '#C9A84C'
+  const bg = '#0A0A0A'
+  const card = '#111111'
+  const inputBg = '#1A1A1A'
+  const inputBorder = '#2A2A2A'
+  const text = '#F5F0E8'
+  const muted = '#9A8F7A'
+
   return (
-    <div className="min-h-screen flex">
-      {/* Left panel */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-[#D62828] to-[#8B0000] flex-col items-center justify-center p-12 text-white">
-        <div className="text-center space-y-6 max-w-sm">
-          <Link href="/" className="flex items-center justify-center gap-1">
-            <span className="text-5xl font-black text-white">zip</span>
-            <span className="text-5xl font-black text-red-200">.tt</span>
+    <div style={{ minHeight: '100vh', background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}>
+      <div style={{ width: '100%', maxWidth: '420px' }}>
+
+        {/* Logo */}
+        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+          <Link href="/" style={{ textDecoration: 'none' }}>
+            <span style={{ fontSize: '40px', fontWeight: '900', color: gold, fontFamily: 'Georgia, serif' }}>zip</span>
+            <span style={{ fontSize: '40px', fontWeight: '900', color: text, fontFamily: 'Georgia, serif' }}>.tt</span>
           </Link>
-          <p className="text-xl font-medium text-red-100">
-            Trinidad & Tobago's premier online marketplace
+          <p style={{ color: muted, fontSize: '14px', marginTop: '8px' }}>
+            Trinidad & Tobago's premier marketplace
           </p>
-          <div className="grid grid-cols-2 gap-3 text-sm mt-8">
-            {[
-              { Icon: Smartphone, label: 'Electronics' },
-              { Icon: Sparkles, label: 'Carnival' },
-              { Icon: Wine, label: 'Rum & Spirits' },
-              { Icon: Star, label: 'Toys' },
-            ].map(({ Icon, label }) => (
-              <div key={label} className="bg-white/20 rounded-xl p-3 text-center flex items-center justify-center gap-1.5">
-                <Icon size={14} strokeWidth={1.5} />{label}
-              </div>
-            ))}
-          </div>
         </div>
-      </div>
 
-      {/* Right panel */}
-      <div className="flex-1 flex items-center justify-center p-8 bg-white">
-        <div className="w-full max-w-md space-y-6">
-          <div className="text-center lg:hidden mb-4">
-            <Link href="/">
-              <span className="text-3xl font-black text-[#D62828]">zip</span>
-              <span className="text-3xl font-black text-gray-900">.tt</span>
-            </Link>
-          </div>
-
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Welcome back!</h1>
-            <p className="text-gray-500 text-sm mt-1">Sign in to your zip.tt account</p>
-          </div>
+        {/* Card */}
+        <div style={{ background: card, border: `1px solid #2A2A2A`, borderRadius: '16px', padding: '32px' }}>
+          <h1 style={{ fontSize: '22px', fontWeight: 'bold', color: text, marginBottom: '6px', fontFamily: 'Georgia, serif' }}>
+            Welcome back
+          </h1>
+          <p style={{ color: muted, fontSize: '13px', marginBottom: '24px' }}>
+            Sign in to your zip.tt account
+          </p>
 
           {/* Google */}
-          <button onClick={handleGoogle}
-            className="w-full flex items-center justify-center gap-3 border border-gray-300 rounded-xl py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
-            <svg className="h-5 w-5" viewBox="0 0 24 24">
+          <button
+            onClick={handleGoogle}
+            style={{
+              width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
+              border: `1px solid ${inputBorder}`, borderRadius: '10px', padding: '10px',
+              fontSize: '14px', fontWeight: '500', color: text, background: inputBg,
+              cursor: 'pointer', marginBottom: '20px', transition: 'border-color 0.2s'
+            }}
+            onMouseEnter={e => (e.currentTarget.style.borderColor = gold)}
+            onMouseLeave={e => (e.currentTarget.style.borderColor = inputBorder)}
+          >
+            <svg style={{ height: '18px', width: '18px' }} viewBox="0 0 24 24">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
               <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
               <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
@@ -88,59 +87,113 @@ export function LoginPageClient() {
             Continue with Google
           </button>
 
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-200" /></div>
-            <div className="relative text-center text-xs text-gray-400 bg-white px-3">or sign in with email</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+            <div style={{ flex: 1, height: '1px', background: inputBorder }} />
+            <span style={{ fontSize: '12px', color: muted }}>or sign in with email</span>
+            <div style={{ flex: 1, height: '1px', background: inputBorder }} />
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required
+              <label style={{ display: 'block', fontSize: '13px', color: muted, marginBottom: '6px', fontWeight: '500' }}>
+                Email
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
                 placeholder="your@email.com"
-                className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#D62828]" />
+                style={{
+                  width: '100%', background: inputBg, border: `1px solid ${inputBorder}`,
+                  borderRadius: '10px', padding: '10px 14px', color: text, fontSize: '14px',
+                  outline: 'none', boxSizing: 'border-box'
+                }}
+                onFocus={e => (e.currentTarget.style.borderColor = gold)}
+                onBlur={e => (e.currentTarget.style.borderColor = inputBorder)}
+              />
             </div>
+
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-              <div className="relative">
-                <input type={showPass ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)} required
+              <label style={{ display: 'block', fontSize: '13px', color: muted, marginBottom: '6px', fontWeight: '500' }}>
+                Password
+              </label>
+              <div style={{ position: 'relative' }}>
+                <input
+                  type={showPass ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
                   placeholder="Your password"
-                  className="w-full border border-gray-300 rounded-xl px-4 py-2.5 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-[#D62828]" />
-                <button type="button" onClick={() => setShowPass(!showPass)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
-                  {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  style={{
+                    width: '100%', background: inputBg, border: `1px solid ${inputBorder}`,
+                    borderRadius: '10px', padding: '10px 40px 10px 14px', color: text, fontSize: '14px',
+                    outline: 'none', boxSizing: 'border-box'
+                  }}
+                  onFocus={e => (e.currentTarget.style.borderColor = gold)}
+                  onBlur={e => (e.currentTarget.style.borderColor = inputBorder)}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPass(!showPass)}
+                  style={{
+                    position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)',
+                    background: 'none', border: 'none', cursor: 'pointer', color: muted, display: 'flex'
+                  }}
+                >
+                  {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
             </div>
-            <button type="submit" disabled={loading}
-              className="w-full py-3 bg-[#D62828] hover:bg-[#b02020] disabled:bg-gray-300 text-white font-bold rounded-xl transition-colors flex items-center justify-center gap-2">
-              {loading && <Loader2 className="h-4 w-4 animate-spin" />}
+
+            <button
+              type="submit"
+              disabled={loading}
+              style={{
+                width: '100%', padding: '12px', background: gold,
+                color: '#0A0A0A', border: 'none', borderRadius: '10px',
+                fontWeight: '700', fontSize: '15px', cursor: loading ? 'not-allowed' : 'pointer',
+                opacity: loading ? 0.75 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                marginTop: '4px'
+              }}
+            >
+              {loading && <Loader2 size={16} className="animate-spin" />}
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
 
-          <div className="text-center text-sm text-gray-500">
+          <p style={{ textAlign: 'center', fontSize: '13px', color: muted, marginTop: '20px' }}>
             Don't have an account?{' '}
-            <Link href="/auth/register" className="text-[#D62828] font-semibold hover:underline">
+            <Link href="/auth/register" style={{ color: gold, fontWeight: '600', textDecoration: 'none' }}>
               Join zip.tt free
             </Link>
-          </div>
+          </p>
 
-          <div className="border-t border-gray-100 pt-4">
-            <p className="text-xs text-gray-400 text-center">Test accounts:</p>
-            <div className="grid grid-cols-2 gap-2 mt-2 text-xs text-gray-500">
-              <button onClick={() => { setEmail('customer@zip.tt'); setPassword('customer123') }}
-                className="border border-gray-200 rounded-lg px-2 py-1.5 hover:bg-gray-50 text-left">
-                Customer
-              </button>
-              <button onClick={() => { setEmail('trini.tech@zip.tt'); setPassword('vendor123') }}
-                className="border border-gray-200 rounded-lg px-2 py-1.5 hover:bg-gray-50 text-left">
-                Vendor
-              </button>
-              <button onClick={() => { setEmail('admin@zip.tt'); setPassword('admin123') }}
-                className="border border-gray-200 rounded-lg px-2 py-1.5 hover:bg-gray-50 text-left">
-                Admin
-              </button>
+          {/* Test accounts */}
+          <div style={{ borderTop: `1px solid ${inputBorder}`, marginTop: '20px', paddingTop: '16px' }}>
+            <p style={{ fontSize: '11px', color: muted, textAlign: 'center', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              Test Accounts
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+              {[
+                { label: 'Customer', email: 'customer@zip.tt', pass: 'customer123' },
+                { label: 'Vendor', email: 'info@trinitechhub.tt', pass: 'TechHub2026' },
+                { label: 'Admin', email: 'elijah.dass1@gmail.com', pass: 'TridentAdmin2026!' },
+              ].map(acc => (
+                <button
+                  key={acc.label}
+                  onClick={() => { setEmail(acc.email); setPassword(acc.pass) }}
+                  style={{
+                    border: `1px solid ${inputBorder}`, borderRadius: '8px', padding: '7px 10px',
+                    background: inputBg, color: muted, fontSize: '12px', cursor: 'pointer',
+                    textAlign: 'left'
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.borderColor = gold)}
+                  onMouseLeave={e => (e.currentTarget.style.borderColor = inputBorder)}
+                >
+                  {acc.label}
+                </button>
+              ))}
             </div>
           </div>
         </div>
