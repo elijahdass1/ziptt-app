@@ -3,10 +3,18 @@
 import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
 import { useState } from 'react'
-import { ShoppingCart, Search, User, Package, ChevronDown, Menu, X, Store, Settings, Smartphone, Shirt, Tag, Sparkles, Star, Wine, Home, Zap } from 'lucide-react'
+import { ShoppingCart, Search, User, Package, ChevronDown, Menu, X, Store, Settings } from 'lucide-react'
 import { useCartStore } from '@/lib/store'
 
-type IconComponent = React.ComponentType<{ size?: number; strokeWidth?: number; className?: string }>
+const CATEGORIES = [
+  { label: 'Electronics', emoji: '📱', href: '/products?category=Electronics' },
+  { label: 'Fashion', emoji: '👗', href: '/products?category=Fashion+%26+Clothing' },
+  { label: 'Streetwear', emoji: '🧢', href: '/products?category=Urban+Fashion+%26+Streetwear' },
+  { label: 'Carnival & Mas', emoji: '🎭', href: '/products?category=Carnival+%26+Mas' },
+  { label: 'Toys & Kids', emoji: '🧸', href: '/products?category=Toys%2C+Games+%26+Kids' },
+  { label: 'Rum & Spirits', emoji: '🥃', href: '/products?category=Rum+%26+Spirits' },
+  { label: 'Home & Garden', emoji: '🏠', href: '/products?category=Home+%26+Garden' },
+]
 
 export function Navbar() {
   const { data: session } = useSession()
@@ -14,22 +22,12 @@ export function Navbar() {
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const cartCount = useCartStore((s) => s.items.reduce((acc, i) => acc + i.quantity, 0))
 
-  const categories: { name: string; href: string; Icon: IconComponent }[] = [
-    { name: 'Electronics', href: '/products?category=electronics', Icon: Smartphone },
-    { name: 'Fashion', href: '/products?category=fashion', Icon: Shirt },
-    { name: 'Streetwear', href: '/products?category=urban-fashion', Icon: Tag },
-    { name: 'Carnival & Mas', href: '/products?category=carnival', Icon: Sparkles },
-    { name: 'Toys & Kids', href: '/products?category=toys', Icon: Star },
-    { name: 'Rum & Spirits', href: '/products?category=rum-spirits', Icon: Wine },
-    { name: 'Home & Garden', href: '/products?category=home-garden', Icon: Home },
-  ]
-
   return (
     <header className="sticky top-0 z-50 bg-[#0A0A0A] border-b border-[#C9A84C]/20 shadow-[0_2px_20px_rgba(0,0,0,0.5)]">
       {/* Top bar */}
       <div className="bg-[#C9A84C] text-[#0A0A0A] text-xs py-1.5 text-center font-semibold flex items-center justify-center gap-1.5">
-        <span className="inline-flex items-center justify-center bg-[#0A0A0A] text-[#C9A84C] text-[9px] font-black px-1 py-0.5 rounded leading-none">TT</span>
-        Free delivery on orders over TTD $500 across Trinidad
+        <span className="emoji-icon">🇹🇹</span>
+        Free delivery on orders over TTD $500 across Trinidad!
       </div>
 
       {/* Main nav */}
@@ -151,20 +149,20 @@ export function Navbar() {
 
         {/* Category nav */}
         <nav className="hidden sm:flex items-center gap-1 pb-2 overflow-x-auto">
-          {categories.map((cat) => (
+          {CATEGORIES.map((cat) => (
             <Link
               key={cat.href}
               href={cat.href}
               className="flex items-center gap-1 px-3 py-1 text-xs font-medium text-[#9A8F7A] hover:text-[#C9A84C] hover:bg-[#C9A84C]/8 rounded-full whitespace-nowrap transition-colors"
             >
-              <cat.Icon size={13} strokeWidth={1.5} /> {cat.name}
+              <span className="emoji-icon">{cat.emoji}</span> {cat.label}
             </Link>
           ))}
           <Link
             href="/digital"
             className="flex items-center gap-1 px-3 py-1 text-xs font-medium bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/30 rounded-full whitespace-nowrap hover:bg-[#C9A84C]/20 transition-colors"
           >
-            <Zap size={12} strokeWidth={1.5} /> Digital
+            <span className="emoji-icon">⚡</span> Digital
           </Link>
           <Link href="/products" className="ml-auto px-3 py-1 text-xs font-medium text-[#C9A84C] hover:underline whitespace-nowrap">
             All Categories
@@ -185,10 +183,10 @@ export function Navbar() {
             </div>
           </form>
           <div className="grid grid-cols-2 gap-2">
-            {categories.map((cat) => (
+            {CATEGORIES.map((cat) => (
               <Link key={cat.href} href={cat.href} onClick={() => setMobileOpen(false)}
                 className="flex items-center gap-2 px-3 py-2 text-sm text-[#9A8F7A] hover:text-[#C9A84C] hover:bg-[#C9A84C]/5 rounded-lg">
-                <cat.Icon size={14} strokeWidth={1.5} /> {cat.name}
+                <span className="emoji-icon">{cat.emoji}</span> {cat.label}
               </Link>
             ))}
           </div>

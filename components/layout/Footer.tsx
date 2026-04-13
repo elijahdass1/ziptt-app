@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { Zap, Banknote, CreditCard, Building2 } from 'lucide-react'
 
 export function Footer() {
   return (
@@ -16,7 +15,7 @@ export function Footer() {
               Trinidad &amp; Tobago&apos;s premier online marketplace. Shop local, support local vendors, and get it delivered to your door.
             </p>
             <div className="flex gap-3 mt-4 items-center">
-              <span className="inline-flex items-center justify-center bg-[#C9A84C] text-[#0A0A0A] text-[10px] font-black px-1.5 py-0.5 rounded leading-none">TT</span>
+              <span className="emoji-icon text-xl">🇹🇹</span>
               <div>
                 <p className="text-xs text-[#9A8F7A]">Delivering across Trinidad</p>
                 <p className="text-xs font-medium text-[#F5F0E8]">POS &middot; Central &middot; South</p>
@@ -36,7 +35,7 @@ export function Footer() {
               ))}
               <li>
                 <Link href="/digital" className="hover:text-[#C9A84C] transition-colors flex items-center gap-1">
-                  <Zap size={12} strokeWidth={1.5} /> Digital Products
+                  <span className="emoji-icon">⚡</span> Digital Products
                 </Link>
               </li>
             </ul>
@@ -66,9 +65,9 @@ export function Footer() {
             <div className="mt-4 p-3 bg-[#1A1A1A] rounded-lg border border-[#C9A84C]/10">
               <p className="text-xs text-[#9A8F7A] mb-2">Payment Methods</p>
               <div className="flex flex-wrap gap-2 text-sm">
-                <span className="badge-gray text-xs flex items-center gap-1"><Banknote size={11} /> Cash on Delivery</span>
-                <span className="badge-gray text-xs flex items-center gap-1"><CreditCard size={11} /> Linx</span>
-                <span className="badge-gray text-xs flex items-center gap-1"><Building2 size={11} /> Online Banking</span>
+                <span className="badge-gray text-xs flex items-center gap-1"><span className="emoji-icon">💰</span> Cash on Delivery</span>
+                <span className="badge-gray text-xs flex items-center gap-1"><span className="emoji-icon">💳</span> Linx</span>
+                <span className="badge-gray text-xs flex items-center gap-1"><span className="emoji-icon">🏦</span> Online Banking</span>
               </div>
             </div>
           </div>

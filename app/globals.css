@@ -119,6 +119,12 @@ body {
   animation: goldShimmer 3s linear infinite;
 }
 
+/* Emoji font stack for reliable cross-platform emoji rendering */
+.emoji-icon {
+  font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
+  font-style: normal;
+}
+
 /* Custom scrollbar */
 .scrollbar-thin::-webkit-scrollbar { width: 4px; }
 .scrollbar-thin::-webkit-scrollbar-track { background: #111; }

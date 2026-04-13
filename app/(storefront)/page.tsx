@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic'
 import Link from 'next/link'
-import { ArrowRight, Star, Truck, Shield, HeadphonesIcon, CreditCard, Store, Smartphone, Home, Sparkles, Tag, Wine, MapPin } from 'lucide-react'
+import { ArrowRight, Star, Truck, Shield, HeadphonesIcon, CreditCard, Store, MapPin } from 'lucide-react'
 import prisma from '@/lib/prisma'
 import { ProductCard } from '@/components/storefront/ProductCard'
 import { formatTTD } from '@/lib/utils'
@@ -44,12 +44,12 @@ async function getFeaturedDigitalProducts() {
 }
 
 const HERO_CATEGORIES = [
-  { Icon: Smartphone, label: 'Electronics', href: '/products?category=electronics' },
-  { Icon: Home, label: 'Home & Garden', href: '/products?category=home-garden' },
-  { Icon: Sparkles, label: 'Carnival', href: '/products?category=carnival' },
-  { Icon: Tag, label: 'Streetwear', href: '/products?category=urban-fashion' },
-  { Icon: Star, label: 'Toys', href: '/products?category=toys' },
-  { Icon: Wine, label: 'Rum & Spirits', href: '/products?category=rum-spirits' },
+  { emoji: '📱', label: 'Electronics', href: '/products?category=Electronics' },
+  { emoji: '🏠', label: 'Home & Garden', href: '/products?category=Home+%26+Garden' },
+  { emoji: '🎭', label: 'Carnival', href: '/products?category=Carnival+%26+Mas' },
+  { emoji: '🧢', label: 'Streetwear', href: '/products?category=Urban+Fashion+%26+Streetwear' },
+  { emoji: '🧸', label: 'Toys', href: '/products?category=Toys%2C+Games+%26+Kids' },
+  { emoji: '🥃', label: 'Rum & Spirits', href: '/products?category=Rum+%26+Spirits' },
 ]
 
 export default async function HomePage() {
@@ -71,7 +71,7 @@ export default async function HomePage() {
           <div className="grid md:grid-cols-2 gap-10 items-center">
             <div className="space-y-6">
               <div className="inline-flex items-center gap-2 bg-[#C9A84C]/10 border border-[#C9A84C]/30 text-[#C9A84C] text-xs font-semibold px-3 py-1.5 rounded-full tracking-wide">
-                <span className="inline-flex items-center justify-center bg-[#C9A84C] text-[#0A0A0A] text-[9px] font-black px-1 py-0.5 rounded leading-none">TT</span>
+                <span className="emoji-icon">🇹🇹</span>
                 Trinidad &amp; Tobago&apos;s #1 Marketplace
               </div>
               <h1 className="text-4xl md:text-5xl font-black leading-tight text-[#F5F0E8]">
@@ -97,7 +97,7 @@ export default async function HomePage() {
                 <Link key={item.href} href={item.href}
                   className="bg-[#C9A84C]/8 hover:bg-[#C9A84C]/15 border border-[#C9A84C]/15 hover:border-[#C9A84C]/35 backdrop-blur-sm rounded-2xl p-5 text-center transition-all group">
                   <div className="flex items-center justify-center mb-2">
-                    <item.Icon size={32} strokeWidth={1.2} className="text-[#C9A84C]" />
+                    <span className="emoji-icon text-4xl">{item.emoji}</span>
                   </div>
                   <div className="text-sm font-semibold text-[#F5F0E8] group-hover:text-[#C9A84C] transition-colors">{item.label}</div>
                 </Link>
