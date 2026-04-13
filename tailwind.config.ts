@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss'
+import defaultTheme from 'tailwindcss/defaultTheme'
 
 const config: Config = {
   darkMode: ['class'],
@@ -9,6 +10,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-inter)', 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', ...defaultTheme.fontFamily.sans],
+      },
       colors: {
         // zip.tt brand colors — inspired by T&T flag (red, black, white)
         brand: {
