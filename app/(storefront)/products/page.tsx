@@ -65,10 +65,10 @@ export default async function ProductsPage({ searchParams }: PageProps) {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold text-[#F5F0E8]">
           {currentCategory ? currentCategory.name : searchParams.q ? `Results for "${searchParams.q}"` : 'All Products'}
         </h1>
-        <p className="text-sm text-gray-500 mt-1">{total} products found</p>
+        <p className="text-sm text-[#9A8F7A] mt-1">{total} products found</p>
       </div>
 
       <div className="flex gap-6">

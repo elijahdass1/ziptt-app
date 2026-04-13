@@ -41,14 +41,14 @@ export function ProductFilters({ categories, searchParams }: ProductFiltersProps
   return (
     <div className="space-y-6">
       {hasFilters && (
-        <button onClick={clearAll} className="text-xs text-[#D62828] hover:underline font-medium">
+        <button onClick={clearAll} className="text-xs text-[#C9A84C] hover:underline font-medium">
           Clear all filters
         </button>
       )}
 
       {/* Sort */}
       <div>
-        <h3 className="text-sm font-semibold text-gray-900 mb-3">Sort By</h3>
+        <h3 className="text-sm font-semibold text-[#F5F0E8] mb-3">Sort By</h3>
         <div className="space-y-1.5">
           {[
             { value: 'featured', label: 'Featured' },
@@ -63,8 +63,8 @@ export function ProductFilters({ categories, searchParams }: ProductFiltersProps
               onClick={() => updateFilter('sort', opt.value)}
               className={`w-full text-left text-sm px-3 py-1.5 rounded-lg transition-colors ${
                 (searchParams.sort ?? 'featured') === opt.value
-                  ? 'bg-red-50 text-[#D62828] font-medium'
-                  : 'text-gray-600 hover:bg-gray-50'
+                  ? 'bg-[#1A1A00] text-[#C9A84C] font-medium border border-[#C9A84C]/30'
+                  : 'text-[#9A8F7A] hover:bg-[#1A1A1A] hover:text-[#F5F0E8]'
               }`}
             >
               {opt.label}
@@ -75,12 +75,14 @@ export function ProductFilters({ categories, searchParams }: ProductFiltersProps
 
       {/* Categories */}
       <div>
-        <h3 className="text-sm font-semibold text-gray-900 mb-3">Category</h3>
+        <h3 className="text-sm font-semibold text-[#F5F0E8] mb-3">Category</h3>
         <div className="space-y-1.5">
           <button
             onClick={() => updateFilter('category', '')}
             className={`w-full text-left text-sm px-3 py-1.5 rounded-lg transition-colors ${
-              !searchParams.category ? 'bg-red-50 text-[#D62828] font-medium' : 'text-gray-600 hover:bg-gray-50'
+              !searchParams.category
+                ? 'bg-[#1A1A00] text-[#C9A84C] font-medium border border-[#C9A84C]/30'
+                : 'text-[#9A8F7A] hover:bg-[#1A1A1A] hover:text-[#F5F0E8]'
             }`}
           >
             All Categories
@@ -90,7 +92,9 @@ export function ProductFilters({ categories, searchParams }: ProductFiltersProps
               key={cat.id}
               onClick={() => updateFilter('category', cat.slug)}
               className={`w-full text-left text-sm px-3 py-1.5 rounded-lg transition-colors ${
-                searchParams.category === cat.slug ? 'bg-red-50 text-[#D62828] font-medium' : 'text-gray-600 hover:bg-gray-50'
+                searchParams.category === cat.slug
+                  ? 'bg-[#1A1A00] text-[#C9A84C] font-medium border border-[#C9A84C]/30'
+                  : 'text-[#9A8F7A] hover:bg-[#1A1A1A] hover:text-[#F5F0E8]'
               }`}
             >
               {cat.name}
@@ -101,7 +105,7 @@ export function ProductFilters({ categories, searchParams }: ProductFiltersProps
 
       {/* Price Range */}
       <div>
-        <h3 className="text-sm font-semibold text-gray-900 mb-3">Price (TTD)</h3>
+        <h3 className="text-sm font-semibold text-[#F5F0E8] mb-3">Price (TTD)</h3>
         <div className="space-y-2">
           {[
             { label: 'Under $100', min: '0', max: '100' },
@@ -123,8 +127,8 @@ export function ProductFilters({ categories, searchParams }: ProductFiltersProps
               }}
               className={`w-full text-left text-sm px-3 py-1.5 rounded-lg transition-colors ${
                 searchParams.minPrice === range.min && searchParams.maxPrice === range.max
-                  ? 'bg-red-50 text-[#D62828] font-medium'
-                  : 'text-gray-600 hover:bg-gray-50'
+                  ? 'bg-[#1A1A00] text-[#C9A84C] font-medium border border-[#C9A84C]/30'
+                  : 'text-[#9A8F7A] hover:bg-[#1A1A1A] hover:text-[#F5F0E8]'
               }`}
             >
               {range.label}
