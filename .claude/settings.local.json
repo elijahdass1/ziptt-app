@@ -89,7 +89,14 @@
       "Bash(npx kill-port:*)",
       "Bash(ls /c/Users/Elijah/ZIPTT/app/\\\\\\(storefront\\\\\\)/)",
       "Bash(echo \"Exit code: $?\")",
-      "Bash(echo \"TypeScript exit: $?\")"
+      "Bash(echo \"TypeScript exit: $?\")",
+      "Bash(node scripts/set-dbest-generated-images.mjs)",
+      "Bash(grep -v \"Use \\\\`node\")",
+      "Bash(node --input-type=module)",
+      "Bash(2>&1)",
+      "Bash(grep -v \"^$\")",
+      "Bash(node scripts/restore-dbest-images-from-sqlite.mjs)",
+      "Bash(npx vercel:*)"
     ]
   }
 }
