@@ -45,7 +45,11 @@ export default function CartPage() {
           </div>
         ) : items.length === 0 ? (
           <div className="text-center py-20">
-            <div className="flex items-center justify-center mb-4"><span className="emoji-icon text-6xl">🛒</span></div>
+            <div className="flex items-center justify-center mb-4">
+              <span className="h-20 w-20 rounded-full bg-[#C9A84C]/10 border border-[#C9A84C]/30 flex items-center justify-center">
+                <ShoppingBag className="h-9 w-9 text-[#C9A84C]" />
+              </span>
+            </div>
             <h2 className="text-xl font-bold text-[#F5F0E8] mb-2">Your cart is empty</h2>
             <p className="text-[#9A8F7A] mb-6">Browse our marketplace and add some items!</p>
             <Link href="/products" className="btn-primary">Start Shopping</Link>

@@ -2,20 +2,51 @@
 
 import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
-import { useState } from 'react'
-import { ShoppingCart, Search, User, Package, ChevronDown, Menu, X, Store, Settings } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import {
+  ShoppingCart, Search, User, Package, ChevronDown, Menu, X, Store, Settings, MessageSquare,
+  Zap, Shirt, Flame, Sparkles, Gamepad2, Wine, Home, Plug, ShoppingBasket, Cloud, type LucideIcon,
+} from 'lucide-react'
 import { useCartStore } from '@/lib/store'
 
-const CATEGORIES = [
-  { label: 'Electronics',   slug: 'electronics',   icon: '⚡', color: '#4A9EFF' },
-  { label: 'Fashion',       slug: 'fashion',        icon: '◈', color: '#FF7EB3' },
-  { label: 'Streetwear',    slug: 'urban-fashion',  icon: '▲', color: '#C9A84C' },
-  { label: 'Carnival',      slug: 'carnival',       icon: '✦', color: '#FF6B35' },
-  { label: 'Toys & Kids',   slug: 'toys',           icon: '⬡', color: '#7EC8E3' },
-  { label: 'Rum & Spirits', slug: 'rum-spirits',    icon: '◇', color: '#B8860B' },
-  { label: 'Home & Garden', slug: 'home-garden',    icon: '⬢', color: '#4CAF82' },
-  { label: 'Appliances',    slug: 'appliances',     icon: '◉', color: '#9C88FF' },
-  { label: 'Groceries',     slug: 'groceries',      icon: '◆', color: '#E8B04B' },
+// Polls /api/conversations/unread on a slow interval so the badge stays
+// roughly fresh without burning requests. Returns 0 when signed out.
+function useUnreadMessages(enabled: boolean) {
+  const [count, setCount] = useState(0)
+  useEffect(() => {
+    if (!enabled) {
+      setCount(0)
+      return
+    }
+    let cancelled = false
+    const tick = async () => {
+      try {
+        const res = await fetch('/api/conversations/unread', { cache: 'no-store' })
+        if (!res.ok || cancelled) return
+        const { count } = await res.json()
+        if (!cancelled) setCount(count ?? 0)
+      } catch {/* swallow */}
+    }
+    tick()
+    const interval = setInterval(tick, 30000)
+    return () => {
+      cancelled = true
+      clearInterval(interval)
+    }
+  }, [enabled])
+  return count
+}
+
+const CATEGORIES: { label: string; slug: string; icon: LucideIcon; color: string }[] = [
+  { label: 'Electronics',   slug: 'electronics',   icon: Zap,             color: '#4A9EFF' },
+  { label: 'Fashion',       slug: 'fashion',        icon: Shirt,           color: '#FF7EB3' },
+  { label: 'Streetwear',    slug: 'urban-fashion',  icon: Flame,           color: '#C9A84C' },
+  { label: 'Carnival',      slug: 'carnival',       icon: Sparkles,        color: '#FF6B35' },
+  { label: 'Toys & Kids',   slug: 'toys',           icon: Gamepad2,        color: '#7EC8E3' },
+  { label: 'Rum & Spirits', slug: 'rum-spirits',    icon: Wine,            color: '#B8860B' },
+  { label: 'Home & Garden', slug: 'home-garden',    icon: Home,            color: '#4CAF82' },
+  { label: 'Appliances',    slug: 'appliances',     icon: Plug,            color: '#9C88FF' },
+  { label: 'Groceries',     slug: 'groceries',      icon: ShoppingBasket,  color: '#E8B04B' },
 ]
 
 export function Navbar() {
@@ -23,13 +54,13 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const cartCount = useCartStore((s) => s.items.reduce((acc, i) => acc + i.quantity, 0))
+  const unreadMessages = useUnreadMessages(!!session)
 
   return (
     <header className="sticky top-0 z-50 bg-[#0A0A0A] border-b border-[#C9A84C]/20 shadow-[0_2px_20px_rgba(0,0,0,0.5)]">
       {/* Top bar */}
-      <div className="bg-[#C9A84C] text-[#0A0A0A] text-xs py-1.5 text-center font-semibold flex items-center justify-center gap-1.5">
-        <span className="emoji-icon">🇹🇹</span>
-        Free delivery on orders over TTD $500 across Trinidad!
+      <div className="bg-[#C9A84C] text-[#0A0A0A] text-xs py-1.5 text-center font-semibold">
+        Free delivery on orders over TTD $500 across Trinidad
       </div>
 
       {/* Main nav */}
@@ -82,7 +113,7 @@ export function Navbar() {
               <div className="relative">
                 <button
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  className="flex items-center gap-2 p-1.5 hover:bg-[#C9A84C]/10 rounded-full transition-colors"
+                  className="relative flex items-center gap-2 p-1.5 hover:bg-[#C9A84C]/10 rounded-full transition-colors"
                 >
                   {session.user.image ? (
                     <img src={session.user.image} alt="" className="h-7 w-7 rounded-full object-cover ring-2 ring-[#C9A84C]/40" />
@@ -92,6 +123,11 @@ export function Navbar() {
                     </div>
                   )}
                   <ChevronDown className="h-3.5 w-3.5 text-[#9A8F7A] hidden sm:block" />
+                  {unreadMessages > 0 && (
+                    <span className="absolute -top-0.5 -right-0.5 bg-[#D62828] text-white text-[10px] font-bold rounded-full h-4 min-w-[16px] px-1 flex items-center justify-center leading-none ring-2 ring-[#0A0A0A]">
+                      {unreadMessages > 9 ? '9+' : unreadMessages}
+                    </span>
+                  )}
                 </button>
 
                 {userMenuOpen && (
@@ -106,6 +142,14 @@ export function Navbar() {
                     </Link>
                     <Link href="/orders" className="flex items-center gap-2 px-4 py-2 text-sm text-[#9A8F7A] hover:text-[#C9A84C] hover:bg-[#C9A84C]/5" onClick={() => setUserMenuOpen(false)}>
                       <Package className="h-4 w-4" /> My Orders
+                    </Link>
+                    <Link href="/messages" className="flex items-center gap-2 px-4 py-2 text-sm text-[#9A8F7A] hover:text-[#C9A84C] hover:bg-[#C9A84C]/5" onClick={() => setUserMenuOpen(false)}>
+                      <MessageSquare className="h-4 w-4" /> Messages
+                      {unreadMessages > 0 && (
+                        <span className="ml-auto bg-[#D62828] text-white text-[10px] font-bold rounded-full h-4 min-w-[16px] px-1 flex items-center justify-center leading-none">
+                          {unreadMessages > 9 ? '9+' : unreadMessages}
+                        </span>
+                      )}
                     </Link>
                     {(session.user.role === 'VENDOR' || session.user.role === 'ADMIN') && (
                       <Link href="/vendor" className="flex items-center gap-2 px-4 py-2 text-sm text-[#9A8F7A] hover:text-[#C9A84C] hover:bg-[#C9A84C]/5" onClick={() => setUserMenuOpen(false)}>
@@ -151,26 +195,36 @@ export function Navbar() {
 
         {/* Category nav */}
         <nav className="hidden sm:flex items-center gap-0.5 pb-2 overflow-x-auto scrollbar-thin">
-          {CATEGORIES.map((cat) => (
-            <Link
-              key={cat.slug}
-              href={`/products?category=${encodeURIComponent(cat.slug)}`}
-              className="group flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-[#9A8F7A] hover:text-[#F5F0E8] hover:bg-[#1A1A1A] rounded-md whitespace-nowrap transition-all duration-150"
-            >
-              <span
-                className="inline-flex items-center justify-center w-4 h-4 rounded text-[10px] font-bold shrink-0 transition-transform group-hover:scale-110"
-                style={{ color: cat.color }}
-              >{cat.icon}</span>
-              <span className="tracking-wide">{cat.label}</span>
-            </Link>
-          ))}
+          {CATEGORIES.map((cat) => {
+            const Icon = cat.icon
+            return (
+              <Link
+                key={cat.slug}
+                href={`/products?category=${encodeURIComponent(cat.slug)}`}
+                className="group flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-[#9A8F7A] hover:text-[#F5F0E8] hover:bg-[#1A1A1A] rounded-md whitespace-nowrap transition-all duration-150"
+              >
+                <Icon
+                  className="h-3.5 w-3.5 shrink-0 transition-transform group-hover:scale-110"
+                  style={{ color: cat.color }}
+                />
+                <span className="tracking-wide">{cat.label}</span>
+              </Link>
+            )
+          })}
           <div className="w-px h-4 bg-[#C9A84C]/20 mx-1 shrink-0" />
           <Link
             href="/digital"
             className="group flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/25 rounded-md whitespace-nowrap hover:bg-[#C9A84C]/20 transition-all"
           >
-            <span className="inline-flex items-center justify-center w-4 h-4 text-[10px] font-bold">⬟</span>
+            <Cloud className="h-3.5 w-3.5 shrink-0" />
             <span className="tracking-wide">Digital</span>
+          </Link>
+          <Link
+            href="/vendors"
+            className="group flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-[#9A8F7A] hover:text-[#F5F0E8] hover:bg-[#1A1A1A] rounded-md whitespace-nowrap transition-all"
+          >
+            <Store className="h-3.5 w-3.5 text-[#C9A84C] shrink-0" />
+            <span className="tracking-wide">Sellers</span>
           </Link>
           <Link href="/products" className="ml-auto px-2.5 py-1 text-xs font-medium text-[#9A8F7A] hover:text-[#C9A84C] whitespace-nowrap transition-colors">
             All →
@@ -191,13 +245,51 @@ export function Navbar() {
             </div>
           </form>
           <div className="grid grid-cols-2 gap-1.5">
-            {CATEGORIES.map((cat) => (
-              <Link key={cat.slug} href={`/products?category=${encodeURIComponent(cat.slug)}`} onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 px-3 py-2 text-sm text-[#9A8F7A] hover:text-[#F5F0E8] hover:bg-[#1A1A1A] rounded-lg transition-colors">
-                <span className="text-sm font-bold shrink-0" style={{ color: cat.color }}>{cat.icon}</span>
-                <span className="text-xs">{cat.label}</span>
+            {CATEGORIES.map((cat) => {
+              const Icon = cat.icon
+              return (
+                <Link key={cat.slug} href={`/products?category=${encodeURIComponent(cat.slug)}`} onClick={() => setMobileOpen(false)}
+                  className="flex items-center gap-2 px-3 py-2 text-sm text-[#9A8F7A] hover:text-[#F5F0E8] hover:bg-[#1A1A1A] rounded-lg transition-colors">
+                  <Icon className="h-4 w-4 shrink-0" style={{ color: cat.color }} />
+                  <span className="text-xs">{cat.label}</span>
+                </Link>
+              )
+            })}
+          </div>
+          {/* Sellers + Messages — same destinations as the desktop nav so
+              mobile users get parity. Messages is gated on signed-in. */}
+          <div className="grid grid-cols-2 gap-1.5 pt-2 border-t border-[#C9A84C]/10">
+            <Link
+              href="/vendors"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-2 px-3 py-2 text-sm text-[#9A8F7A] hover:text-[#F5F0E8] hover:bg-[#1A1A1A] rounded-lg transition-colors"
+            >
+              <Store className="h-4 w-4 text-[#C9A84C] shrink-0" />
+              <span className="text-xs font-medium">All Sellers</span>
+            </Link>
+            <Link
+              href="/digital"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-2 px-3 py-2 text-sm text-[#C9A84C] bg-[#C9A84C]/10 border border-[#C9A84C]/25 rounded-lg"
+            >
+              <Cloud className="h-4 w-4 shrink-0" />
+              <span className="text-xs font-medium">Digital</span>
+            </Link>
+            {session && (
+              <Link
+                href="/messages"
+                onClick={() => setMobileOpen(false)}
+                className="col-span-2 flex items-center gap-2 px-3 py-2 text-sm text-[#9A8F7A] hover:text-[#F5F0E8] hover:bg-[#1A1A1A] rounded-lg transition-colors relative"
+              >
+                <MessageSquare className="h-4 w-4 text-[#C9A84C] shrink-0" />
+                <span className="text-xs font-medium">Messages</span>
+                {unreadMessages > 0 && (
+                  <span className="ml-auto bg-[#D62828] text-white text-[10px] font-bold rounded-full h-4 min-w-[16px] px-1 flex items-center justify-center leading-none">
+                    {unreadMessages > 9 ? '9+' : unreadMessages}
+                  </span>
+                )}
               </Link>
-            ))}
+            )}
           </div>
           {!session && (
             <div className="flex gap-2 pt-2 border-t border-[#C9A84C]/10">

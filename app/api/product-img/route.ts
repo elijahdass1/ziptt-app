@@ -1,16 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-// Category icons and colors
-const CAT_CONFIG: Record<string, { icon: string; color: string; bg: string }> = {
-  toys:         { icon: '⬡', color: '#7EC8E3', bg: '#0A1520' },
-  electronics:  { icon: '⚡', color: '#4A9EFF', bg: '#0A0F1A' },
-  fashion:      { icon: '◈', color: '#FF7EB3', bg: '#1A0A12' },
-  'urban-fashion': { icon: '▲', color: '#C9A84C', bg: '#1A1500' },
-  carnival:     { icon: '✦', color: '#FF6B35', bg: '#1A0A00' },
-  'rum-spirits':{ icon: '◇', color: '#B8860B', bg: '#1A1000' },
-  'home-garden':{ icon: '⬢', color: '#4CAF82', bg: '#0A1A10' },
-  appliances:   { icon: '◉', color: '#9C88FF', bg: '#100A1A' },
-  groceries:    { icon: '◆', color: '#E8B04B', bg: '#1A1200' },
+// Category labels and colors. The "icon" rendered into the placeholder SVG
+// is now just the first letter of the label (E, F, T, etc.) — no Unicode
+// symbols. Real product images replace these placeholders for healthy
+// listings, so this only fires on the broken-image fallback.
+const CAT_CONFIG: Record<string, { initial: string; color: string; bg: string }> = {
+  toys:            { initial: 'T', color: '#7EC8E3', bg: '#0A1520' },
+  electronics:     { initial: 'E', color: '#4A9EFF', bg: '#0A0F1A' },
+  fashion:         { initial: 'F', color: '#FF7EB3', bg: '#1A0A12' },
+  'urban-fashion': { initial: 'S', color: '#C9A84C', bg: '#1A1500' },
+  carnival:        { initial: 'C', color: '#FF6B35', bg: '#1A0A00' },
+  'rum-spirits':   { initial: 'R', color: '#B8860B', bg: '#1A1000' },
+  'home-garden':   { initial: 'H', color: '#4CAF82', bg: '#0A1A10' },
+  appliances:      { initial: 'A', color: '#9C88FF', bg: '#100A1A' },
+  groceries:       { initial: 'G', color: '#E8B04B', bg: '#1A1200' },
 }
 
 function wrapText(text: string, maxLen: number): string[] {
@@ -76,11 +79,11 @@ export async function GET(req: NextRequest) {
   <!-- Top accent bar -->
   <rect x="0" y="0" width="600" height="4" rx="2" fill="url(#gold)"/>
 
-  <!-- Category icon circle -->
+  <!-- Category initial circle -->
   <circle cx="300" cy="130" r="56" fill="${cfg.color}" opacity="0.1"/>
   <circle cx="300" cy="130" r="52" fill="none" stroke="${cfg.color}" stroke-width="1" opacity="0.4"/>
   <text x="300" y="148" text-anchor="middle" font-family="system-ui, sans-serif"
-    font-size="48" fill="${cfg.color}" opacity="0.9">${cfg.icon}</text>
+    font-size="44" font-weight="700" fill="${cfg.color}" opacity="0.9">${cfg.initial}</text>
 
   <!-- Product name -->
   ${lines.map((line, i) =>

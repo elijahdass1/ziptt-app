@@ -11,20 +11,24 @@ async function main() {
   console.log('🌱 Seeding zip.tt database...')
 
   // ─── Categories ────────────────────────────────────────────────────────────
+  // Note: `icon` is intentionally left null. The storefront renders Lucide
+  // icons keyed by slug (see Navbar/HERO_CATEGORIES) so we don't need to
+  // store glyphs in the DB. If you ever re-seed a fresh DB, the column
+  // stays null and nothing breaks.
   const categories = await Promise.all([
-    prisma.category.upsert({ where: { slug: 'groceries' }, update: {}, create: { name: 'Groceries & Food', slug: 'groceries', icon: '🛒', image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=400' } }),
-    prisma.category.upsert({ where: { slug: 'electronics' }, update: {}, create: { name: 'Electronics', slug: 'electronics', icon: '📱', image: 'https://images.unsplash.com/photo-1491933382434-500287f9b54b?w=400' } }),
-    prisma.category.upsert({ where: { slug: 'fashion' }, update: {}, create: { name: 'Fashion & Clothing', slug: 'fashion', icon: '👗', image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400' } }),
-    prisma.category.upsert({ where: { slug: 'home-garden' }, update: {}, create: { name: 'Home & Garden', slug: 'home-garden', icon: '🏡', image: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=400' } }),
-    prisma.category.upsert({ where: { slug: 'beauty' }, update: {}, create: { name: 'Beauty & Health', slug: 'beauty', icon: '💄', image: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400' } }),
-    prisma.category.upsert({ where: { slug: 'services' }, update: {}, create: { name: 'Services', slug: 'services', icon: '🔧', image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400' } }),
-    prisma.category.upsert({ where: { slug: 'sports' }, update: {}, create: { name: 'Sports & Fitness', slug: 'sports', icon: '⚽', image: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400' } }),
-    prisma.category.upsert({ where: { slug: 'automotive' }, update: {}, create: { name: 'Automotive', slug: 'automotive', icon: '🚗', image: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=400' } }),
-    prisma.category.upsert({ where: { slug: 'carnival' }, update: {}, create: { name: 'Carnival & Mas', slug: 'carnival', icon: '🎭', image: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=400' } }),
-    prisma.category.upsert({ where: { slug: 'rum-spirits' }, update: {}, create: { name: 'Rum & Spirits', slug: 'rum-spirits', icon: '🥃', image: 'https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=400' } }),
-    prisma.category.upsert({ where: { slug: 'urban-fashion' }, update: {}, create: { name: 'Urban Fashion & Streetwear', slug: 'urban-fashion', icon: '🧢', image: 'https://images.unsplash.com/photo-1523398002811-999ca8dec234?w=400' } }),
-    prisma.category.upsert({ where: { slug: 'toys' }, update: {}, create: { name: 'Toys, Games & Kids', slug: 'toys', icon: '🧸', image: 'https://images.unsplash.com/photo-1558060370-d644479cb6f7?w=400' } }),
-    prisma.category.upsert({ where: { slug: 'appliances' }, update: {}, create: { name: 'Appliances & Home', slug: 'appliances', icon: '🏠', image: 'https://images.unsplash.com/photo-1584568694244-14fbdf83bd30?w=400' } }),
+    prisma.category.upsert({ where: { slug: 'groceries' }, update: {}, create: { name: 'Groceries & Food', slug: 'groceries', image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=400' } }),
+    prisma.category.upsert({ where: { slug: 'electronics' }, update: {}, create: { name: 'Electronics', slug: 'electronics', image: 'https://images.unsplash.com/photo-1491933382434-500287f9b54b?w=400' } }),
+    prisma.category.upsert({ where: { slug: 'fashion' }, update: {}, create: { name: 'Fashion & Clothing', slug: 'fashion', image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400' } }),
+    prisma.category.upsert({ where: { slug: 'home-garden' }, update: {}, create: { name: 'Home & Garden', slug: 'home-garden', image: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=400' } }),
+    prisma.category.upsert({ where: { slug: 'beauty' }, update: {}, create: { name: 'Beauty & Health', slug: 'beauty', image: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400' } }),
+    prisma.category.upsert({ where: { slug: 'services' }, update: {}, create: { name: 'Services', slug: 'services', image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400' } }),
+    prisma.category.upsert({ where: { slug: 'sports' }, update: {}, create: { name: 'Sports & Fitness', slug: 'sports', image: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400' } }),
+    prisma.category.upsert({ where: { slug: 'automotive' }, update: {}, create: { name: 'Automotive', slug: 'automotive', image: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=400' } }),
+    prisma.category.upsert({ where: { slug: 'carnival' }, update: {}, create: { name: 'Carnival & Mas', slug: 'carnival', image: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=400' } }),
+    prisma.category.upsert({ where: { slug: 'rum-spirits' }, update: {}, create: { name: 'Rum & Spirits', slug: 'rum-spirits', image: 'https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=400' } }),
+    prisma.category.upsert({ where: { slug: 'urban-fashion' }, update: {}, create: { name: 'Urban Fashion & Streetwear', slug: 'urban-fashion', image: 'https://images.unsplash.com/photo-1523398002811-999ca8dec234?w=400' } }),
+    prisma.category.upsert({ where: { slug: 'toys' }, update: {}, create: { name: 'Toys, Games & Kids', slug: 'toys', image: 'https://images.unsplash.com/photo-1558060370-d644479cb6f7?w=400' } }),
+    prisma.category.upsert({ where: { slug: 'appliances' }, update: {}, create: { name: 'Appliances & Home', slug: 'appliances', image: 'https://images.unsplash.com/photo-1584568694244-14fbdf83bd30?w=400' } }),
   ])
 
   const [groceries, electronics, fashion, homeGarden, beauty, services, sports, automotive, carnival, rum, urbanFashion, toys, appliances] = categories

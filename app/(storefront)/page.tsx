@@ -1,6 +1,9 @@
 export const dynamic = 'force-dynamic'
 import Link from 'next/link'
-import { ArrowRight, Star, Truck, Shield, HeadphonesIcon, CreditCard, Store, MapPin } from 'lucide-react'
+import {
+  ArrowRight, Star, Truck, Shield, HeadphonesIcon, CreditCard, Store, MapPin,
+  Zap, Home, Sparkles, Flame, Gamepad2, Wine, type LucideIcon,
+} from 'lucide-react'
 import prisma from '@/lib/prisma'
 import { ProductCard } from '@/components/storefront/ProductCard'
 import { formatTTD } from '@/lib/utils'
@@ -18,10 +21,18 @@ async function getFeaturedProducts() {
 }
 
 async function getCategories() {
-  return prisma.category.findMany({
-    take: 10,
-    orderBy: { name: 'asc' },
+  // Only show categories that actually have active inventory. An empty
+  // "Services" or "Beauty" tile in the Shop by Category grid looks like
+  // a broken link — better to hide them until vendors list there.
+  // Order by product count desc so the busiest categories surface first.
+  const cats = await prisma.category.findMany({
+    where: { products: { some: { status: 'ACTIVE' } } },
+    take: 12,
+    include: { _count: { select: { products: { where: { status: 'ACTIVE' } } } } },
   })
+  return cats
+    .sort((a, b) => b._count.products - a._count.products)
+    .slice(0, 10)
 }
 
 async function getFeaturedVendors() {
@@ -43,13 +54,13 @@ async function getFeaturedDigitalProducts() {
   })
 }
 
-const HERO_CATEGORIES = [
-  { emoji: '📱', label: 'Electronics', href: '/products?category=Electronics' },
-  { emoji: '🏠', label: 'Home & Garden', href: '/products?category=Home+%26+Garden' },
-  { emoji: '🎭', label: 'Carnival', href: '/products?category=Carnival+%26+Mas' },
-  { emoji: '🧢', label: 'Streetwear', href: '/products?category=Urban+Fashion+%26+Streetwear' },
-  { emoji: '🧸', label: 'Toys', href: '/products?category=Toys%2C+Games+%26+Kids' },
-  { emoji: '🥃', label: 'Rum & Spirits', href: '/products?category=Rum+%26+Spirits' },
+const HERO_CATEGORIES: { icon: LucideIcon; color: string; label: string; href: string }[] = [
+  { icon: Zap,      color: '#4A9EFF', label: 'Electronics',  href: '/products?category=electronics' },
+  { icon: Home,     color: '#4CAF82', label: 'Home & Garden', href: '/products?category=home-garden' },
+  { icon: Sparkles, color: '#FF6B35', label: 'Carnival',      href: '/products?category=carnival' },
+  { icon: Flame,    color: '#C9A84C', label: 'Streetwear',    href: '/products?category=urban-fashion' },
+  { icon: Gamepad2, color: '#7EC8E3', label: 'Toys',          href: '/products?category=toys' },
+  { icon: Wine,     color: '#B8860B', label: 'Rum & Spirits', href: '/products?category=rum-spirits' },
 ]
 
 export default async function HomePage() {
@@ -71,7 +82,7 @@ export default async function HomePage() {
           <div className="grid md:grid-cols-2 gap-10 items-center">
             <div className="space-y-6">
               <div className="inline-flex items-center gap-2 bg-[#C9A84C]/10 border border-[#C9A84C]/30 text-[#C9A84C] text-xs font-semibold px-3 py-1.5 rounded-full tracking-wide">
-                <span className="emoji-icon">🇹🇹</span>
+                <span className="h-1.5 w-1.5 rounded-full bg-[#C9A84C]" />
                 Trinidad &amp; Tobago&apos;s #1 Marketplace
               </div>
               <h1 className="text-4xl md:text-5xl font-black leading-tight text-[#F5F0E8]">
@@ -93,15 +104,23 @@ export default async function HomePage() {
               </div>
             </div>
             <div className="hidden md:grid grid-cols-2 gap-3">
-              {HERO_CATEGORIES.map((item) => (
-                <Link key={item.href} href={item.href}
-                  className="bg-[#C9A84C]/8 hover:bg-[#C9A84C]/15 border border-[#C9A84C]/15 hover:border-[#C9A84C]/35 backdrop-blur-sm rounded-2xl p-5 text-center transition-all group">
-                  <div className="flex items-center justify-center mb-2">
-                    <span className="emoji-icon text-4xl">{item.emoji}</span>
-                  </div>
-                  <div className="text-sm font-semibold text-[#F5F0E8] group-hover:text-[#C9A84C] transition-colors">{item.label}</div>
-                </Link>
-              ))}
+              {HERO_CATEGORIES.map((item) => {
+                const Icon = item.icon
+                return (
+                  <Link key={item.href} href={item.href}
+                    className="bg-[#C9A84C]/8 hover:bg-[#C9A84C]/15 border border-[#C9A84C]/15 hover:border-[#C9A84C]/35 backdrop-blur-sm rounded-2xl p-5 text-center transition-all group">
+                    <div className="flex items-center justify-center mb-2">
+                      <span
+                        className="h-12 w-12 rounded-full bg-[#0A0A0A]/40 border border-white/10 flex items-center justify-center"
+                        style={{ color: item.color }}
+                      >
+                        <Icon className="h-6 w-6" />
+                      </span>
+                    </div>
+                    <div className="text-sm font-semibold text-[#F5F0E8] group-hover:text-[#C9A84C] transition-colors">{item.label}</div>
+                  </Link>
+                )
+              })}
             </div>
           </div>
         </div>
@@ -232,7 +251,7 @@ export default async function HomePage() {
                     </div>
                     <div style={{ padding: '12px' }}>
                       <p style={{ fontSize: '13px', fontWeight: '600', marginBottom: '4px', lineHeight: '1.3', color: '#F5F0E8' }}>{dp.name}</p>
-                      <p style={{ fontSize: '15px', color: '#C9A84C', fontWeight: 'bold' }}>${dp.price.toFixed(2)} <span style={{ fontSize: '11px', color: '#9A8F7A' }}>TTD</span></p>
+                      <p style={{ fontSize: '15px', color: '#C9A84C', fontWeight: 'bold' }}>{formatTTD(dp.price)}</p>
                     </div>
                   </div>
                 </a>
