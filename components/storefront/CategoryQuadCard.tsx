@@ -25,20 +25,31 @@ interface Props {
   href: string
   cta?: string
   products: Thumb[]
+  // Optional accent color stripe across the top of the card. Picks up
+  // the per-category color so the wall of cards has visual rhythm
+  // instead of looking like four identical gold-bordered tiles.
+  accent?: string
 }
 
 // Fallback image for any thumbnail that fails to load. Chosen to read as
 // "carnival/Trinidad" so a broken image at least looks intentional.
 const FALLBACK = 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=400&q=80'
 
-export function CategoryQuadCard({ title, href, cta = 'See more', products }: Props) {
+export function CategoryQuadCard({ title, href, cta = 'See more', products, accent }: Props) {
   // Pad to exactly 4 tiles so the grid stays balanced when a category
   // is sparse — empty tiles render as dim plates rather than collapsing.
   const tiles = products.slice(0, 4)
   while (tiles.length < 4) tiles.push(null as unknown as Thumb)
 
   return (
-    <div className="bg-[#111111] border border-[#C9A84C]/15 rounded-lg p-4 flex flex-col">
+    <div className="bg-[#111111] border border-[#C9A84C]/15 rounded-lg p-4 flex flex-col ziptt-lift hover:border-[#C9A84C]/45 relative overflow-hidden">
+      {accent && (
+        <span
+          className="absolute inset-x-0 top-0 h-[3px]"
+          style={{ background: `linear-gradient(90deg, transparent, ${accent}, transparent)` }}
+          aria-hidden
+        />
+      )}
       <h3 className="text-base font-bold text-[#F5F0E8] mb-3 truncate">{title}</h3>
       <div className="grid grid-cols-2 gap-2 mb-3">
         {tiles.map((t, i) =>
