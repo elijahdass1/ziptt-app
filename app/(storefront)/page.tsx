@@ -22,8 +22,10 @@ import { ProductCard } from '@/components/storefront/ProductCard'
 import { ProductRail } from '@/components/storefront/ProductRail'
 import { CategoryQuadCard } from '@/components/storefront/CategoryQuadCard'
 import { PromoTicker } from '@/components/storefront/PromoTicker'
+import { HeroSpotlight } from '@/components/storefront/HeroSpotlight'
+import { LiveStats } from '@/components/storefront/LiveStats'
+import { VendorMarquee } from '@/components/storefront/VendorMarquee'
 import { formatTTD } from '@/lib/utils'
-import { firstImage } from '@/lib/parseImages'
 
 // Slug → accent color (used for the top stripe on each quad card and
 // for the hero-pill icon tint). Mirrors the colors in the Navbar so
@@ -141,6 +143,16 @@ async function getFeaturedVendors() {
   })
 }
 
+async function getAllVendorsForMarquee() {
+  // Used for the always-on vendor logo strip — pulls every approved
+  // vendor and lets the marquee handle wrapping.
+  return prisma.vendor.findMany({
+    where: { status: 'APPROVED' },
+    select: { storeName: true, slug: true, logo: true },
+    orderBy: { storeName: 'asc' },
+  })
+}
+
 async function getFeaturedDigitalProducts() {
   return prisma.digitalProduct.findMany({
     where: { isActive: true, featured: true },
@@ -159,7 +171,7 @@ const HERO_PILLS: { icon: LucideIcon; color: string; label: string; href: string
 ]
 
 export default async function HomePage() {
-  const [categories, trending, featured, deals, newArrivals, vendors, digitalProducts] =
+  const [categories, trending, featured, deals, newArrivals, vendors, allVendors, digitalProducts] =
     await Promise.all([
       getCategoriesWithSamples(),
       getTrendingProducts(),
@@ -167,6 +179,7 @@ export default async function HomePage() {
       getDealsProducts(),
       getNewArrivals(),
       getFeaturedVendors(),
+      getAllVendorsForMarquee(),
       getFeaturedDigitalProducts(),
     ])
 
@@ -174,8 +187,8 @@ export default async function HomePage() {
   const band2 = categories.slice(4, 8)
   const band3 = categories.slice(8, 12)
 
-  // Top trending product gets a spotlight tile next to the hero copy.
-  const spotlight = trending[0]
+  // Top 5 trending products feed the auto-rotating spotlight tile.
+  const spotlightItems = trending.slice(0, 5)
 
   return (
     <div className="space-y-10 md:space-y-14 pb-16">
@@ -183,11 +196,31 @@ export default async function HomePage() {
       <PromoTicker />
 
       {/* HERO — bigger and livelier. Drifting radial glow + pulse dot
-          on the eyebrow + product spotlight card on the right. */}
+          on the eyebrow + product spotlight card on the right + a
+          field of twinkling sparkles to make the dark background feel
+          alive instead of flat. */}
       <section className="relative bg-gradient-to-br from-[#0A0A0A] via-[#1A0A0A] to-[#0A0A0A] border-b border-[#C9A84C]/15 overflow-hidden -mt-10">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-1/2 w-[700px] h-[400px] bg-[#C9A84C]/8 rounded-full blur-3xl ziptt-drift" />
           <div className="absolute bottom-0 left-1/4 w-[400px] h-[300px] bg-[#D62828]/6 rounded-full blur-3xl ziptt-drift" style={{ animationDelay: '-9s' }} />
+          {/* Twinkling sparkles. Each one gets a hand-tuned position +
+              animation-delay so they fire out of sync. */}
+          {[
+            { top: '12%', left: '8%',  delay: '0s'   },
+            { top: '20%', left: '32%', delay: '0.8s' },
+            { top: '48%', left: '12%', delay: '1.5s' },
+            { top: '68%', left: '24%', delay: '2.2s' },
+            { top: '14%', left: '54%', delay: '0.4s' },
+            { top: '38%', left: '46%', delay: '3.1s' },
+            { top: '78%', left: '40%', delay: '1.1s' },
+            { top: '8%',  left: '72%', delay: '2.8s' },
+            { top: '32%', left: '88%', delay: '1.8s' },
+            { top: '58%', left: '64%', delay: '0.6s' },
+            { top: '82%', left: '78%', delay: '3.4s' },
+            { top: '24%', left: '94%', delay: '2.4s' },
+          ].map((s, i) => (
+            <span key={i} className="ziptt-sparkle" style={{ top: s.top, left: s.left, animationDelay: s.delay }} />
+          ))}
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10">
           <div className="grid md:grid-cols-[1fr_auto] gap-8 items-center">
@@ -239,42 +272,16 @@ export default async function HomePage() {
               </div>
             </div>
 
-            {/* Spotlight tile — biggest hero element on the right.
-                Showcases the top trending product with a glow ring. */}
-            {spotlight && (
-              <Link
-                href={`/products/${spotlight.slug}`}
-                className="hidden md:block w-[320px] shrink-0 group relative"
-              >
-                <div className="absolute -inset-1 rounded-2xl ziptt-conic-ring opacity-60 blur-md group-hover:opacity-90 transition-opacity" />
-                <div className="relative bg-[#111111] rounded-2xl overflow-hidden border border-[#C9A84C]/30">
-                  <div className="absolute top-3 left-3 z-10 inline-flex items-center gap-1.5 bg-[#0A0A0A]/85 backdrop-blur px-2.5 py-1 rounded-full border border-[#C9A84C]/30">
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#D62828] ziptt-pulse-red" />
-                    <span className="text-[10px] font-bold tracking-wide text-[#F5F0E8]">TRENDING</span>
-                  </div>
-                  <div className="aspect-[4/5] bg-[#1A1A1A] overflow-hidden">
-                    <img
-                      src={firstImage(spotlight.images)}
-                      alt={spotlight.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                  <div className="p-4 space-y-1">
-                    <p className="text-[11px] text-[#C9A84C] font-medium uppercase tracking-wide truncate">{spotlight.vendor.storeName}</p>
-                    <p className="text-sm font-bold text-[#F5F0E8] line-clamp-2 leading-tight">{spotlight.name}</p>
-                    <div className="flex items-baseline gap-2 pt-0.5">
-                      <span className="text-base font-black text-[#C9A84C]">{formatTTD(spotlight.price)}</span>
-                      {spotlight.comparePrice && spotlight.comparePrice > spotlight.price && (
-                        <span className="text-xs text-[#9A8F7A] line-through">{formatTTD(spotlight.comparePrice)}</span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            )}
+            {/* Auto-rotating spotlight: cycles through the top 5
+                trending SKUs every 4s, pauses on hover. */}
+            <HeroSpotlight items={spotlightItems} />
           </div>
         </div>
       </section>
+
+      {/* Live activity strip — count-up numbers tick gently every few
+          seconds so the page feels real-time. */}
+      <LiveStats />
 
       {/* TRUST BADGES — vibrant icons on colored chips */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -512,6 +519,11 @@ export default async function HomePage() {
           </div>
         </section>
       )}
+
+      {/* VENDOR LOGO STRIP — always-on horizontal marquee of every
+          approved vendor. Reads as a Times-Square ribbon under the
+          spotlit "Featured Vendors" grid. */}
+      <VendorMarquee vendors={allVendors} />
 
       {/* DIGITAL PRODUCTS */}
       {digitalProducts.length > 0 && (

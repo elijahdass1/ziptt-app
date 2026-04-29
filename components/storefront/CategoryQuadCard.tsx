@@ -42,7 +42,7 @@ export function CategoryQuadCard({ title, href, cta = 'See more', products, acce
   while (tiles.length < 4) tiles.push(null as unknown as Thumb)
 
   return (
-    <div className="bg-[#111111] border border-[#C9A84C]/15 rounded-lg p-4 flex flex-col ziptt-lift hover:border-[#C9A84C]/45 relative overflow-hidden">
+    <div className="bg-[#111111] border border-[#C9A84C]/15 rounded-lg p-4 flex flex-col ziptt-tilt hover:border-[#C9A84C]/45 relative overflow-hidden">
       {accent && (
         <span
           className="absolute inset-x-0 top-0 h-[3px]"
