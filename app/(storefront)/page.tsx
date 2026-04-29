@@ -52,17 +52,26 @@ const CATEGORY_LABEL: Record<string, string> = {
 }
 
 async function getCategoriesWithSamples() {
-  // Fetch categories with at least one ACTIVE product, plus 4 thumb
-  // products each (highest soldCount first so the quad shows the
-  // category's bestsellers).
+  // Fetch categories that have inventory, plus a generous pool of
+  // candidate thumbs per category. We then filter the pool to products
+  // with REAL photo URLs (not /api/product-img branded SVG fallbacks)
+  // before picking the top 4 — this keeps the quad cards looking like
+  // a magazine layout instead of four blank gold plates.
   const cats = await prisma.category.findMany({
     where: { products: { some: { status: 'ACTIVE' } } },
     include: {
       _count: { select: { products: { where: { status: 'ACTIVE' } } } },
       products: {
-        where: { status: 'ACTIVE' },
+        where: {
+          status: 'ACTIVE',
+          // SQLite/PG `NOT contains` — Prisma supports `not` on string
+          // filters, so any image JSON that mentions /api/product-img
+          // is excluded. Falls back to all-products if the category
+          // has no real photos at all (handled below).
+          NOT: { images: { contains: '/api/product-img' } },
+        },
         orderBy: [{ soldCount: 'desc' }, { createdAt: 'desc' }],
-        take: 4,
+        take: 8,
         select: { id: true, slug: true, name: true, images: true },
       },
     },
@@ -70,11 +79,19 @@ async function getCategoriesWithSamples() {
   return cats
     .sort((a, b) => b._count.products - a._count.products)
     .slice(0, 12)
+    .map((c) => ({ ...c, products: c.products.slice(0, 4) }))
 }
+
+// All three rails exclude products on the /api/product-img SVG
+// fallback so the homepage only surfaces SKUs with real photos. The
+// fallback products still appear on /products and on category pages
+// (and in the vendor "Fix Photos" queue) — they're just not promoted
+// to the front door.
+const REAL_PHOTOS = { NOT: { images: { contains: '/api/product-img' } } } as const
 
 async function getFeaturedProducts() {
   return prisma.product.findMany({
-    where: { status: 'ACTIVE', featured: true },
+    where: { status: 'ACTIVE', featured: true, ...REAL_PHOTOS },
     take: 12,
     include: {
       category: { select: { name: true, slug: true } },
@@ -92,6 +109,7 @@ async function getDealsProducts() {
     where: {
       status: 'ACTIVE',
       comparePrice: { not: null, gt: 0 },
+      ...REAL_PHOTOS,
     },
     take: 50,
     include: {
@@ -107,7 +125,7 @@ async function getDealsProducts() {
 
 async function getNewArrivals() {
   return prisma.product.findMany({
-    where: { status: 'ACTIVE' },
+    where: { status: 'ACTIVE', ...REAL_PHOTOS },
     take: 12,
     include: {
       category: { select: { name: true, slug: true } },

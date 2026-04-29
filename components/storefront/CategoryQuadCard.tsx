@@ -5,6 +5,11 @@
 //
 // Each thumb in the 2x2 deep-links to the product (so the card surfaces
 // 4 SKUs simultaneously instead of just one hero shot per category).
+//
+// Marked 'use client' because we need an inline onError fallback so any
+// stragglers that 404 mid-page don't render as a broken-image icon.
+'use client'
+
 import Link from 'next/link'
 import { firstImage } from '@/lib/parseImages'
 
@@ -21,6 +26,10 @@ interface Props {
   cta?: string
   products: Thumb[]
 }
+
+// Fallback image for any thumbnail that fails to load. Chosen to read as
+// "carnival/Trinidad" so a broken image at least looks intentional.
+const FALLBACK = 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=400&q=80'
 
 export function CategoryQuadCard({ title, href, cta = 'See more', products }: Props) {
   // Pad to exactly 4 tiles so the grid stays balanced when a category
@@ -44,6 +53,10 @@ export function CategoryQuadCard({ title, href, cta = 'See more', products }: Pr
                 alt={t.name}
                 className="w-full h-full object-cover group-hover/tile:scale-105 transition-transform duration-300"
                 loading="lazy"
+                onError={(e) => {
+                  const img = e.target as HTMLImageElement
+                  if (img.src !== FALLBACK) img.src = FALLBACK
+                }}
               />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-1.5">
                 <p className="text-[10px] text-[#F5F0E8] line-clamp-1 leading-tight">{t.name}</p>
