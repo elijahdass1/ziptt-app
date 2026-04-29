@@ -13,8 +13,8 @@ export const dynamic = 'force-dynamic'
 
 import Link from 'next/link'
 import {
-  ArrowRight, Star, Truck, Shield, HeadphonesIcon, CreditCard, Store, MapPin,
-  Zap, Home, Sparkles, Flame, Gamepad2, Wine, Shirt, Plug, ShoppingBasket,
+  ArrowRight, Star, Store, MapPin,
+  Zap, Home, Sparkles, Flame, Gamepad2, Wine,
   TrendingUp, Tag, Clock, Crown, type LucideIcon,
 } from 'lucide-react'
 import prisma from '@/lib/prisma'
@@ -23,7 +23,6 @@ import { ProductRail } from '@/components/storefront/ProductRail'
 import { CategoryQuadCard } from '@/components/storefront/CategoryQuadCard'
 import { PromoTicker } from '@/components/storefront/PromoTicker'
 import { HeroSpotlight } from '@/components/storefront/HeroSpotlight'
-import { LiveStats } from '@/components/storefront/LiveStats'
 import { VendorMarquee } from '@/components/storefront/VendorMarquee'
 import { formatTTD } from '@/lib/utils'
 
@@ -276,35 +275,6 @@ export default async function HomePage() {
                 trending SKUs every 4s, pauses on hover. */}
             <HeroSpotlight items={spotlightItems} />
           </div>
-        </div>
-      </section>
-
-      {/* Live activity strip — count-up numbers tick gently every few
-          seconds so the page feels real-time. */}
-      <LiveStats />
-
-      {/* TRUST BADGES — vibrant icons on colored chips */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {[
-            { icon: Truck,         title: 'Nationwide Delivery', desc: 'Trinidad & Tobago', color: '#4CAF82' },
-            { icon: Shield,        title: 'Secure Shopping',     desc: 'Buyer protection',  color: '#4A9EFF' },
-            { icon: CreditCard,    title: 'Cash on Delivery',    desc: 'Pay when received', color: '#C9A84C' },
-            { icon: HeadphonesIcon,title: '24/7 Support',        desc: 'Zip AI assistant',  color: '#FF7EB3' },
-          ].map((item) => (
-            <div key={item.title} className="bg-[#111111] border border-[#C9A84C]/10 rounded-xl p-3 flex items-center gap-3 ziptt-lift">
-              <div
-                className="p-2.5 rounded-full shrink-0"
-                style={{ background: `${item.color}15`, border: `1px solid ${item.color}40` }}
-              >
-                <item.icon className="h-4 w-4" style={{ color: item.color }} />
-              </div>
-              <div className="min-w-0">
-                <p className="text-xs font-semibold text-[#F5F0E8] truncate">{item.title}</p>
-                <p className="text-[11px] text-[#9A8F7A] truncate">{item.desc}</p>
-              </div>
-            </div>
-          ))}
         </div>
       </section>
 
