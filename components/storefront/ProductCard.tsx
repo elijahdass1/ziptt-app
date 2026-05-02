@@ -95,18 +95,27 @@ export function ProductCard({ product }: ProductCardProps) {
         </Link>
         <h3 className="text-sm font-semibold text-[#F5F0E8] line-clamp-2 leading-tight">{product.name}</h3>
 
-        {/* Rating */}
-        <div className="flex items-center gap-1">
-          <div className="flex">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <Star
-                key={star}
-                className={`h-3 w-3 ${star <= Math.round(product.rating) ? 'fill-[#F0C040] text-[#F0C040]' : 'text-[#1A1A1A]'}`}
-              />
-            ))}
+        {/* Rating — only shown once the product has real reviews. For
+            products with zero reviews we surface a "Be the first to
+            review" tag instead of a misleading 0.0★ block, which
+            drained buyer trust on launch (every card looked unrated).
+            The tag deep-links into the product detail page where the
+            review form lives. */}
+        {product.reviewCount > 0 ? (
+          <div className="flex items-center gap-1">
+            <div className="flex">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star
+                  key={star}
+                  className={`h-3 w-3 ${star <= Math.round(product.rating) ? 'fill-[#F0C040] text-[#F0C040]' : 'text-[#1A1A1A]'}`}
+                />
+              ))}
+            </div>
+            <span className="text-xs text-[#9A8F7A]">({product.reviewCount})</span>
           </div>
-          <span className="text-xs text-[#9A8F7A]">({product.reviewCount})</span>
-        </div>
+        ) : (
+          <span className="text-[10px] text-[#9A8F7A]/70 italic">Be the first to review</span>
+        )}
 
         {/* Price */}
         <div className="flex items-baseline gap-2 mt-auto">

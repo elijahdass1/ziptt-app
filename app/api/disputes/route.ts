@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
+import { rateLimit } from '@/lib/rateLimit'
 import prisma from '@/lib/prisma'
 
 export async function GET(_req: NextRequest) {
@@ -23,6 +24,16 @@ export async function GET(_req: NextRequest) {
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions)
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+  // 5 disputes per hour per user — disputes are a high-friction
+  // workflow on the support side, so abuse here directly costs us.
+  const { allowed } = rateLimit(`dispute:${session.user.id}`, 5, 3_600_000)
+  if (!allowed) {
+    return NextResponse.json(
+      { error: 'Too many disputes filed recently. Please contact support@zip.tt directly.' },
+      { status: 429 }
+    )
+  }
 
   const { orderId, reason, description, requestedResolution } = await req.json()
 

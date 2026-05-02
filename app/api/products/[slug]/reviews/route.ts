@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
+import { rateLimit } from '@/lib/rateLimit'
 import prisma from '@/lib/prisma'
 
 export async function GET(
@@ -39,6 +40,15 @@ export async function POST(
 ) {
   const session = await getServerSession(authOptions)
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+  // 10 review submissions / hour / user. The eligibility check
+  // (must have a delivered order) below already blocks most abuse,
+  // but the rate-limit cuts off automated probing for products the
+  // user *does* qualify for.
+  const { allowed } = rateLimit(`review:${session.user.id}`, 10, 3_600_000)
+  if (!allowed) {
+    return NextResponse.json({ error: 'Too many reviews submitted recently.' }, { status: 429 })
+  }
 
   const product = await prisma.product.findUnique({
     where: { slug: params.slug },
