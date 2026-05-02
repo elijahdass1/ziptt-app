@@ -303,6 +303,16 @@ export async function POST(req: NextRequest) {
       return orders
     })
 
+    // ── Fire-and-forget order notification emails ────────────────────────────
+    // We send vendor + admin emails AFTER the transaction commits (not inside)
+    // because Resend is an external service and we don't want a slow/flaky
+    // SMTP call to roll back a successfully-paid order. Errors are logged
+    // but never surfaced to the customer.
+    void sendOrderNotifications({
+      orderIds: created.map((o) => o.id),
+      sessionUserId: session.user.id,
+    }).catch((err) => console.warn('[orders] notification dispatch failed:', err))
+
     return NextResponse.json({ orders: created }, { status: 201 })
   } catch (e: any) {
     if (typeof e?.message === 'string' && e.message.startsWith('OUT_OF_STOCK:')) {
@@ -314,5 +324,82 @@ export async function POST(req: NextRequest) {
     }
     console.error('[zip.tt API Error]:', e)
     return NextResponse.json({ error: 'Failed to place order' }, { status: 500 })
+  }
+}
+
+// ── Order email dispatch ────────────────────────────────────────────────────
+// Lives below POST so the transactional code path stays readable. Pulls each
+// freshly-created order from the DB (with the relations the email needs) and
+// sends one email to the vendor + one consolidated email per order to the
+// platform admin. Each send is independent — one failed email never blocks
+// the others.
+async function sendOrderNotifications({
+  orderIds,
+  sessionUserId,
+}: { orderIds: string[]; sessionUserId: string }) {
+  if (orderIds.length === 0) return
+
+  const { sendEmail, ADMIN_NOTIFY_EMAIL } = await import('@/lib/email')
+  const { vendorOrderEmail, adminOrderEmail } = await import('@/lib/emailTemplates')
+
+  const orders = await prisma.order.findMany({
+    where: { id: { in: orderIds }, customerId: sessionUserId },
+    include: {
+      customer: { select: { name: true, email: true, phone: true } },
+      vendor: {
+        select: {
+          storeName: true,
+          // Vendor.email isn't a direct column — it lives on the
+          // owning User row. Fetch via the relation.
+          user: { select: { email: true } },
+        },
+      },
+      address: { select: { street: true, city: true, region: true } },
+      items: {
+        select: {
+          quantity: true, price: true,
+          product: { select: { name: true } },
+        },
+      },
+    },
+  })
+
+  for (const o of orders) {
+    const ctx = {
+      orderNumber: o.orderNumber,
+      customerName: o.customer?.name ?? 'a customer',
+      customerEmail: o.customer?.email ?? '',
+      customerPhone: o.phone ?? o.customer?.phone ?? null,
+      vendorStoreName: o.vendor.storeName,
+      total: o.total,
+      subtotal: o.subtotal,
+      deliveryFee: o.deliveryFee,
+      paymentMethod: o.paymentMethod,
+      items: o.items.map((i) => ({ name: i.product.name, quantity: i.quantity, price: i.price })),
+      address: o.address,
+      instructions: o.instructions,
+    }
+
+    // Vendor email — only send if the owning user has an email on file.
+    const vendorEmail = o.vendor.user?.email
+    if (vendorEmail) {
+      const v = vendorOrderEmail(ctx)
+      await sendEmail({
+        to: vendorEmail,
+        subject: v.subject,
+        html: v.html,
+        replyTo: o.customer?.email ?? undefined,
+      }).catch((err) => console.warn('[orders] vendor email failed:', err))
+    } else {
+      console.warn(`[orders] vendor ${o.vendor.storeName} has no user email on file; skipping notification`)
+    }
+
+    // Admin email — always sent so we can track marketplace activity.
+    const a = adminOrderEmail(ctx)
+    await sendEmail({
+      to: ADMIN_NOTIFY_EMAIL,
+      subject: a.subject,
+      html: a.html,
+    }).catch((err) => console.warn('[orders] admin email failed:', err))
   }
 }

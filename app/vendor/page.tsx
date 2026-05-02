@@ -50,7 +50,7 @@ export default async function VendorDashboard() {
     )
   }
 
-  const [orderCount, productCount, revenueData, recentOrders] = await Promise.all([
+  const [orderCount, productCount, revenueData, recentOrders, needsPhotosCount, unconfirmedOrders] = await Promise.all([
     prisma.order.count({ where: { items: { some: { product: { vendorId: vendor.id } } } } }),
     prisma.product.count({ where: { vendorId: vendor.id, status: 'ACTIVE' } }),
     prisma.orderItem.aggregate({ where: { product: { vendorId: vendor.id } }, _sum: { price: true } }),
@@ -59,6 +59,27 @@ export default async function VendorDashboard() {
       orderBy: { createdAt: 'desc' },
       take: 5,
       include: { customer: { select: { name: true } }, items: { include: { product: { select: { name: true, vendorId: true } } } } },
+    }),
+    // Count products with bad images (placeholder/stock photo) so we can
+    // surface a banner. Vendors who haven't uploaded real photos for their
+    // listings often don't realise it's hurting conversion.
+    prisma.product.count({
+      where: {
+        vendorId: vendor.id,
+        OR: [
+          { images: { contains: 'placehold.co' } },
+          { images: { contains: 'placeholder.com' } },
+          { images: { contains: '/api/product-img' } },
+          { images: { contains: 'images.unsplash' } },
+          { images: '[]' },
+        ],
+      },
+    }),
+    // Orders the vendor still has to act on. PENDING = arrived but not
+    // confirmed; CONFIRMED = accepted but not yet dispatched. The
+    // banner stays visible until both buckets clear.
+    prisma.order.count({
+      where: { vendorId: vendor.id, status: { in: ['PENDING', 'CONFIRMED'] } },
     }),
   ])
 
@@ -81,6 +102,88 @@ export default async function VendorDashboard() {
         </h1>
         <p style={{ color: '#9A8F7A', fontSize: '14px' }}>{vendor.storeName} Dashboard</p>
       </div>
+
+      {/* New orders alert — top of stack so it owns the vendor's
+          first glance. Renders above the photos banner because an
+          unconfirmed order is more time-sensitive than a stale photo. */}
+      {unconfirmedOrders > 0 && (
+        <a
+          href="/vendor/orders"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '16px',
+            padding: '16px 20px',
+            marginBottom: '16px',
+            background: 'linear-gradient(90deg, rgba(214,40,40,0.18), rgba(201,168,76,0.10))',
+            border: '1px solid rgba(214,40,40,0.5)',
+            borderRadius: '12px',
+            color: '#F5F0E8',
+            textDecoration: 'none',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <span
+              style={{
+                background: '#D62828',
+                color: '#fff',
+                fontWeight: 800,
+                fontSize: '12px',
+                padding: '4px 10px',
+                borderRadius: '999px',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {unconfirmedOrders} NEW
+            </span>
+            <div>
+              <p style={{ fontSize: '14px', fontWeight: 600, marginBottom: '2px' }}>
+                {unconfirmedOrders === 1 ? 'You have a new order' : `You have ${unconfirmedOrders} new orders`} waiting
+              </p>
+              <p style={{ fontSize: '12px', color: '#9A8F7A' }}>
+                Confirm to start fulfilment so customers don&apos;t wait.
+              </p>
+            </div>
+          </div>
+          <span style={{ fontSize: '13px', color: '#C9A84C', fontWeight: 600, whiteSpace: 'nowrap' }}>
+            Open orders →
+          </span>
+        </a>
+      )}
+
+      {/* "Fix product photos" banner — only shows when there's something to fix */}
+      {needsPhotosCount > 0 && (
+        <a
+          href="/vendor/products/needs-photos"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '16px',
+            padding: '16px 20px',
+            marginBottom: '24px',
+            background: 'linear-gradient(90deg, rgba(214,40,40,0.12), rgba(201,168,76,0.12))',
+            border: '1px solid rgba(214,40,40,0.4)',
+            borderRadius: '12px',
+            color: '#F5F0E8',
+            textDecoration: 'none',
+            transition: 'transform 0.15s ease',
+          }}
+        >
+          <div>
+            <p style={{ fontSize: '14px', fontWeight: 600, marginBottom: '2px' }}>
+              {needsPhotosCount} {needsPhotosCount === 1 ? 'product is' : 'products are'} missing real photos
+            </p>
+            <p style={{ fontSize: '12px', color: '#9A8F7A' }}>
+              Listings without real photos sell less. Drag-and-drop to fix them all in one place.
+            </p>
+          </div>
+          <span style={{ fontSize: '13px', color: '#C9A84C', fontWeight: 600, whiteSpace: 'nowrap' }}>
+            Fix now →
+          </span>
+        </a>
+      )}
 
       {/* Stats */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px', marginBottom: '40px' }}>

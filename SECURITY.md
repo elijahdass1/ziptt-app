@@ -87,7 +87,48 @@ stars + `(0)` for unreviewed products. Instead it shows a small
 italic "Be the first to review" tag, which deep-links to the product
 detail page where the review form lives.
 
+### 7. Vendor order-placed email + dashboard alert
+- `lib/email.ts` — Resend REST wrapper (no SDK dep) with a graceful
+  no-op fallback that logs the payload to stdout when `RESEND_API_KEY`
+  isn't set. Also exposes `emailLayout()` for the gold/black chrome
+  every transactional email uses.
+- `lib/emailTemplates.ts` — `vendorOrderEmail`, `adminOrderEmail`,
+  `digitalDeliveryEmail`. Each returns `{ subject, html }`.
+- `app/api/orders/route.ts` — after the `prisma.$transaction` commits,
+  fires `sendOrderNotifications()` (fire-and-forget, errors logged but
+  never roll back the order) which sends one email per order to the
+  vendor's owning user + one to the admin.
+- `app/vendor/layout.tsx` now counts orders in `PENDING`/`CONFIRMED`
+  state and threads it into `<VendorSidebar unconfirmedOrders={…} />`
+  for a red badge on the Orders link.
+- `app/vendor/page.tsx` renders a "{N} NEW" alert banner above the
+  rest of the dashboard when `unconfirmedOrders > 0`.
+
+### 8. Admin order-placed email
+Same `sendOrderNotifications()` helper sends a parallel admin email
+to `process.env.ADMIN_NOTIFY_EMAIL` (default
+`elijah.dass1@gmail.com`) for every order.
+
+### 10b. Digital delivery email + UI
+- `app/(storefront)/digital/success/page.tsx` already shows
+  `deliveredCode` with a `<CopyCodeButton>` — verified.
+- `app/api/digital/purchase/route.ts` now also fires a fire-and-forget
+  email to the customer with the access code and any redemption
+  instructions, using `digitalDeliveryEmail` from emailTemplates.
+
 ## 🔴 Still open — needs follow-up
+
+### Activate email delivery
+Drop these into Vercel env to flip on real send:
+- `RESEND_API_KEY` (required — get one at resend.com)
+- `RESEND_FROM_EMAIL` (default: `zip.tt <orders@zip.tt>` — needs the
+  domain verified in Resend; until then the helper falls back to
+  `onboarding@resend.dev`, which only delivers to your Resend account
+  email)
+- `ADMIN_NOTIFY_EMAIL` (default: `elijah.dass1@gmail.com`)
+
+Until the key is set, every email send no-ops with a console.log so
+the order flow still completes locally and on staging.
 
 ### 2b. Make rate-limiting durable across serverless instances
 The current `lib/rateLimit.ts` is in-memory. On Vercel each lambda
@@ -95,28 +136,6 @@ instance has its own counter and cold-starts reset, so a determined
 attacker hitting fresh instances can blow past the limit. Production
 fix: migrate the helper to `@upstash/ratelimit` backed by Upstash
 Redis (~30 min of work + Upstash account).
-
-### 7. Vendor order-placed email + dashboard alert
-No email provider is installed (`grep -E 'resend|nodemailer|sendgrid|postmark' package.json` returns nothing). To do:
-
-1. `npm i resend` and add `RESEND_API_KEY` to Vercel env
-2. Create `lib/email.ts` with a typed `sendEmail({ to, subject, html })`
-3. In the order-creation transaction in `app/api/orders/route.ts`, after `prisma.order.create`, call `sendEmail` to `vendor.email` with the order summary
-4. Add an unread-orders badge to `components/vendor/VendorSidebar.tsx` driven by `prisma.order.count({ where: { vendorId, status: 'PENDING' } })`
-5. Add the "New Orders" alert banner to `app/vendor/page.tsx` when that count > 0
-
-### 8. Admin order-placed email
-Same plumbing as #7. Single extra `sendEmail` call to
-`elijah.dass1@gmail.com` (or a `ADMIN_NOTIFY_EMAIL` env var) with the
-order summary.
-
-### 10b. Digital delivery email + UI
-The API already returns the code, but I haven't verified the success
-page renders it cleanly. To do:
-
-1. Inspect `app/(storefront)/digital/success/page.tsx` (or wherever the post-purchase page lives) and ensure it shows `deliveredCode` from `digitalOrder` with copy-to-clipboard
-2. Hook `sendEmail` into the digital purchase flow so the code is also emailed to the customer
-3. Add a "How instant delivery works" block to `app/(storefront)/digital/[slug]/page.tsx`
 
 ## Re-running this audit
 

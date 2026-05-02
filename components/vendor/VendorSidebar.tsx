@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import {
   LayoutDashboard, Package, ShoppingBag, BarChart2,
-  Store, Settings, LogOut, ChevronRight, PlusCircle,
+  Store, Settings, LogOut, ChevronRight, PlusCircle, ImagePlus, MessageSquare,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -21,12 +21,27 @@ const navItems = [
   { href: '/vendor/dashboard', label: 'New Dashboard', icon: LayoutDashboard, exact: false },
   { href: '/vendor/products', label: 'Products', icon: Package },
   { href: '/vendor/products/new', label: 'Add Product', icon: PlusCircle },
-  { href: '/vendor/orders', label: 'Orders', icon: ShoppingBag },
+  { href: '/vendor/products/needs-photos', label: 'Fix Photos', icon: ImagePlus, badgeKey: 'needsPhotos' as const },
+  { href: '/vendor/orders', label: 'Orders', icon: ShoppingBag, badgeKey: 'unconfirmedOrders' as const },
+  // Customer chat inbox — same /messages route as customers, but the SSR
+  // logic auto-includes the vendor's threads. Badge mirrors the count
+  // that the vendor layout fetched.
+  { href: '/messages', label: 'Inbox', icon: MessageSquare, badgeKey: 'unreadMessages' as const },
   { href: '/vendor/analytics', label: 'Analytics', icon: BarChart2 },
   { href: '/vendor/settings', label: 'Store Settings', icon: Settings },
 ]
 
-export function VendorSidebar({ vendor }: { vendor: Vendor | null }) {
+export function VendorSidebar({
+  vendor,
+  needsPhotosCount = 0,
+  unreadMessages = 0,
+  unconfirmedOrders = 0,
+}: {
+  vendor: Vendor | null
+  needsPhotosCount?: number
+  unreadMessages?: number
+  unconfirmedOrders?: number
+}) {
   const pathname = usePathname()
 
   return (
@@ -62,7 +77,19 @@ export function VendorSidebar({ vendor }: { vendor: Vendor | null }) {
       {/* Nav */}
       <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
         {navItems.map((item) => {
-          const active = item.exact ? pathname === item.href : pathname.startsWith(item.href) && item.href !== '/vendor/products/new'
+          // Skip "Fix Photos" entirely if the vendor has zero bad photos —
+          // no need to draw attention to a non-issue.
+          if (item.badgeKey === 'needsPhotos' && needsPhotosCount === 0) return null
+
+          const active = item.exact
+            ? pathname === item.href
+            : pathname.startsWith(item.href) && item.href !== '/vendor/products/new'
+          const badgeValue =
+            item.badgeKey === 'needsPhotos' ? needsPhotosCount
+            : item.badgeKey === 'unreadMessages' ? unreadMessages
+            : item.badgeKey === 'unconfirmedOrders' ? unconfirmedOrders
+            : 0
+
           return (
             <Link key={item.href} href={item.href}
               className={cn(
@@ -72,8 +99,13 @@ export function VendorSidebar({ vendor }: { vendor: Vendor | null }) {
                   : 'text-[#9A8F7A] hover:bg-[#C9A84C]/5 hover:text-[#F5F0E8]'
               )}>
               <item.icon className="h-4 w-4 shrink-0" />
-              {item.label}
-              {active && <ChevronRight className="h-3.5 w-3.5 ml-auto text-[#C9A84C]" />}
+              <span className="flex-1">{item.label}</span>
+              {badgeValue > 0 && (
+                <span className="bg-[#D62828] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none min-w-[18px] text-center">
+                  {badgeValue > 99 ? '99+' : badgeValue}
+                </span>
+              )}
+              {active && !badgeValue && <ChevronRight className="h-3.5 w-3.5 ml-auto text-[#C9A84C]" />}
             </Link>
           )
         })}

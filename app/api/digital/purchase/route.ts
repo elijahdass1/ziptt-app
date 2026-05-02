@@ -60,7 +60,24 @@ export async function POST(req: NextRequest) {
       data: { soldCount: { increment: 1 } }
     })
 
-    console.log(`â DIGITAL: ${product.name} â ${user.email}: ${code.code}`)
+    console.log('[digital]', product.name, '->', user.email, ':', code.code)
+
+    if (user.email) {
+      void (async () => {
+        const { sendEmail } = await import('@/lib/email')
+        const { digitalDeliveryEmail } = await import('@/lib/emailTemplates')
+        const tpl = digitalDeliveryEmail({
+          customerName: user.name ?? '',
+          productName: product.name,
+          code: code.code,
+          instructions: product.instructions ?? null,
+          orderId: order.id,
+        })
+        await sendEmail({ to: user.email, subject: tpl.subject, html: tpl.html })
+          .catch((err) => console.warn('[digital] email failed:', err))
+      })()
+    }
+
     return Response.json({ success: true, orderId: order.id, code: code.code })
   } catch (error) {
     console.error('[digital/purchase]', error)
