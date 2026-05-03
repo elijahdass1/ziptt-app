@@ -7,6 +7,7 @@ import { formatTTD, getDeliveryEstimate } from '@/lib/utils'
 import { useCartStore } from '@/lib/store'
 import { toast } from '@/components/ui/use-toast'
 import { parseImages } from '@/lib/parseImages'
+import { ShareRow } from './ShareRow'
 
 interface Review {
   id: string; rating: number; title?: string | null; body?: string | null
@@ -100,17 +101,25 @@ export function ProductDetail({ product }: { product: Product }) {
             <h1 className="text-2xl font-bold text-[#F5F0E8] mt-1">{product.name}</h1>
           </div>
 
-          {/* Rating */}
-          <div className="flex items-center gap-3">
-            <div className="flex">
-              {[1, 2, 3, 4, 5].map((s) => (
-                <Star key={s} className={`h-4 w-4 ${s <= Math.round(avgRating) ? 'fill-yellow-400 text-yellow-400' : 'text-[#2A2A2A]'}`} />
-              ))}
+          {/* Rating — only shown once the product has real reviews.
+              Otherwise we render an inviting "no reviews yet" line so
+              the page doesn't look like a 0.0★ abandoned listing. */}
+          {product.reviewCount > 0 ? (
+            <div className="flex items-center gap-3">
+              <div className="flex">
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <Star key={s} className={`h-4 w-4 ${s <= Math.round(avgRating) ? 'fill-yellow-400 text-yellow-400' : 'text-[#2A2A2A]'}`} />
+                ))}
+              </div>
+              <span className="text-sm text-[#F5F0E8] font-medium">{avgRating.toFixed(1)}</span>
+              <span className="text-sm text-[#9A8F7A]">({product.reviewCount} reviews)</span>
+              {product.soldCount > 0 && (
+                <span className="text-sm text-[#9A8F7A]">• {product.soldCount} sold</span>
+              )}
             </div>
-            <span className="text-sm text-[#F5F0E8] font-medium">{avgRating.toFixed(1)}</span>
-            <span className="text-sm text-[#9A8F7A]">({product.reviewCount} reviews)</span>
-            <span className="text-sm text-[#9A8F7A]">• {product.soldCount} sold</span>
-          </div>
+          ) : (
+            <p className="text-sm text-[#9A8F7A] italic">No reviews yet — be the first</p>
+          )}
 
           {/* Price */}
           <div className="flex items-baseline gap-3">
@@ -166,6 +175,12 @@ export function ProductDetail({ product }: { product: Product }) {
               Buy Now
             </Link>
           </div>
+
+          {/* Share — WhatsApp is the dominant share surface in T&T,
+              so it gets a colour-correct primary share button. Copy
+              Link sits beside it for everywhere else. */}
+          <ShareRow product={product} />
+
 
           {/* Delivery info */}
           <div className="bg-[#111111] border border-[#C9A84C]/15 rounded-xl p-4 space-y-3">
