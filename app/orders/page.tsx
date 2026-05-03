@@ -8,6 +8,7 @@ import { Footer } from '@/components/layout/Footer'
 import { formatTTD, formatDate } from '@/lib/utils'
 import Link from 'next/link'
 import { Package, ChevronRight, AlertTriangle } from 'lucide-react'
+import { CancelOrderButton } from '@/components/storefront/CancelOrderButton'
 
 const STATUS_COLORS: Record<string, string> = {
   PENDING: 'badge-yellow', CONFIRMED: 'badge-blue', PROCESSING: 'badge-blue',
@@ -101,6 +102,15 @@ export default async function OrdersPage() {
                         <div className="text-sm text-[#D62828] font-medium">
                           Tracking: {order.trackingNumber}
                         </div>
+                      )}
+                      {/* Cancel only while still PENDING — the moment
+                          a vendor confirms or ships, dispute flow takes
+                          over (button below). */}
+                      {order.status === 'PENDING' && (
+                        <CancelOrderButton
+                          orderId={order.id}
+                          orderNumber={order.orderNumber.slice(-8).toUpperCase()}
+                        />
                       )}
                       {(order.status === 'CONFIRMED' || order.status === 'DELIVERED') && (
                         <Link
