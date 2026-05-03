@@ -33,10 +33,30 @@ async function getReviews(productId: string) {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const product = await getProduct(params.slug)
   if (!product) return { title: 'Product Not Found' }
+  // OG / Twitter tags drive WhatsApp + iMessage + social previews. We
+  // include the price in the title so a shared link reads as a real
+  // listing, not a generic page link.
+  const priceTag = `TTD $${product.price.toFixed(2)}`
+  const title = `${product.name} — ${priceTag}`
+  const description = (product.description ?? '').substring(0, 160).trim()
+                      || `Available now on zip.tt — Trinidad & Tobago's marketplace.`
+  const image = firstImage(product.images)
   return {
-    title: product.name,
-    description: product.description.substring(0, 160),
-    openGraph: { images: [firstImage(product.images)] },
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: [{ url: image, width: 800, height: 800, alt: product.name }],
+      type: 'website',
+      siteName: 'zip.tt',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [image],
+    },
   }
 }
 
