@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import {
   LayoutDashboard, Package, ShoppingBag, BarChart2,
-  Store, Settings, LogOut, ChevronRight, PlusCircle, ImagePlus, MessageSquare,
+  Store, Settings, LogOut, ChevronRight, PlusCircle, ImagePlus, MessageSquare, Cloud,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -23,6 +23,7 @@ const navItems = [
   { href: '/vendor/products/new', label: 'Add Product', icon: PlusCircle },
   { href: '/vendor/products/needs-photos', label: 'Fix Photos', icon: ImagePlus, badgeKey: 'needsPhotos' as const },
   { href: '/vendor/orders', label: 'Orders', icon: ShoppingBag, badgeKey: 'unconfirmedOrders' as const },
+  { href: '/vendor/digital/orders', label: 'Digital Orders', icon: Cloud },
   // Customer chat inbox — same /messages route as customers, but the SSR
   // logic auto-includes the vendor's threads. Badge mirrors the count
   // that the vendor layout fetched.
@@ -45,14 +46,14 @@ export function VendorSidebar({
   const pathname = usePathname()
 
   return (
-    <aside className="w-56 bg-[#0A0A0A] border-r border-[#C9A84C]/15 flex flex-col shrink-0 sticky top-0 h-screen">
+    <aside className="w-56 bg-[var(--bg-primary)] border-r border-[#C9A84C]/15 flex flex-col shrink-0 sticky top-0 h-screen">
       {/* Logo */}
       <div className="p-4 border-b border-[#C9A84C]/10">
         <Link href="/" className="flex items-center gap-0.5">
           <span className="text-xl font-black gold-shimmer">zip</span>
-          <span className="text-xl font-black text-[#F5F0E8]">.tt</span>
+          <span className="text-xl font-black text-[var(--text-primary)]">.tt</span>
         </Link>
-        <p className="text-xs text-[#9A8F7A] mt-0.5">Vendor Portal</p>
+        <p className="text-xs text-[var(--text-secondary)] mt-0.5">Vendor Portal</p>
       </div>
 
       {/* Store info */}
@@ -67,7 +68,7 @@ export function VendorSidebar({
               )}
             </div>
             <div className="min-w-0">
-              <p className="text-sm font-semibold text-[#F5F0E8] truncate">{vendor.storeName}</p>
+              <p className="text-sm font-semibold text-[var(--text-primary)] truncate">{vendor.storeName}</p>
               <p className="text-xs text-[#C9A84C]">{vendor.rating.toFixed(1)} rating</p>
             </div>
           </div>
@@ -96,7 +97,7 @@ export function VendorSidebar({
                 'flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-all',
                 active
                   ? 'bg-[#C9A84C]/10 text-[#C9A84C] border-l-[3px] border-[#C9A84C] pl-[9px]'
-                  : 'text-[#9A8F7A] hover:bg-[#C9A84C]/5 hover:text-[#F5F0E8]'
+                  : 'text-[var(--text-secondary)] hover:bg-[#C9A84C]/5 hover:text-[var(--text-primary)]'
               )}>
               <item.icon className="h-4 w-4 shrink-0" />
               <span className="flex-1">{item.label}</span>
@@ -113,12 +114,12 @@ export function VendorSidebar({
 
       {/* Bottom */}
       <div className="p-3 border-t border-[#C9A84C]/10 space-y-1">
-        <Link href="/" className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-[#9A8F7A] hover:text-[#C9A84C] hover:bg-[#C9A84C]/5">
+        <Link href="/" className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-[var(--text-secondary)] hover:text-[#C9A84C] hover:bg-[#C9A84C]/5">
           <Store className="h-4 w-4" /> View Storefront
         </Link>
         <button
           onClick={() => signOut({ callbackUrl: '/' })}
-          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-[#9A8F7A] hover:bg-red-900/20 hover:text-red-400 transition-colors">
+          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-[var(--text-secondary)] hover:bg-red-900/20 hover:text-red-400 transition-colors">
           <LogOut className="h-4 w-4" /> Sign Out
         </button>
       </div>
