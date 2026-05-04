@@ -135,8 +135,8 @@ export function VendorAnalyticsCharts({ data }: { data: AnalyticsData }) {
                 fontSize: 12,
                 borderRadius: 8,
                 border: '1px solid #1a1a1a',
-                backgroundColor: '#111111',
-                color: '#F5F0E8',
+                backgroundColor: 'var(--bg-secondary)',
+                color: 'var(--text-primary)',
               }}
               labelStyle={{ color: '#C9A84C' }}
             />

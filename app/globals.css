@@ -123,10 +123,17 @@ body {
     @apply bg-transparent hover:bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C] font-semibold px-6 py-2.5 rounded-lg transition-colors duration-200;
   }
   .card {
-    @apply bg-[#111111] rounded-xl border border-[#C9A84C]/20 shadow-sm;
+    /* `bg-card` and the border colour both come from CSS vars so the
+       card flips between #FFFFFF (light) and #1A1A1A (dark) without
+       any per-component code change. */
+    @apply rounded-xl shadow-sm;
+    background-color: var(--bg-card);
+    border: 1px solid rgba(201, 168, 76, 0.20);
   }
   .product-card {
-    @apply bg-[#111111] rounded-xl border border-[#C9A84C]/20 shadow-sm hover:shadow-[0_4px_24px_rgba(201,168,76,0.15)] hover:border-[#C9A84C]/50 transition-all duration-200 overflow-hidden;
+    @apply rounded-xl shadow-sm hover:shadow-[0_4px_24px_rgba(201,168,76,0.15)] hover:border-[#C9A84C]/50 transition-all duration-200 overflow-hidden;
+    background-color: var(--bg-card);
+    border: 1px solid rgba(201, 168, 76, 0.20);
   }
   .badge {
     @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;

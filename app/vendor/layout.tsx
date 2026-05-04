@@ -59,7 +59,7 @@ export default async function VendorLayout({ children }: { children: React.React
     : 0
 
   return (
-    <div className="flex min-h-screen" style={{ background: '#0A0A0A' }}>
+    <div className="flex min-h-screen" style={{ background: 'var(--bg-primary)' }}>
       {showSidebar && (
         <VendorSidebar
           vendor={vendor}

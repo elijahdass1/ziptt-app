@@ -38,7 +38,7 @@ export function DigitalBuyButton({ productId, price, inStock }: { productId: str
         disabled={!inStock || loading}
         style={{
           width: '100%', padding: '16px', borderRadius: '8px', border: 'none', cursor: inStock && !loading ? 'pointer' : 'not-allowed',
-          background: inStock ? '#C9A84C' : '#333', color: '#0A0A0A', fontSize: '16px', fontWeight: 'bold',
+          background: inStock ? '#C9A84C' : '#333', color: 'var(--bg-primary)', fontSize: '16px', fontWeight: 'bold',
         }}>
         {loading ? 'Processing...' : inStock ? `Buy Now — $${price.toFixed(2)} TTD` : 'Out of Stock'}
       </button>

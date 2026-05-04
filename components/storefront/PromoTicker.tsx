@@ -11,13 +11,16 @@ const ITEMS = [
   { icon: Wallet,    text: 'Cash on Delivery accepted nationwide' },
   { icon: Zap,       text: 'New tech drops weekly — iPhones, JBL, Samsung' },
   { icon: Wine,      text: 'Caribbean spirits — Angostura, Fernandes, Scotch Bonnet' },
-  { icon: MapPin,    text: 'Trinidad-wide delivery — POS · Central · South · Tobago' },
+  // Tobago is intentionally NOT listed — we don't deliver there yet.
+  // Don't add it back without updating /help/delivery and the
+  // checkout zone validation first.
+  { icon: MapPin,    text: 'Trinidad-wide delivery — POS · Chaguanas · San Fernando · Arima · Couva' },
   { icon: Headphones,text: '24/7 Zip AI assistant — ask anything' },
 ]
 
 export function PromoTicker() {
   return (
-    <div className="bg-gradient-to-r from-[var(--bg-primary)] via-[#1A0A0A] to-[var(--bg-primary)] border-b border-[#C9A84C]/15 overflow-hidden">
+    <div className="bg-gradient-to-r from-[var(--bg-primary)] via-[var(--bg-secondary)] to-[var(--bg-primary)] border-b border-[#C9A84C]/15 overflow-hidden">
       <div className="ziptt-marquee-track py-2">
         {[0, 1].map((dup) => (
           <div key={dup} className="flex items-center gap-8 px-4 shrink-0">

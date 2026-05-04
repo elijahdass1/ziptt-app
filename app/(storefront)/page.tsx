@@ -42,7 +42,7 @@ const CATEGORY_COLOR: Record<string, string> = {
   beauty:         '#FF7EB3',
   sports:         '#4A9EFF',
   automotive:     '#9C88FF',
-  services:       '#9A8F7A',
+  services:       'var(--text-secondary)',
 }
 
 // Friendly headline labels — DB Category.name reads a bit catalog-y.
@@ -198,7 +198,7 @@ export default async function HomePage() {
           on the eyebrow + product spotlight card on the right + a
           field of twinkling sparkles to make the dark background feel
           alive instead of flat. */}
-      <section className="relative bg-gradient-to-br from-[var(--bg-primary)] via-[#1A0A0A] to-[var(--bg-primary)] border-b border-[#C9A84C]/15 overflow-hidden -mt-10">
+      <section className="relative bg-gradient-to-br from-[var(--bg-primary)] via-[var(--bg-secondary)] to-[var(--bg-primary)] border-b border-[#C9A84C]/15 overflow-hidden -mt-10">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-1/2 w-[700px] h-[400px] bg-[#C9A84C]/8 rounded-full blur-3xl ziptt-drift" />
           <div className="absolute bottom-0 left-1/4 w-[400px] h-[300px] bg-[#D62828]/6 rounded-full blur-3xl ziptt-drift" style={{ animationDelay: '-9s' }} />
@@ -348,7 +348,7 @@ export default async function HomePage() {
 
       {/* MID-PAGE PROMO BANNER — full-bleed diagonal-stripe poster
           look. Big copy, double CTA, plenty of contrast. */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-[var(--bg-primary)] via-[#1A0A0A] to-[var(--bg-primary)] border-y border-[#C9A84C]/20">
+      <section className="relative overflow-hidden bg-gradient-to-r from-[var(--bg-primary)] via-[var(--bg-secondary)] to-[var(--bg-primary)] border-y border-[#C9A84C]/20">
         <div className="absolute inset-0 ziptt-stripes pointer-events-none" />
         <div className="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-[#D62828]/10 blur-3xl pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14 relative z-10">
@@ -530,7 +530,7 @@ export default async function HomePage() {
       )}
 
       {/* VENDOR CTA */}
-      <section className="bg-gradient-to-r from-[var(--bg-primary)] via-[#1A0A0A] to-[var(--bg-primary)] border-t border-b border-[#C9A84C]/15 relative overflow-hidden">
+      <section className="bg-gradient-to-r from-[var(--bg-primary)] via-[var(--bg-secondary)] to-[var(--bg-primary)] border-t border-b border-[#C9A84C]/15 relative overflow-hidden">
         <div className="absolute inset-0 ziptt-stripes opacity-50 pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
           <div className="text-center space-y-3">

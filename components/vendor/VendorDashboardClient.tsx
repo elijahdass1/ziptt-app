@@ -199,12 +199,12 @@ export function VendorDashboardClient({ vendor, products, totalRevenue, totalOrd
   }
 
   const gold = '#C9A84C'
-  const bg = '#0A0A0A'
-  const card = '#111111'
-  const text = '#F5F0E8'
-  const muted = '#9A8F7A'
+  const bg = 'var(--bg-primary)'
+  const card = 'var(--bg-secondary)'
+  const text = 'var(--text-primary)'
+  const muted = 'var(--text-secondary)'
   const border = '#C9A84C33'
-  const inputBg = '#1A1A1A'
+  const inputBg = 'var(--bg-card)'
   const inputBorder = '#2A2A2A'
 
   const inputStyle: React.CSSProperties = {
@@ -429,7 +429,7 @@ export function VendorDashboardClient({ vendor, products, totalRevenue, totalOrd
                         <td style={{ padding: '12px 16px' }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                             <img src={firstImage(p.images)} alt={p.name}
-                              style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '6px', background: '#1A1A1A', flexShrink: 0 }}
+                              style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '6px', background: 'var(--bg-card)', flexShrink: 0 }}
                               onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=100' }} />
                             <div style={{ minWidth: 0 }}>
                               <p style={{ fontWeight: '500', maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</p>
@@ -442,7 +442,7 @@ export function VendorDashboardClient({ vendor, products, totalRevenue, totalOrd
                         <td style={{ padding: '12px 16px' }}>
                           <span style={{
                             fontSize: '11px', padding: '3px 8px', borderRadius: '4px', fontWeight: '600',
-                            background: p.status === 'ACTIVE' ? '#14532d' : '#1a1a1a',
+                            background: p.status === 'ACTIVE' ? '#14532d' : 'var(--bg-card)',
                             color: p.status === 'ACTIVE' ? '#4ade80' : muted,
                             border: `1px solid ${p.status === 'ACTIVE' ? '#166534' : '#333'}`
                           }}>{p.status}</span>

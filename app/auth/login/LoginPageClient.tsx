@@ -34,13 +34,15 @@ export function LoginPageClient() {
 
   const handleGoogle = () => signIn('google', { callbackUrl })
 
+  // Reference the CSS variables so inline styles flip with the theme.
+  // Gold is the same hex in both modes, so it stays a literal.
   const gold = '#C9A84C'
-  const bg = '#0A0A0A'
-  const card = '#111111'
-  const inputBg = '#1A1A1A'
-  const inputBorder = '#2A2A2A'
-  const text = '#F5F0E8'
-  const muted = '#9A8F7A'
+  const bg = 'var(--bg-primary)'
+  const card = 'var(--bg-card)'
+  const inputBg = 'var(--bg-surface)'
+  const inputBorder = 'var(--border-color)'
+  const text = 'var(--text-primary)'
+  const muted = 'var(--text-secondary)'
 
   return (
     <div style={{ minHeight: '100vh', background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}>
@@ -58,7 +60,7 @@ export function LoginPageClient() {
         </div>
 
         {/* Card */}
-        <div style={{ background: card, border: `1px solid #2A2A2A`, borderRadius: '16px', padding: '32px' }}>
+        <div style={{ background: card, border: `1px solid ${inputBorder}`, borderRadius: '16px', padding: '32px' }}>
           <h1 style={{ fontSize: '22px', fontWeight: 'bold', color: text, marginBottom: '6px', fontFamily: 'Georgia, serif' }}>
             Welcome back
           </h1>
@@ -151,7 +153,7 @@ export function LoginPageClient() {
               disabled={loading}
               style={{
                 width: '100%', padding: '12px', background: gold,
-                color: '#0A0A0A', border: 'none', borderRadius: '10px',
+                color: '#0A0A0A' /* gold pill — text stays black both modes */, border: 'none', borderRadius: '10px',
                 fontWeight: '700', fontSize: '15px', cursor: loading ? 'not-allowed' : 'pointer',
                 opacity: loading ? 0.75 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                 marginTop: '4px'
