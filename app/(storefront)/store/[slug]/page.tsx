@@ -504,20 +504,20 @@ async function ReviewsTab({
   canReview: boolean
   isOwnStore: boolean
 }) {
-  const reviews = await prisma.vendorReview.findMany({
-    where: { vendorId, status: 'APPROVED' },
-    orderBy: { createdAt: 'desc' },
-    include: { user: { select: { name: true, image: true } } },
-  })
-
-  const initialReviews = reviews.map((r) => ({
-    id: r.id,
-    rating: r.rating,
-    title: r.title,
-    body: r.body,
-    createdAt: r.createdAt.toISOString(),
-    user: { name: r.user.name, image: r.user.image },
-  }))
+  // VendorReview was removed from prisma/schema.prisma at some point
+  // and the model is no longer on the Prisma client. The previous
+  // `prisma.vendorReview.findMany(...)` call threw at runtime and
+  // 500'd the entire Reviews tab. Until the model is added back,
+  // we serve an empty list and let VendorReviewSection render its
+  // "No reviews yet" empty state.
+  const initialReviews: {
+    id: string
+    rating: number
+    title: string | null
+    body: string | null
+    createdAt: string
+    user: { name: string | null; image: string | null }
+  }[] = []
 
   return (
     <VendorReviewSection

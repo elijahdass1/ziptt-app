@@ -34,15 +34,22 @@ export default async function VendorLayout({ children }: { children: React.React
   // Unread customer messages — shows as a red pip on the Inbox link.
   // SSR-only count; the client-side polling on /messages is what keeps
   // the badge fresh once the vendor is on a vendor page.
-  const unreadMessages = vendor
-    ? await prisma.message.count({
-        where: {
-          readAt: null,
-          senderId: { not: session.user.id as string },
-          conversation: { vendorId: vendor.id },
-        },
-      })
-    : 0
+  //
+  // Defensive: Message + Conversation models were dropped from the
+  // schema, so `prisma.message` is undefined on the current client.
+  // Without this guard the entire vendor portal layout 500s. Treat
+  // missing-model as zero unread until the schema is restored.
+  const p = prisma as any
+  const unreadMessages =
+    vendor && p?.message?.count
+      ? await p.message.count({
+          where: {
+            readAt: null,
+            senderId: { not: session.user.id as string },
+            conversation: { vendorId: vendor.id },
+          },
+        }).catch(() => 0)
+      : 0
 
   // Unconfirmed orders — shows as a red pip on the Orders link and as
   // an alert banner on the dashboard home. PENDING means the vendor
