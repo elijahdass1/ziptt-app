@@ -3,13 +3,14 @@
 import { useEffect, useState, useCallback } from 'react'
 import { formatTTD } from '@/lib/utils'
 import { toast } from '@/components/ui/use-toast'
-import { Phone, Truck, RefreshCcw, Search } from 'lucide-react'
+import { Phone, Truck, RefreshCcw, Search, ChevronLeft, ChevronRight } from 'lucide-react'
 
 type AdminOrder = {
   id: string
   orderNumber: string
   status: string
   paymentStatus: string
+  paymentMethod: string
   total: number
   phone: string | null
   instructions: string | null
@@ -25,6 +26,7 @@ type AdminOrder = {
 }
 
 type Driver = { id: string; name: string | null; email: string | null; phone: string | null }
+type Vendor = { id: string; storeName: string; status: string }
 
 const STATUS_OPTIONS = [
   'PENDING',
@@ -36,15 +38,23 @@ const STATUS_OPTIONS = [
 ] as const
 
 const FILTER_STATUSES = ['ALL', ...STATUS_OPTIONS] as const
+const PAGE_SIZE = 20
 
 export function AdminOrdersClient() {
   const [orders, setOrders] = useState<AdminOrder[]>([])
   const [drivers, setDrivers] = useState<Driver[]>([])
+  const [vendors, setVendors] = useState<Vendor[]>([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<typeof FILTER_STATUSES[number]>('ALL')
   const [driverFilter, setDriverFilter] = useState<'ALL' | 'UNASSIGNED'>('ALL')
+  const [vendorFilter, setVendorFilter] = useState<string>('ALL')
+  const [from, setFrom] = useState<string>('') // yyyy-mm-dd
+  const [to, setTo] = useState<string>('')     // yyyy-mm-dd
   const [q, setQ] = useState('')
   const [busyId, setBusyId] = useState<string | null>(null)
+  const [page, setPage] = useState(1)
+  const [total, setTotal] = useState(0)
+  const [totalPages, setTotalPages] = useState(1)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -52,29 +62,48 @@ export function AdminOrdersClient() {
       const params = new URLSearchParams()
       if (filter !== 'ALL') params.set('status', filter)
       if (driverFilter === 'UNASSIGNED') params.set('driver', 'null')
+      if (vendorFilter !== 'ALL') params.set('vendor', vendorFilter)
+      if (from) params.set('from', from)
+      if (to) params.set('to', to)
       if (q.trim()) params.set('q', q.trim())
+      params.set('page', String(page))
+      params.set('pageSize', String(PAGE_SIZE))
       const res = await fetch(`/api/admin/orders?${params}`, { cache: 'no-store' })
       if (!res.ok) throw new Error('Failed to load orders')
       const data = await res.json()
       setOrders(data.orders ?? [])
+      setTotal(data.total ?? 0)
+      setTotalPages(data.totalPages ?? 1)
     } catch (e: any) {
       toast({ title: 'Could not load orders', description: e.message, variant: 'destructive' })
     } finally {
       setLoading(false)
     }
-  }, [filter, driverFilter, q])
+  }, [filter, driverFilter, vendorFilter, from, to, q, page])
 
-  // Fetch drivers once.
+  // Fetch drivers + vendors once. Two parallel calls — cheap, both
+  // are tiny payloads.
   useEffect(() => {
     fetch('/api/admin/drivers', { cache: 'no-store' })
       .then((r) => r.json())
       .then((d) => setDrivers(d.drivers ?? []))
+      .catch(() => {})
+    fetch('/api/admin/vendors/list', { cache: 'no-store' })
+      .then((r) => r.json())
+      .then((d) => setVendors(d.vendors ?? []))
       .catch(() => {})
   }, [])
 
   useEffect(() => {
     load()
   }, [load])
+
+  // Reset to page 1 whenever a filter changes (without triggering an
+  // extra reload — the page setter will cascade through the load
+  // useEffect above).
+  useEffect(() => {
+    setPage(1)
+  }, [filter, driverFilter, vendorFilter, from, to, q])
 
   async function assign(orderId: string, driverId: string | null) {
     setBusyId(orderId)
@@ -134,8 +163,8 @@ export function AdminOrdersClient() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white border border-gray-200 rounded-xl p-4 flex flex-wrap items-end gap-3">
-        <div className="flex-1 min-w-[180px]">
+      <div className="bg-white border border-gray-200 rounded-xl p-4 grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 items-end">
+        <div className="lg:col-span-2">
           <label className="block text-xs font-medium text-gray-500 mb-1">Search</label>
           <div className="relative">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -153,7 +182,7 @@ export function AdminOrdersClient() {
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value as typeof FILTER_STATUSES[number])}
-            className="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white"
           >
             {FILTER_STATUSES.map((s) => (
               <option key={s} value={s}>
@@ -163,17 +192,70 @@ export function AdminOrdersClient() {
           </select>
         </div>
         <div>
+          <label className="block text-xs font-medium text-gray-500 mb-1">Vendor</label>
+          <select
+            value={vendorFilter}
+            onChange={(e) => setVendorFilter(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white"
+          >
+            <option value="ALL">All vendors</option>
+            {vendors.map((v) => (
+              <option key={v.id} value={v.id}>{v.storeName}</option>
+            ))}
+          </select>
+        </div>
+        <div>
           <label className="block text-xs font-medium text-gray-500 mb-1">Driver</label>
           <select
             value={driverFilter}
             onChange={(e) => setDriverFilter(e.target.value as 'ALL' | 'UNASSIGNED')}
-            className="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white"
           >
             <option value="ALL">All</option>
             <option value="UNASSIGNED">Unassigned</option>
           </select>
         </div>
+        <div>
+          <label className="block text-xs font-medium text-gray-500 mb-1">Date range</label>
+          <div className="flex gap-1.5">
+            <input
+              type="date"
+              value={from}
+              onChange={(e) => setFrom(e.target.value)}
+              className="w-1/2 px-2 py-2 border border-gray-300 rounded-lg text-xs bg-white"
+              aria-label="From date"
+            />
+            <input
+              type="date"
+              value={to}
+              onChange={(e) => setTo(e.target.value)}
+              min={from || undefined}
+              className="w-1/2 px-2 py-2 border border-gray-300 rounded-lg text-xs bg-white"
+              aria-label="To date"
+            />
+          </div>
+        </div>
+        {(filter !== 'ALL' || driverFilter !== 'ALL' || vendorFilter !== 'ALL' || from || to || q) && (
+          <button
+            onClick={() => {
+              setFilter('ALL'); setDriverFilter('ALL'); setVendorFilter('ALL')
+              setFrom(''); setTo(''); setQ('')
+            }}
+            className="lg:col-span-6 self-start text-xs text-amber-700 hover:underline justify-self-end"
+          >
+            Clear all filters
+          </button>
+        )}
       </div>
+
+      {/* Result count */}
+      {!loading && orders.length > 0 && (
+        <p className="text-xs text-gray-500">
+          Showing <span className="font-medium text-gray-700">{(page - 1) * PAGE_SIZE + 1}</span>–
+          <span className="font-medium text-gray-700">{(page - 1) * PAGE_SIZE + orders.length}</span>
+          {' '}of <span className="font-medium text-gray-700">{total}</span> orders
+        </p>
+      )}
 
       {/* Orders */}
       {loading && orders.length === 0 ? (
@@ -319,8 +401,63 @@ export function AdminOrdersClient() {
           ))}
         </div>
       )}
+
+      {/* Pagination — hidden when everything fits on one page. We
+          render up to 5 numeric buttons centred on the current page so
+          the strip stays narrow even with hundreds of pages. */}
+      {totalPages > 1 && (
+        <nav className="flex items-center justify-center gap-1 pt-2" aria-label="Order pagination">
+          <button
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1 || loading}
+            className="inline-flex items-center gap-1 px-3 py-1.5 border border-gray-300 rounded-lg text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            <ChevronLeft size={12} /> Prev
+          </button>
+          {pageWindow(page, totalPages).map((p) =>
+            p === '…' ? (
+              <span key={`ellipsis-${Math.random()}`} className="px-2 text-xs text-gray-400">…</span>
+            ) : (
+              <button
+                key={p}
+                onClick={() => setPage(p)}
+                disabled={p === page || loading}
+                className={`min-w-[32px] px-2.5 py-1.5 border rounded-lg text-xs font-medium ${
+                  p === page
+                    ? 'border-amber-500 bg-amber-500 text-white'
+                    : 'border-gray-300 text-gray-700 bg-white hover:bg-gray-50'
+                }`}
+              >
+                {p}
+              </button>
+            )
+          )}
+          <button
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={page === totalPages || loading}
+            className="inline-flex items-center gap-1 px-3 py-1.5 border border-gray-300 rounded-lg text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Next <ChevronRight size={12} />
+          </button>
+        </nav>
+      )}
     </div>
   )
+}
+
+// Compute a 1..totalPages window centered on the current page with
+// ellipses on either side when the range gets large. Caps the visible
+// strip at ~7 buttons total so the bar doesn't blow out horizontally.
+function pageWindow(current: number, total: number): (number | '…')[] {
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1)
+  const out: (number | '…')[] = [1]
+  const start = Math.max(2, current - 1)
+  const end = Math.min(total - 1, current + 1)
+  if (start > 2) out.push('…')
+  for (let i = start; i <= end; i++) out.push(i)
+  if (end < total - 1) out.push('…')
+  out.push(total)
+  return out
 }
 
 function statusPill(status: string) {

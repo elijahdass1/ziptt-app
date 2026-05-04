@@ -4,14 +4,17 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import {
-  LayoutDashboard, Users, Store, Package, ShieldAlert, Star, LogOut, ChevronRight, BadgeCheck,
+  LayoutDashboard, Users, Store, Package, ShieldAlert, Star, LogOut, ChevronRight, BadgeCheck, ShoppingBag,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
+// "Orders" sits between Vendors and Verifications so the operational
+// surface (users → vendors → orders → verifications) reads top-down.
 const navItems = [
   { href: '/admin', label: 'Overview', icon: LayoutDashboard, exact: true },
   { href: '/admin/users', label: 'Users', icon: Users },
   { href: '/admin/vendors', label: 'Vendors', icon: Store },
+  { href: '/admin/orders', label: 'Orders', icon: ShoppingBag },
   { href: '/admin/verifications', label: 'Verifications', icon: BadgeCheck },
   { href: '/admin/products', label: 'Products', icon: Package },
   { href: '/admin/disputes', label: 'Disputes', icon: ShieldAlert },
