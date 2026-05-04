@@ -53,14 +53,18 @@ function parseTab(input: string | undefined): Tab {
 // preview when a customer shares e.g. "/store/d-best-toys" via
 // WhatsApp.
 export async function generateMetadata({ params }: PageProps): Promise<import('next').Metadata> {
+  // Vendor schema only has `description`, `banner`, `logo` — no
+  // separate bio / coverImage / reviewCount columns. We dropped those
+  // from this query in commit a04xxxx because they were causing a
+  // PrismaClientValidationError that 500'd every store page.
   const v = await prisma.vendor.findUnique({
     where: { slug: params.slug },
-    select: { storeName: true, description: true, bio: true, banner: true, coverImage: true, logo: true, region: true },
+    select: { storeName: true, description: true, banner: true, logo: true, region: true },
   })
   if (!v) return { title: 'Store not found' }
   const title = `${v.storeName} on zip.tt`
-  const description = (v.bio ?? v.description ?? `${v.storeName}${v.region ? ` — ${v.region}, Trinidad` : ''} on zip.tt`).slice(0, 160)
-  const image = v.banner ?? v.coverImage ?? v.logo ?? undefined
+  const description = (v.description ?? `${v.storeName}${v.region ? ` — ${v.region}, Trinidad` : ''} on zip.tt`).slice(0, 160)
+  const image = v.banner ?? v.logo ?? undefined
   return {
     title,
     description,
@@ -144,11 +148,9 @@ export default async function VendorStorePage({ params, searchParams }: PageProp
     <div className="min-h-screen">
       {/* ─── Cover photo + logo (Facebook-style) ─── */}
       <div className="relative w-full">
-        {/* Cover */}
+        {/* Cover — schema has only `banner`, no separate coverImage. */}
         <div className="relative h-48 sm:h-64 md:h-80 overflow-hidden bg-[var(--bg-primary)]">
-          {vendor.coverImage ? (
-            <img src={vendor.coverImage} alt="" className="w-full h-full object-cover" />
-          ) : vendor.banner ? (
+          {vendor.banner ? (
             <img src={vendor.banner} alt="" className="w-full h-full object-cover opacity-60" />
           ) : (
             <div className="absolute inset-0 bg-gradient-to-br from-[#1A1500] via-[var(--bg-primary)] to-[#1A1500]" />
@@ -187,7 +189,6 @@ export default async function VendorStorePage({ params, searchParams }: PageProp
                   <span className="flex items-center gap-1">
                     <Star className="h-3.5 w-3.5 fill-[#C9A84C] text-[#C9A84C]" />
                     <span className="font-bold text-[var(--text-primary)]">{vendor.rating.toFixed(1)}</span>
-                    <span>({vendor.reviewCount} review{vendor.reviewCount !== 1 ? 's' : ''})</span>
                   </span>
                 )}
                 <span className="flex items-center gap-1">
@@ -553,10 +554,11 @@ function AboutTab({
       <div className="md:col-span-2 space-y-4">
         <div className="bg-[var(--bg-secondary)] border border-[#C9A84C]/15 rounded-xl p-6">
           <h2 className="text-lg font-bold text-[var(--text-primary)] mb-3">About {vendor.storeName}</h2>
-          {vendor.bio ? (
-            <p className="text-sm text-[var(--text-secondary)] leading-relaxed whitespace-pre-wrap">{vendor.bio}</p>
-          ) : vendor.description ? (
-            <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{vendor.description}</p>
+          {/* Schema has only `description` — `bio` was removed from
+              the Vendor model so the previous `vendor.bio` reference
+              500'd. */}
+          {vendor.description ? (
+            <p className="text-sm text-[var(--text-secondary)] leading-relaxed whitespace-pre-wrap">{vendor.description}</p>
           ) : (
             <p className="text-sm text-[#666] italic">No bio yet.</p>
           )}

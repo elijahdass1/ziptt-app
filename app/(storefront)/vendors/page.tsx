@@ -20,7 +20,10 @@ export default async function VendorsDirectoryPage({ searchParams }: PageProps) 
   const sort   = searchParams.sort ?? 'products'
 
   const orderBy: any =
-    sort === 'rating'  ? [{ rating: 'desc' }, { reviewCount: 'desc' }]
+    // Vendor model has no reviewCount column — secondary sort goes
+    // to totalSales so highly-rated stores with many sales surface
+    // above brand-new ones with a single 5-star.
+    sort === 'rating'  ? [{ rating: 'desc' }, { totalSales: 'desc' }]
     : sort === 'newest' ? { createdAt: 'desc' }
     : { totalSales: 'desc' } // 'products' default — sort by sales as a proxy
 
