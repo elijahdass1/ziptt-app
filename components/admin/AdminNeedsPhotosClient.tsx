@@ -97,7 +97,7 @@ export function AdminNeedsPhotosClient({
             onClick={() => router.push(filterHref('vendor', null))}
             className={`text-xs px-3 py-1 rounded-full transition-colors ${
               !activeVendorId
-                ? 'bg-[#C9A84C] text-[#0A0A0A] font-semibold'
+                ? 'bg-[#C9A84C] text-black font-semibold'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
@@ -109,7 +109,7 @@ export function AdminNeedsPhotosClient({
               onClick={() => router.push(filterHref('vendor', v.id))}
               className={`text-xs px-3 py-1 rounded-full transition-colors ${
                 activeVendorId === v.id
-                  ? 'bg-[#C9A84C] text-[#0A0A0A] font-semibold'
+                  ? 'bg-[#C9A84C] text-black font-semibold'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >

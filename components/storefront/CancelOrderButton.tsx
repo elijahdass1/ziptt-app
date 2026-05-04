@@ -54,10 +54,10 @@ export function CancelOrderButton({ orderId, orderNumber }: Props) {
 
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-          <div className="bg-[#111111] border border-[#C9A84C]/20 rounded-2xl max-w-sm w-full p-6">
-            <h3 className="text-lg font-bold text-[#F5F0E8] mb-2">Cancel this order?</h3>
-            <p className="text-sm text-[#9A8F7A] leading-relaxed">
-              Are you sure you want to cancel order <span className="text-[#F5F0E8] font-medium">#{orderNumber}</span>?
+          <div className="bg-[var(--bg-secondary)] border border-[#C9A84C]/20 rounded-2xl max-w-sm w-full p-6">
+            <h3 className="text-lg font-bold text-[var(--text-primary)] mb-2">Cancel this order?</h3>
+            <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+              Are you sure you want to cancel order <span className="text-[var(--text-primary)] font-medium">#{orderNumber}</span>?
               This cannot be undone — you&apos;ll need to place a new order if you change your mind.
             </p>
             <div className="flex gap-2 mt-5">

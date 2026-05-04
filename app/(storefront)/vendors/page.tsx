@@ -64,9 +64,9 @@ export default async function VendorsDirectoryPage({ searchParams }: PageProps) 
       <div className="mb-6">
         <div className="flex items-center gap-2">
           <Store className="h-5 w-5 text-[#C9A84C]" />
-          <h1 className="text-2xl md:text-3xl font-black text-[#F5F0E8]">All Sellers</h1>
+          <h1 className="text-2xl md:text-3xl font-black text-[var(--text-primary)]">All Sellers</h1>
         </div>
-        <p className="text-sm text-[#9A8F7A] mt-1">
+        <p className="text-sm text-[var(--text-secondary)] mt-1">
           {vendors.length} active seller{vendors.length !== 1 ? 's' : ''}
           {q && <> · matching &quot;{q}&quot;</>}
         </p>
@@ -79,25 +79,25 @@ export default async function VendorsDirectoryPage({ searchParams }: PageProps) 
           {region && <input type="hidden" name="region" value={region} />}
           {sort !== 'products' && <input type="hidden" name="sort" value={sort} />}
           <div className="relative max-w-xl">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#9A8F7A]" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--text-secondary)]" />
             <input
               name="q"
               defaultValue={q}
               placeholder="Search sellers by name…"
-              className="w-full pl-10 pr-4 py-2.5 bg-[#1A1A1A] border border-[#C9A84C]/30 rounded-full text-sm text-[#F5F0E8] placeholder-[#9A8F7A] focus:outline-none focus:ring-2 focus:ring-[#C9A84C]"
+              className="w-full pl-10 pr-4 py-2.5 bg-[var(--bg-card)] border border-[#C9A84C]/30 rounded-full text-sm text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[#C9A84C]"
             />
           </div>
         </form>
 
         <div className="flex flex-wrap items-center gap-2">
           {/* Region pills */}
-          <span className="text-xs font-semibold uppercase tracking-wider text-[#9A8F7A] mr-1">Region</span>
+          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--text-secondary)] mr-1">Region</span>
           <Link
             href={buildUrl({ region: undefined })}
             className={`text-xs px-3 py-1 rounded-full border transition-colors ${
               !region
-                ? 'bg-[#C9A84C] text-[#0A0A0A] border-[#C9A84C] font-semibold'
-                : 'text-[#9A8F7A] border-[#C9A84C]/20 hover:border-[#C9A84C]/50 hover:text-[#F5F0E8]'
+                ? 'bg-[#C9A84C] text-black border-[#C9A84C] font-semibold'
+                : 'text-[var(--text-secondary)] border-[#C9A84C]/20 hover:border-[#C9A84C]/50 hover:text-[var(--text-primary)]'
             }`}
           >All</Link>
           {regions
@@ -110,15 +110,15 @@ export default async function VendorsDirectoryPage({ searchParams }: PageProps) 
                 href={buildUrl({ region: r })}
                 className={`text-xs px-3 py-1 rounded-full border transition-colors ${
                   region === r
-                    ? 'bg-[#C9A84C] text-[#0A0A0A] border-[#C9A84C] font-semibold'
-                    : 'text-[#9A8F7A] border-[#C9A84C]/20 hover:border-[#C9A84C]/50 hover:text-[#F5F0E8]'
+                    ? 'bg-[#C9A84C] text-black border-[#C9A84C] font-semibold'
+                    : 'text-[var(--text-secondary)] border-[#C9A84C]/20 hover:border-[#C9A84C]/50 hover:text-[var(--text-primary)]'
                 }`}
               >{r}</Link>
             ))}
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-semibold uppercase tracking-wider text-[#9A8F7A] mr-1">Sort</span>
+          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--text-secondary)] mr-1">Sort</span>
           {[
             { value: 'products', label: 'Most Active' },
             { value: 'rating',   label: 'Top Rated' },
@@ -130,7 +130,7 @@ export default async function VendorsDirectoryPage({ searchParams }: PageProps) 
               className={`text-xs px-3 py-1 rounded-full border transition-colors ${
                 sort === opt.value
                   ? 'bg-[#1A1A00] text-[#C9A84C] border-[#C9A84C]/40 font-semibold'
-                  : 'text-[#9A8F7A] border-[#C9A84C]/15 hover:border-[#C9A84C]/40 hover:text-[#F5F0E8]'
+                  : 'text-[var(--text-secondary)] border-[#C9A84C]/15 hover:border-[#C9A84C]/40 hover:text-[var(--text-primary)]'
               }`}
             >{opt.label}</Link>
           ))}
@@ -140,9 +140,9 @@ export default async function VendorsDirectoryPage({ searchParams }: PageProps) 
       {/* Vendor grid */}
       {vendors.length === 0 ? (
         <div className="text-center py-24">
-          <Store className="h-12 w-12 text-[#9A8F7A] mx-auto mb-4" strokeWidth={1.2} />
-          <h3 className="text-lg font-semibold text-[#F5F0E8] mb-1">No sellers found</h3>
-          <p className="text-sm text-[#9A8F7A]">Try a different filter or search term.</p>
+          <Store className="h-12 w-12 text-[var(--text-secondary)] mx-auto mb-4" strokeWidth={1.2} />
+          <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-1">No sellers found</h3>
+          <p className="text-sm text-[var(--text-secondary)]">Try a different filter or search term.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -150,10 +150,10 @@ export default async function VendorsDirectoryPage({ searchParams }: PageProps) 
             <Link
               key={v.id}
               href={`/store/${v.slug}`}
-              className="group bg-[#111111] border border-[#C9A84C]/15 rounded-2xl overflow-hidden hover:border-[#C9A84C]/40 transition-colors"
+              className="group bg-[var(--bg-secondary)] border border-[#C9A84C]/15 rounded-2xl overflow-hidden hover:border-[#C9A84C]/40 transition-colors"
             >
               {/* Cover */}
-              <div className="relative aspect-[16/6] bg-gradient-to-br from-[#1A1500] to-[#0A0A0A] overflow-hidden">
+              <div className="relative aspect-[16/6] bg-gradient-to-br from-[#1A1500] to-[var(--bg-primary)] overflow-hidden">
                 {(v.coverImage || v.banner) && (
                   <img
                     src={v.coverImage ?? v.banner!}
@@ -166,7 +166,7 @@ export default async function VendorsDirectoryPage({ searchParams }: PageProps) 
               {/* Identity */}
               <div className="p-4 -mt-8 relative">
                 <div className="flex items-start gap-3">
-                  <div className="h-14 w-14 rounded-xl bg-[#111111] border-2 border-[#0A0A0A] ring-1 ring-[#C9A84C]/30 flex items-center justify-center overflow-hidden shrink-0 shadow-lg">
+                  <div className="h-14 w-14 rounded-xl bg-[var(--bg-secondary)] border-2 border-[var(--bg-primary)] ring-1 ring-[#C9A84C]/30 flex items-center justify-center overflow-hidden shrink-0 shadow-lg">
                     {v.logo ? (
                       <img src={v.logo} alt={v.storeName} className="h-full w-full object-cover" />
                     ) : (
@@ -175,13 +175,13 @@ export default async function VendorsDirectoryPage({ searchParams }: PageProps) 
                   </div>
                   <div className="flex-1 min-w-0 pt-1">
                     <div className="flex items-center gap-1.5">
-                      <h2 className="text-base font-bold text-[#F5F0E8] truncate group-hover:text-[#C9A84C] transition-colors">
+                      <h2 className="text-base font-bold text-[var(--text-primary)] truncate group-hover:text-[#C9A84C] transition-colors">
                         {v.storeName}
                       </h2>
                       {v.idVerified && <BadgeCheck className="h-4 w-4 text-[#C9A84C] shrink-0" />}
                     </div>
                     {v.region && (
-                      <p className="text-xs text-[#9A8F7A] flex items-center gap-1 mt-0.5">
+                      <p className="text-xs text-[var(--text-secondary)] flex items-center gap-1 mt-0.5">
                         <MapPin className="h-3 w-3" /> {v.region}
                       </p>
                     )}
@@ -189,19 +189,19 @@ export default async function VendorsDirectoryPage({ searchParams }: PageProps) 
                 </div>
 
                 {(v.description || v.bio) && (
-                  <p className="text-xs text-[#9A8F7A] mt-3 line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-[var(--text-secondary)] mt-3 line-clamp-2 leading-relaxed">
                     {v.description || v.bio}
                   </p>
                 )}
 
-                <div className="flex items-center gap-3 mt-3 pt-3 border-t border-[#C9A84C]/10 text-xs text-[#9A8F7A]">
+                <div className="flex items-center gap-3 mt-3 pt-3 border-t border-[#C9A84C]/10 text-xs text-[var(--text-secondary)]">
                   <span className="flex items-center gap-1">
                     <Package className="h-3.5 w-3.5" /> {v._count.products}
                   </span>
                   {v.rating > 0 && (
                     <span className="flex items-center gap-1">
                       <Star className="h-3.5 w-3.5 fill-[#C9A84C] text-[#C9A84C]" />
-                      <span className="font-bold text-[#F5F0E8]">{v.rating.toFixed(1)}</span>
+                      <span className="font-bold text-[var(--text-primary)]">{v.rating.toFixed(1)}</span>
                       <span>({v.reviewCount})</span>
                     </span>
                   )}

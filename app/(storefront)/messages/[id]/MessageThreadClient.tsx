@@ -98,12 +98,12 @@ export function MessageThreadClient({
       <div className="flex items-center gap-3 mb-4 pb-3 border-b border-[#C9A84C]/15">
         <Link
           href="/messages"
-          className="text-[#9A8F7A] hover:text-[#F5F0E8] transition-colors"
+          className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
           aria-label="Back to inbox"
         >
           <ArrowLeft className="h-5 w-5" />
         </Link>
-        <div className="h-10 w-10 rounded-full bg-[#1A1A1A] border border-[#C9A84C]/20 flex items-center justify-center overflow-hidden shrink-0">
+        <div className="h-10 w-10 rounded-full bg-[var(--bg-card)] border border-[#C9A84C]/20 flex items-center justify-center overflow-hidden shrink-0">
           {otherParty.image ? (
             <img src={otherParty.image} alt="" className="h-full w-full object-cover" />
           ) : otherParty.href ? (
@@ -116,12 +116,12 @@ export function MessageThreadClient({
           {otherParty.href ? (
             <Link
               href={otherParty.href}
-              className="text-sm font-semibold text-[#F5F0E8] hover:text-[#C9A84C] truncate transition-colors"
+              className="text-sm font-semibold text-[var(--text-primary)] hover:text-[#C9A84C] truncate transition-colors"
             >
               {otherParty.name}
             </Link>
           ) : (
-            <span className="text-sm font-semibold text-[#F5F0E8] truncate">{otherParty.name}</span>
+            <span className="text-sm font-semibold text-[var(--text-primary)] truncate">{otherParty.name}</span>
           )}
         </div>
       </div>
@@ -129,19 +129,19 @@ export function MessageThreadClient({
       {/* Messages */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto space-y-2 px-1 pb-3">
         {messages.length === 0 ? (
-          <p className="text-xs text-[#9A8F7A] text-center py-12">No messages yet — say hi!</p>
+          <p className="text-xs text-[var(--text-secondary)] text-center py-12">No messages yet — say hi!</p>
         ) : (
           messages.map((m) => (
             <div key={m.id} className={`flex ${m.fromMe ? 'justify-end' : 'justify-start'}`}>
               <div
                 className={`max-w-[75%] px-3.5 py-2 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap break-words ${
                   m.fromMe
-                    ? 'bg-[#C9A84C] text-[#0A0A0A] rounded-br-sm'
-                    : 'bg-[#1A1A1A] text-[#F5F0E8] rounded-bl-sm border border-[#C9A84C]/10'
+                    ? 'bg-[#C9A84C] text-black rounded-br-sm'
+                    : 'bg-[var(--bg-card)] text-[var(--text-primary)] rounded-bl-sm border border-[#C9A84C]/10'
                 }`}
               >
                 {m.body}
-                <span className={`block text-[10px] mt-1 ${m.fromMe ? 'text-[#0A0A0A]/60' : 'text-[#9A8F7A]'}`}>
+                <span className={`block text-[10px] mt-1 ${m.fromMe ? 'text-[var(--bg-primary)]/60' : 'text-[var(--text-secondary)]'}`}>
                   {new Date(m.createdAt).toLocaleTimeString('en-TT', {
                     hour: 'numeric', minute: '2-digit',
                   })}
@@ -166,12 +166,12 @@ export function MessageThreadClient({
           }}
           rows={1}
           placeholder="Write a message…"
-          className="flex-1 bg-[#0A0A0A] border border-[#333] text-[#F5F0E8] focus:border-[#C9A84C] focus:outline-none rounded-xl px-3 py-2.5 text-sm placeholder:text-[#555] resize-none max-h-32"
+          className="flex-1 bg-[var(--bg-primary)] border border-[#333] text-[var(--text-primary)] focus:border-[#C9A84C] focus:outline-none rounded-xl px-3 py-2.5 text-sm placeholder:text-[#555] resize-none max-h-32"
         />
         <button
           type="submit"
           disabled={!draft.trim() || sending}
-          className="bg-[#C9A84C] text-[#0A0A0A] hover:bg-[#b8963f] disabled:opacity-40 disabled:cursor-not-allowed h-10 w-10 rounded-full flex items-center justify-center shrink-0 transition-colors"
+          className="bg-[#C9A84C] text-black hover:bg-[#b8963f] disabled:opacity-40 disabled:cursor-not-allowed h-10 w-10 rounded-full flex items-center justify-center shrink-0 transition-colors"
           aria-label="Send"
         >
           <Send className="h-4 w-4" />

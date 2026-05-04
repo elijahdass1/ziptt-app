@@ -3,16 +3,16 @@ import { Cloud, Wallet, CreditCard, Building2, MapPin } from 'lucide-react'
 
 export function Footer() {
   return (
-    <footer className="bg-[#0A0A0A] border-t border-[#C9A84C]/20 text-[#9A8F7A] mt-16">
+    <footer className="bg-[var(--bg-primary)] border-t border-[#C9A84C]/20 text-[var(--text-secondary)] mt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-0.5 mb-3">
               <span className="text-2xl font-black gold-shimmer">zip</span>
-              <span className="text-2xl font-black text-[#F5F0E8]">.tt</span>
+              <span className="text-2xl font-black text-[var(--text-primary)]">.tt</span>
             </Link>
-            <p className="text-sm text-[#9A8F7A] leading-relaxed">
+            <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
               Trinidad &amp; Tobago&apos;s premier online marketplace. Shop local, support local vendors, and get it delivered to your door.
             </p>
             <div className="flex gap-3 mt-4 items-center">
@@ -20,8 +20,8 @@ export function Footer() {
                 <MapPin className="h-4 w-4 text-[#C9A84C]" />
               </span>
               <div>
-                <p className="text-xs text-[#9A8F7A]">Delivering across Trinidad</p>
-                <p className="text-xs font-medium text-[#F5F0E8]">POS &middot; Central &middot; South</p>
+                <p className="text-xs text-[var(--text-secondary)]">Delivering across Trinidad</p>
+                <p className="text-xs font-medium text-[var(--text-primary)]">POS &middot; Central &middot; South</p>
               </div>
             </div>
           </div>
@@ -72,8 +72,8 @@ export function Footer() {
               <li><Link href="/help/vendor-fees" className="hover:text-[#C9A84C] transition-colors">Fees &amp; Commission</Link></li>
               <li><Link href="/help/vendor-guide" className="hover:text-[#C9A84C] transition-colors">Seller Guide</Link></li>
             </ul>
-            <div className="mt-4 p-3 bg-[#1A1A1A] rounded-lg border border-[#C9A84C]/10">
-              <p className="text-xs text-[#9A8F7A] mb-2">Payment Methods</p>
+            <div className="mt-4 p-3 bg-[var(--bg-card)] rounded-lg border border-[#C9A84C]/10">
+              <p className="text-xs text-[var(--text-secondary)] mb-2">Payment Methods</p>
               <div className="flex flex-wrap gap-2 text-sm">
                 <span className="badge-gray text-xs flex items-center gap-1.5"><Wallet className="h-3 w-3" /> Cash on Delivery</span>
                 <span className="badge-gray text-xs flex items-center gap-1.5"><CreditCard className="h-3 w-3" /> Linx</span>
@@ -84,10 +84,10 @@ export function Footer() {
         </div>
 
         <div className="border-t border-[#C9A84C]/10 mt-8 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-[#9A8F7A]">
+          <p className="text-xs text-[var(--text-secondary)]">
             &copy; {new Date().getFullYear()} zip.tt &mdash; Made with care in Trinidad &amp; Tobago
           </p>
-          <div className="flex gap-6 text-xs text-[#9A8F7A]">
+          <div className="flex gap-6 text-xs text-[var(--text-secondary)]">
             <Link href="/privacy" className="hover:text-[#C9A84C] transition-colors">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-[#C9A84C] transition-colors">Terms of Service</Link>
             <Link href="/cookies" className="hover:text-[#C9A84C] transition-colors">Cookie Policy</Link>

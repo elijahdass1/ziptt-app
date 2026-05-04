@@ -25,13 +25,13 @@ export function AdminSidebar() {
   const pathname = usePathname()
 
   return (
-    <aside className="w-56 bg-[#0A0A0A] border-r border-[#C9A84C]/15 text-[#9A8F7A] flex flex-col shrink-0 sticky top-0 h-screen">
+    <aside className="w-56 bg-[var(--bg-primary)] border-r border-[#C9A84C]/15 text-[var(--text-secondary)] flex flex-col shrink-0 sticky top-0 h-screen">
       <div className="p-4 border-b border-[#C9A84C]/10">
         <Link href="/" className="flex items-center gap-0.5">
           <span className="text-xl font-black gold-shimmer">zip</span>
-          <span className="text-xl font-black text-[#F5F0E8]">.tt</span>
+          <span className="text-xl font-black text-[var(--text-primary)]">.tt</span>
         </Link>
-        <p className="text-xs text-[#9A8F7A] mt-0.5">Admin Panel</p>
+        <p className="text-xs text-[var(--text-secondary)] mt-0.5">Admin Panel</p>
       </div>
 
       <nav className="flex-1 p-3 space-y-0.5">
@@ -43,7 +43,7 @@ export function AdminSidebar() {
                 'flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-all',
                 active
                   ? 'bg-[#C9A84C]/10 text-[#C9A84C] border-l-[3px] border-[#C9A84C] pl-[9px]'
-                  : 'text-[#9A8F7A] hover:bg-[#C9A84C]/5 hover:text-[#F5F0E8]'
+                  : 'text-[var(--text-secondary)] hover:bg-[#C9A84C]/5 hover:text-[var(--text-primary)]'
               )}>
               <item.icon className="h-4 w-4 shrink-0" />
               {item.label}
@@ -56,7 +56,7 @@ export function AdminSidebar() {
       <div className="p-3 border-t border-[#C9A84C]/10">
         <button
           onClick={() => signOut({ callbackUrl: '/' })}
-          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-[#9A8F7A] hover:bg-red-900/20 hover:text-red-400 transition-colors">
+          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-[var(--text-secondary)] hover:bg-red-900/20 hover:text-red-400 transition-colors">
           <LogOut className="h-4 w-4" /> Sign Out
         </button>
       </div>

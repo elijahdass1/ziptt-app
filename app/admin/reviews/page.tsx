@@ -51,10 +51,10 @@ export default async function AdminReviewsPage({
   ]
 
   return (
-    <div className="bg-[#0A0A0A] min-h-full">
+    <div className="bg-[var(--bg-primary)] min-h-full">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-[#F5F0E8]" style={{ fontFamily: 'Georgia,serif' }}>
+          <h1 className="text-2xl font-semibold text-[var(--text-primary)]" style={{ fontFamily: 'Georgia,serif' }}>
             Reviews
           </h1>
           <p className="text-sm text-[#888] mt-1">
@@ -68,7 +68,7 @@ export default async function AdminReviewsPage({
       </div>
 
       {/* Status tabs */}
-      <div className="flex gap-1 mb-6 border-b border-[#1a1a1a]">
+      <div className="flex gap-1 mb-6 border-b border-[var(--bg-card)]">
         {tabs.map((tab) => {
           const active = statusFilter === tab.value
           return (
@@ -78,7 +78,7 @@ export default async function AdminReviewsPage({
               className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 -mb-px ${
                 active
                   ? 'border-[#C9A84C] text-[#C9A84C]'
-                  : 'border-transparent text-[#888] hover:text-[#F5F0E8]'
+                  : 'border-transparent text-[#888] hover:text-[var(--text-primary)]'
               }`}
             >
               {tab.label}
@@ -87,11 +87,11 @@ export default async function AdminReviewsPage({
         })}
       </div>
 
-      <div className="bg-[#111111] border border-[#1a1a1a] rounded-xl overflow-hidden">
+      <div className="bg-[var(--bg-secondary)] border border-[var(--bg-card)] rounded-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#1a1a1a] bg-[#0A0A0A]">
+              <tr className="border-b border-[var(--bg-card)] bg-[var(--bg-primary)]">
                 {['Reviewer', 'Product', 'Rating', 'Review', 'Status', 'Date', 'Actions'].map((h, i) => (
                   <th
                     key={h}
@@ -113,9 +113,9 @@ export default async function AdminReviewsPage({
                 </tr>
               ) : (
                 reviews.map((review) => (
-                  <tr key={review.id} className="border-b border-[#1a1a1a] hover:bg-[#0A0A0A] transition-colors">
+                  <tr key={review.id} className="border-b border-[var(--bg-card)] hover:bg-[var(--bg-primary)] transition-colors">
                     <td className="px-5 py-3">
-                      <p className="font-medium text-[#F5F0E8]">{review.user.name ?? 'Anonymous'}</p>
+                      <p className="font-medium text-[var(--text-primary)]">{review.user.name ?? 'Anonymous'}</p>
                       <p className="text-xs text-[#555]">{review.user.email}</p>
                     </td>
                     <td className="px-5 py-3">
@@ -131,7 +131,7 @@ export default async function AdminReviewsPage({
                     </td>
                     <td className="px-5 py-3 max-w-xs">
                       {review.title && (
-                        <p className="font-medium text-[#F5F0E8] line-clamp-1">{review.title}</p>
+                        <p className="font-medium text-[var(--text-primary)] line-clamp-1">{review.title}</p>
                       )}
                       {review.body && (
                         <p className="text-xs text-[#888] line-clamp-2">{review.body}</p>

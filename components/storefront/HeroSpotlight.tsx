@@ -52,15 +52,15 @@ export function HeroSpotlight({ items, intervalMs = 4000 }: Props) {
       onMouseLeave={() => setPaused(false)}
     >
       <div className="absolute -inset-1 rounded-2xl ziptt-conic-ring opacity-60 blur-md group-hover:opacity-90 transition-opacity" />
-      <div className="relative bg-[#111111] rounded-2xl overflow-hidden border border-[#C9A84C]/30">
-        <div className="absolute top-3 left-3 z-20 inline-flex items-center gap-1.5 bg-[#0A0A0A]/85 backdrop-blur px-2.5 py-1 rounded-full border border-[#C9A84C]/30">
+      <div className="relative bg-[var(--bg-secondary)] rounded-2xl overflow-hidden border border-[#C9A84C]/30">
+        <div className="absolute top-3 left-3 z-20 inline-flex items-center gap-1.5 bg-[var(--bg-primary)]/85 backdrop-blur px-2.5 py-1 rounded-full border border-[#C9A84C]/30">
           <span className="h-1.5 w-1.5 rounded-full bg-[#D62828] ziptt-pulse-red" />
-          <span className="text-[10px] font-bold tracking-wide text-[#F5F0E8]">TRENDING</span>
+          <span className="text-[10px] font-bold tracking-wide text-[var(--text-primary)]">TRENDING</span>
         </div>
 
         {/* Stack each item absolute and crossfade between them. The
             currently-active one gets opacity-100, the rest opacity-0. */}
-        <div className="relative aspect-[4/5] bg-[#1A1A1A] overflow-hidden">
+        <div className="relative aspect-[4/5] bg-[var(--bg-card)] overflow-hidden">
           {items.map((p, i) => (
             <Link
               key={p.id}
@@ -90,14 +90,14 @@ export function HeroSpotlight({ items, intervalMs = 4000 }: Props) {
               <p className="text-[11px] text-[#C9A84C] font-medium uppercase tracking-wide truncate">{p.vendor.storeName}</p>
               <Link
                 href={`/products/${p.slug}`}
-                className="block text-sm font-bold text-[#F5F0E8] hover:text-[#C9A84C] line-clamp-2 leading-tight transition-colors"
+                className="block text-sm font-bold text-[var(--text-primary)] hover:text-[#C9A84C] line-clamp-2 leading-tight transition-colors"
               >
                 {p.name}
               </Link>
               <div className="flex items-baseline gap-2 pt-0.5">
                 <span className="text-base font-black text-[#C9A84C]">{formatTTD(p.price)}</span>
                 {p.comparePrice && p.comparePrice > p.price && (
-                  <span className="text-xs text-[#9A8F7A] line-through">{formatTTD(p.comparePrice)}</span>
+                  <span className="text-xs text-[var(--text-secondary)] line-through">{formatTTD(p.comparePrice)}</span>
                 )}
               </div>
             </div>

@@ -48,7 +48,7 @@ export default function VendorAnalyticsPage() {
 
   if (error) {
     return (
-      <div className="bg-[#111111] border border-red-500/30 rounded-xl p-8 text-center">
+      <div className="bg-[var(--bg-secondary)] border border-red-500/30 rounded-xl p-8 text-center">
         <p className="text-red-400 font-medium">{error}</p>
         <button
           onClick={() => { setLoading(true); setError(''); window.location.reload() }}
@@ -63,9 +63,9 @@ export default function VendorAnalyticsPage() {
   if (!data) return null
 
   return (
-    <div className="bg-[#0A0A0A] min-h-full">
+    <div className="bg-[var(--bg-primary)] min-h-full">
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-[#F5F0E8]" style={{ fontFamily: 'Georgia,serif' }}>
+        <h1 className="text-2xl font-semibold text-[var(--text-primary)]" style={{ fontFamily: 'Georgia,serif' }}>
           Analytics
         </h1>
         <p className="text-sm text-[#888] mt-1">Your store performance overview</p>

@@ -48,29 +48,29 @@ export default async function AdminProductsPage({
   const pages = Math.ceil(total / limit)
 
   return (
-    <div className="bg-[#0A0A0A] min-h-full">
+    <div className="bg-[var(--bg-primary)] min-h-full">
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-[#F5F0E8]" style={{ fontFamily: 'Georgia,serif' }}>
+        <h1 className="text-2xl font-semibold text-[var(--text-primary)]" style={{ fontFamily: 'Georgia,serif' }}>
           Products
         </h1>
         <p className="text-sm text-[#888] mt-1">{total.toLocaleString()} product{total !== 1 ? 's' : ''}</p>
       </div>
 
       {/* Search and filter */}
-      <form className="bg-[#111111] border border-[#1a1a1a] rounded-xl p-4 mb-6 flex flex-wrap gap-3">
+      <form className="bg-[var(--bg-secondary)] border border-[var(--bg-card)] rounded-xl p-4 mb-6 flex flex-wrap gap-3">
         <div className="relative flex-1 min-w-48">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#555]" />
           <input
             name="q"
             defaultValue={searchParams.q}
             placeholder="Search product or vendorâ¦"
-            className="w-full pl-9 pr-4 py-2 text-sm bg-[#0A0A0A] border border-[#333] text-[#F5F0E8] focus:border-[#C9A84C] focus:outline-none rounded placeholder:text-[#555]"
+            className="w-full pl-9 pr-4 py-2 text-sm bg-[var(--bg-primary)] border border-[#333] text-[var(--text-primary)] focus:border-[#C9A84C] focus:outline-none rounded placeholder:text-[#555]"
           />
         </div>
         <select
           name="status"
           defaultValue={statusFilter}
-          className="text-sm bg-[#0A0A0A] border border-[#333] text-[#F5F0E8] focus:border-[#C9A84C] focus:outline-none rounded px-3 py-2"
+          className="text-sm bg-[var(--bg-primary)] border border-[#333] text-[var(--text-primary)] focus:border-[#C9A84C] focus:outline-none rounded px-3 py-2"
         >
           <option value="">All Status</option>
           <option value="ACTIVE">Active</option>
@@ -80,17 +80,17 @@ export default async function AdminProductsPage({
         </select>
         <button
           type="submit"
-          className="bg-[#C9A84C] text-[#0A0A0A] hover:bg-[#b8963f] font-semibold px-4 py-2 rounded text-sm transition-colors"
+          className="bg-[#C9A84C] text-black hover:bg-[#b8963f] font-semibold px-4 py-2 rounded text-sm transition-colors"
         >
           Filter
         </button>
       </form>
 
-      <div className="bg-[#111111] border border-[#1a1a1a] rounded-xl overflow-hidden">
+      <div className="bg-[var(--bg-secondary)] border border-[var(--bg-card)] rounded-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#1a1a1a] bg-[#0A0A0A]">
+              <tr className="border-b border-[var(--bg-card)] bg-[var(--bg-primary)]">
                 {['Product', 'Vendor', 'Category', 'Price (TTD)', 'Stock', 'Status', 'Actions'].map((h, i) => (
                   <th
                     key={h}
@@ -116,25 +116,25 @@ export default async function AdminProductsPage({
                     ? JSON.parse(product.images as string) as string[]
                     : product.images as unknown as string[]
                   return (
-                    <tr key={product.id} className="border-b border-[#1a1a1a] hover:bg-[#0A0A0A] transition-colors">
+                    <tr key={product.id} className="border-b border-[var(--bg-card)] hover:bg-[var(--bg-primary)] transition-colors">
                       <td className="px-5 py-3">
                         <div className="flex items-center gap-3">
                           {images[0] ? (
-                            <div className="relative w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-[#1a1a1a]">
+                            <div className="relative w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-[var(--bg-card)]">
                               <Image src={images[0]} alt={product.name} fill className="object-cover" />
                             </div>
                           ) : (
-                            <div className="w-10 h-10 rounded-lg bg-[#1a1a1a] shrink-0" />
+                            <div className="w-10 h-10 rounded-lg bg-[var(--bg-card)] shrink-0" />
                           )}
                           <div>
-                            <p className="font-medium text-[#F5F0E8] line-clamp-1">{product.name}</p>
+                            <p className="font-medium text-[var(--text-primary)] line-clamp-1">{product.name}</p>
                             <p className="text-xs text-[#555]">/{product.slug}</p>
                           </div>
                         </div>
                       </td>
                       <td className="px-5 py-3 text-[#888]">{product.vendor.storeName}</td>
                       <td className="px-5 py-3 text-xs text-[#888]">{product.category?.name ?? 'â'}</td>
-                      <td className="px-5 py-3 font-medium text-[#F5F0E8]">{formatTTD(product.price)}</td>
+                      <td className="px-5 py-3 font-medium text-[var(--text-primary)]">{formatTTD(product.price)}</td>
                       <td className="px-5 py-3 text-[#888]">{product.stock}</td>
                       <td className="px-5 py-3">
                         <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium ${STATUS_COLOR[product.status] ?? 'bg-[#333] text-[#888]'}`}>
@@ -153,13 +153,13 @@ export default async function AdminProductsPage({
         </div>
 
         {pages > 1 && (
-          <div className="px-5 py-4 border-t border-[#1a1a1a] flex items-center justify-between">
+          <div className="px-5 py-4 border-t border-[var(--bg-card)] flex items-center justify-between">
             <p className="text-xs text-[#888]">Page {page} of {pages}</p>
             <div className="flex gap-2">
               {page > 1 && (
                 <a
                   href={`?${new URLSearchParams({ ...(searchParams.q ? { q: searchParams.q } : {}), ...(statusFilter ? { status: statusFilter } : {}), page: String(page - 1) })}`}
-                  className="text-sm px-3 py-1 border border-[#333] text-[#888] rounded-lg hover:bg-[#111111] transition-colors"
+                  className="text-sm px-3 py-1 border border-[#333] text-[#888] rounded-lg hover:bg-[var(--bg-secondary)] transition-colors"
                 >
                   Prev
                 </a>
@@ -167,7 +167,7 @@ export default async function AdminProductsPage({
               {page < pages && (
                 <a
                   href={`?${new URLSearchParams({ ...(searchParams.q ? { q: searchParams.q } : {}), ...(statusFilter ? { status: statusFilter } : {}), page: String(page + 1) })}`}
-                  className="text-sm px-3 py-1 border border-[#333] text-[#888] rounded-lg hover:bg-[#111111] transition-colors"
+                  className="text-sm px-3 py-1 border border-[#333] text-[#888] rounded-lg hover:bg-[var(--bg-secondary)] transition-colors"
                 >
                   Next
                 </a>

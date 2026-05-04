@@ -65,12 +65,12 @@ export default async function NeedsPhotosPage() {
       <div>
         <Link
           href="/vendor/products"
-          className="inline-flex items-center gap-1.5 text-sm text-[#9A8F7A] hover:text-[#C9A84C] mb-3"
+          className="inline-flex items-center gap-1.5 text-sm text-[var(--text-secondary)] hover:text-[#C9A84C] mb-3"
         >
           <ArrowLeft className="h-3.5 w-3.5" /> All products
         </Link>
-        <h1 className="text-2xl font-bold text-[#F5F0E8]">Fix Product Photos</h1>
-        <p className="text-sm text-[#9A8F7A] mt-1">
+        <h1 className="text-2xl font-bold text-[var(--text-primary)]">Fix Product Photos</h1>
+        <p className="text-sm text-[var(--text-secondary)] mt-1">
           {enriched.length === 0
             ? 'All your products have real photos. '
             : `${enriched.length} product${enriched.length === 1 ? '' : 's'} still on a placeholder or stock photo. `}
@@ -81,8 +81,8 @@ export default async function NeedsPhotosPage() {
       {enriched.length === 0 ? (
         <div className="rounded-xl border border-[#C9A84C]/20 bg-[#111] p-12 text-center">
           <ImageIcon className="h-10 w-10 text-[#C9A84C] mx-auto mb-3" />
-          <p className="text-[#F5F0E8] font-semibold">Nothing to fix.</p>
-          <p className="text-sm text-[#9A8F7A] mt-1">
+          <p className="text-[var(--text-primary)] font-semibold">Nothing to fix.</p>
+          <p className="text-sm text-[var(--text-secondary)] mt-1">
             All your listings already have real photos. New listings created with
             placeholders will show up here automatically.
           </p>

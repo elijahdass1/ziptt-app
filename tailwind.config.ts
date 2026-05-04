@@ -21,6 +21,24 @@ const config: Config = {
           gold: '#F7B731',
           green: '#228B22',
         },
+        // Named theme tokens — these resolve to CSS variables that flip
+        // when the `dark` class is applied to <html>. Components written
+        // with `bg-bg-primary`, `text-text-primary`, etc. respond to the
+        // theme toggle automatically.
+        'bg-primary':    'var(--bg-primary)',
+        'bg-secondary':  'var(--bg-secondary)',
+        'bg-card':       'var(--bg-card)',
+        'bg-surface':    'var(--bg-surface)',
+        'text-primary':  'var(--text-primary)',
+        'text-secondary':'var(--text-secondary)',
+        'border-color':  'var(--border-color)',
+        gold: {
+          DEFAULT: 'var(--gold)',
+          hover:   'var(--gold-hover)',
+          text:    'var(--gold-text)',
+          light:   'var(--gold-light)',
+          dark:    'var(--gold-dark)',
+        },
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {

@@ -198,7 +198,7 @@ export default async function HomePage() {
           on the eyebrow + product spotlight card on the right + a
           field of twinkling sparkles to make the dark background feel
           alive instead of flat. */}
-      <section className="relative bg-gradient-to-br from-[#0A0A0A] via-[#1A0A0A] to-[#0A0A0A] border-b border-[#C9A84C]/15 overflow-hidden -mt-10">
+      <section className="relative bg-gradient-to-br from-[var(--bg-primary)] via-[#1A0A0A] to-[var(--bg-primary)] border-b border-[#C9A84C]/15 overflow-hidden -mt-10">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-1/2 w-[700px] h-[400px] bg-[#C9A84C]/8 rounded-full blur-3xl ziptt-drift" />
           <div className="absolute bottom-0 left-1/4 w-[400px] h-[300px] bg-[#D62828]/6 rounded-full blur-3xl ziptt-drift" style={{ animationDelay: '-9s' }} />
@@ -228,12 +228,12 @@ export default async function HomePage() {
                 <span className="h-1.5 w-1.5 rounded-full bg-[#C9A84C] ziptt-pulse-gold" />
                 Trinidad &amp; Tobago&apos;s #1 Marketplace
               </div>
-              <h1 className="text-4xl md:text-6xl font-black leading-[1.05] text-[#F5F0E8]">
+              <h1 className="text-4xl md:text-6xl font-black leading-[1.05] text-[var(--text-primary)]">
                 Shop Local.<br />
                 <span className="gold-shimmer">Ship Fast.</span><br />
                 Live Good.
               </h1>
-              <p className="text-base text-[#9A8F7A] leading-relaxed max-w-lg">
+              <p className="text-base text-[var(--text-secondary)] leading-relaxed max-w-lg">
                 Thousands of products from local vendors — shadow beni to Samsung phones.
                 Free delivery on orders over TTD $500.
               </p>
@@ -254,17 +254,17 @@ export default async function HomePage() {
                     <Link
                       key={p.href}
                       href={p.href}
-                      className="bg-[#111111]/70 hover:bg-[#1A1A1A] border border-[#C9A84C]/15 hover:border-[#C9A84C]/45 rounded-xl py-2 px-2 text-center ziptt-lift group"
+                      className="bg-[var(--bg-secondary)]/70 hover:bg-[var(--bg-card)] border border-[#C9A84C]/15 hover:border-[#C9A84C]/45 rounded-xl py-2 px-2 text-center ziptt-lift group"
                     >
                       <div className="flex items-center justify-center mb-1">
                         <span
-                          className="h-8 w-8 rounded-full bg-[#0A0A0A]/40 border border-white/10 flex items-center justify-center"
+                          className="h-8 w-8 rounded-full bg-[var(--bg-primary)]/40 border border-white/10 flex items-center justify-center"
                           style={{ color: p.color }}
                         >
                           <Icon className="h-4 w-4" />
                         </span>
                       </div>
-                      <div className="text-[11px] font-semibold text-[#F5F0E8] group-hover:text-[#C9A84C] transition-colors">{p.label}</div>
+                      <div className="text-[11px] font-semibold text-[var(--text-primary)] group-hover:text-[#C9A84C] transition-colors">{p.label}</div>
                     </Link>
                   )
                 })}
@@ -288,7 +288,7 @@ export default async function HomePage() {
                 <span className="h-2 w-2 rounded-full bg-[#D62828] ziptt-pulse-red" />
                 <span className="text-[11px] font-black tracking-[2.5px] text-[#D62828]">TRENDING NOW</span>
               </div>
-              <h2 className="text-2xl md:text-3xl font-black text-[#F5F0E8] flex items-center gap-2">
+              <h2 className="text-2xl md:text-3xl font-black text-[var(--text-primary)] flex items-center gap-2">
                 <TrendingUp className="h-6 w-6 text-[#C9A84C]" />
                 Hot off the shelves
               </h2>
@@ -315,7 +315,7 @@ export default async function HomePage() {
       {band1.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-end justify-between mb-4">
-            <h2 className="text-xl md:text-2xl font-bold text-[#F5F0E8] flex items-center gap-2">
+            <h2 className="text-xl md:text-2xl font-bold text-[var(--text-primary)] flex items-center gap-2">
               <Crown className="h-5 w-5 text-[#C9A84C]" />
               Shop by Category
             </h2>
@@ -348,7 +348,7 @@ export default async function HomePage() {
 
       {/* MID-PAGE PROMO BANNER — full-bleed diagonal-stripe poster
           look. Big copy, double CTA, plenty of contrast. */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-[#0A0A0A] via-[#1A0A0A] to-[#0A0A0A] border-y border-[#C9A84C]/20">
+      <section className="relative overflow-hidden bg-gradient-to-r from-[var(--bg-primary)] via-[#1A0A0A] to-[var(--bg-primary)] border-y border-[#C9A84C]/20">
         <div className="absolute inset-0 ziptt-stripes pointer-events-none" />
         <div className="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-[#D62828]/10 blur-3xl pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14 relative z-10">
@@ -357,10 +357,10 @@ export default async function HomePage() {
               <div className="inline-flex items-center gap-2 text-[#D62828] text-xs font-black tracking-[2px]">
                 <Clock className="h-3.5 w-3.5" /> CARNIVAL SEASON
               </div>
-              <h2 className="text-3xl md:text-4xl font-black text-[#F5F0E8] leading-tight">
+              <h2 className="text-3xl md:text-4xl font-black text-[var(--text-primary)] leading-tight">
                 Get <span className="gold-shimmer">Carnival-ready</span> in days, not weeks.
               </h2>
-              <p className="text-sm md:text-base text-[#9A8F7A]">
+              <p className="text-sm md:text-base text-[var(--text-secondary)]">
                 Costumes, mas boots, body glitter, makeup kits — local vendors, nationwide delivery.
               </p>
             </div>
@@ -403,8 +403,8 @@ export default async function HomePage() {
                 <Tag className="h-3.5 w-3.5 text-[#D62828]" />
                 <span className="text-[11px] font-black tracking-[2.5px] text-[#D62828]">TODAY&apos;S DEALS</span>
               </div>
-              <h2 className="text-2xl md:text-3xl font-black text-[#F5F0E8]">Biggest savings on zip.tt</h2>
-              <p className="text-sm text-[#9A8F7A] mt-0.5">Sorted by absolute TTD discount — limited time</p>
+              <h2 className="text-2xl md:text-3xl font-black text-[var(--text-primary)]">Biggest savings on zip.tt</h2>
+              <p className="text-sm text-[var(--text-secondary)] mt-0.5">Sorted by absolute TTD discount — limited time</p>
             </div>
             <Link href="/products?sort=newest" className="text-sm text-[#C9A84C] hover:text-[#F0C040] font-medium flex items-center gap-1 transition-colors shrink-0">
               See all <ArrowRight className="h-3.5 w-3.5" />
@@ -453,8 +453,8 @@ export default async function HomePage() {
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-5">
             <div>
-              <h2 className="text-xl md:text-2xl font-bold text-[#F5F0E8]">Featured Vendors</h2>
-              <p className="text-sm text-[#9A8F7A] mt-0.5">Top-rated local stores</p>
+              <h2 className="text-xl md:text-2xl font-bold text-[var(--text-primary)]">Featured Vendors</h2>
+              <p className="text-sm text-[var(--text-secondary)] mt-0.5">Top-rated local stores</p>
             </div>
             <Link href="/vendors" className="text-sm text-[#C9A84C] hover:text-[#F0C040] font-medium flex items-center gap-1 transition-colors">
               See all <ArrowRight className="h-3.5 w-3.5" />
@@ -463,7 +463,7 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {vendors.map((vendor) => (
               <Link key={vendor.id} href={`/store/${vendor.slug}`}
-                className="bg-[#111111] border border-[#C9A84C]/15 rounded-xl group p-4 flex items-center gap-3 hover:border-[#C9A84C]/45 ziptt-lift">
+                className="bg-[var(--bg-secondary)] border border-[#C9A84C]/15 rounded-xl group p-4 flex items-center gap-3 hover:border-[#C9A84C]/45 ziptt-lift">
                 <div className="h-12 w-12 rounded-full bg-[#C9A84C]/10 border border-[#C9A84C]/30 flex items-center justify-center shrink-0 overflow-hidden">
                   {vendor.logo ? (
                     <img src={vendor.logo} alt={vendor.storeName} className="h-12 w-12 object-cover rounded-full" />
@@ -472,18 +472,18 @@ export default async function HomePage() {
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-[#F5F0E8] group-hover:text-[#C9A84C] transition-colors truncate">{vendor.storeName}</p>
+                  <p className="text-sm font-semibold text-[var(--text-primary)] group-hover:text-[#C9A84C] transition-colors truncate">{vendor.storeName}</p>
                   <div className="flex items-center gap-1 mt-0.5">
                     <Star className="h-3 w-3 fill-[#F0C040] text-[#F0C040]" />
-                    <span className="text-xs text-[#9A8F7A]">{vendor.rating.toFixed(1)} &middot; {vendor._count.products} products</span>
+                    <span className="text-xs text-[var(--text-secondary)]">{vendor.rating.toFixed(1)} &middot; {vendor._count.products} products</span>
                   </div>
                   {vendor.region && (
-                    <p className="text-[11px] text-[#9A8F7A] mt-0.5 truncate flex items-center gap-1">
+                    <p className="text-[11px] text-[var(--text-secondary)] mt-0.5 truncate flex items-center gap-1">
                       <MapPin size={10} strokeWidth={1.5} />{vendor.region}
                     </p>
                   )}
                 </div>
-                <ArrowRight className="h-4 w-4 text-[#9A8F7A] group-hover:text-[#C9A84C] shrink-0 transition-colors" />
+                <ArrowRight className="h-4 w-4 text-[var(--text-secondary)] group-hover:text-[#C9A84C] shrink-0 transition-colors" />
               </Link>
             ))}
           </div>
@@ -504,8 +504,8 @@ export default async function HomePage() {
                 <span className="h-2 w-2 rounded-full bg-[#C9A84C] ziptt-pulse-gold" />
                 <span className="text-[11px] font-black tracking-[2.5px] text-[#C9A84C]">INSTANT DELIVERY</span>
               </div>
-              <h2 className="text-xl md:text-2xl font-bold text-[#F5F0E8]">Digital Products</h2>
-              <p className="text-sm text-[#9A8F7A] mt-0.5">Netflix, Spotify, ChatGPT &amp; more — paid in TTD</p>
+              <h2 className="text-xl md:text-2xl font-bold text-[var(--text-primary)]">Digital Products</h2>
+              <p className="text-sm text-[var(--text-secondary)] mt-0.5">Netflix, Spotify, ChatGPT &amp; more — paid in TTD</p>
             </div>
             <Link href="/digital" className="text-sm text-[#C9A84C] hover:text-[#F0C040] font-medium flex items-center gap-1 transition-colors">
               See all <ArrowRight className="h-3.5 w-3.5" />
@@ -514,13 +514,13 @@ export default async function HomePage() {
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
             {digitalProducts.map((dp) => (
               <Link key={dp.id} href={`/digital/${dp.slug}`}
-                className="bg-[#111111] border border-[#C9A84C]/15 rounded-xl overflow-hidden hover:border-[#C9A84C]/45 ziptt-lift group">
-                <div className="aspect-square bg-[#1A1A1A] relative">
+                className="bg-[var(--bg-secondary)] border border-[#C9A84C]/15 rounded-xl overflow-hidden hover:border-[#C9A84C]/45 ziptt-lift group">
+                <div className="aspect-square bg-[var(--bg-card)] relative">
                   {dp.thumbnail && <img src={dp.thumbnail} alt={dp.name} className="w-full h-full object-cover" />}
-                  <span className="absolute top-2 left-2 bg-[#C9A84C] text-[#0A0A0A] text-[10px] font-bold px-2 py-0.5 rounded">INSTANT</span>
+                  <span className="absolute top-2 left-2 bg-[#C9A84C] text-black text-[10px] font-bold px-2 py-0.5 rounded">INSTANT</span>
                 </div>
                 <div className="p-3">
-                  <p className="text-xs font-semibold text-[#F5F0E8] group-hover:text-[#C9A84C] line-clamp-2 mb-1 transition-colors">{dp.name}</p>
+                  <p className="text-xs font-semibold text-[var(--text-primary)] group-hover:text-[#C9A84C] line-clamp-2 mb-1 transition-colors">{dp.name}</p>
                   <p className="text-sm text-[#C9A84C] font-bold">{formatTTD(dp.price)}</p>
                 </div>
               </Link>
@@ -530,15 +530,15 @@ export default async function HomePage() {
       )}
 
       {/* VENDOR CTA */}
-      <section className="bg-gradient-to-r from-[#0A0A0A] via-[#1A0A0A] to-[#0A0A0A] border-t border-b border-[#C9A84C]/15 relative overflow-hidden">
+      <section className="bg-gradient-to-r from-[var(--bg-primary)] via-[#1A0A0A] to-[var(--bg-primary)] border-t border-b border-[#C9A84C]/15 relative overflow-hidden">
         <div className="absolute inset-0 ziptt-stripes opacity-50 pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
           <div className="text-center space-y-3">
             <div className="flex items-center justify-center">
               <Store className="h-10 w-10 text-[#C9A84C]" strokeWidth={1.2} />
             </div>
-            <h2 className="text-2xl md:text-3xl font-black text-[#F5F0E8]">Start selling on <span className="gold-shimmer">zip.tt</span> today</h2>
-            <p className="text-sm text-[#9A8F7A] max-w-xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-black text-[var(--text-primary)]">Start selling on <span className="gold-shimmer">zip.tt</span> today</h2>
+            <p className="text-sm text-[var(--text-secondary)] max-w-xl mx-auto">
               Join hundreds of Trinbagonian vendors reaching customers across Trinidad.
               Only 10% commission. Weekly payouts. Free to list.
             </p>

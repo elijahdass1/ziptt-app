@@ -94,9 +94,9 @@ export function DisputeForm({ preselectedOrderId, onClose }: Props) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-[#111111] border border-[#1a1a1a] rounded-xl p-6 space-y-4"
+      className="bg-[var(--bg-secondary)] border border-[var(--bg-card)] rounded-xl p-6 space-y-4"
     >
-      <h2 className="text-lg font-semibold text-[#F5F0E8]" style={{ fontFamily: 'Georgia,serif' }}>
+      <h2 className="text-lg font-semibold text-[var(--text-primary)]" style={{ fontFamily: 'Georgia,serif' }}>
         Open a Dispute
       </h2>
 
@@ -113,7 +113,7 @@ export function DisputeForm({ preselectedOrderId, onClose }: Props) {
             value={orderId}
             onChange={(e) => setOrderId(e.target.value)}
             required
-            className="w-full bg-[#0A0A0A] border border-[#333] text-[#F5F0E8] focus:border-[#C9A84C] focus:outline-none rounded px-3 py-2 text-sm"
+            className="w-full bg-[var(--bg-primary)] border border-[#333] text-[var(--text-primary)] focus:border-[#C9A84C] focus:outline-none rounded px-3 py-2 text-sm"
           >
             <option value="">Select an order…</option>
             {orders.map((o) => (
@@ -131,7 +131,7 @@ export function DisputeForm({ preselectedOrderId, onClose }: Props) {
           value={reason}
           onChange={(e) => setReason(e.target.value)}
           required
-          className="w-full bg-[#0A0A0A] border border-[#333] text-[#F5F0E8] focus:border-[#C9A84C] focus:outline-none rounded px-3 py-2 text-sm"
+          className="w-full bg-[var(--bg-primary)] border border-[#333] text-[var(--text-primary)] focus:border-[#C9A84C] focus:outline-none rounded px-3 py-2 text-sm"
         >
           <option value="">Select a reason…</option>
           {REASONS.map((r) => (
@@ -148,7 +148,7 @@ export function DisputeForm({ preselectedOrderId, onClose }: Props) {
           rows={4}
           required
           placeholder="Describe the issue in detail…"
-          className="w-full bg-[#0A0A0A] border border-[#333] text-[#F5F0E8] focus:border-[#C9A84C] focus:outline-none rounded px-3 py-2 text-sm placeholder:text-[#555] resize-none"
+          className="w-full bg-[var(--bg-primary)] border border-[#333] text-[var(--text-primary)] focus:border-[#C9A84C] focus:outline-none rounded px-3 py-2 text-sm placeholder:text-[#555] resize-none"
         />
       </div>
 
@@ -157,7 +157,7 @@ export function DisputeForm({ preselectedOrderId, onClose }: Props) {
         <select
           value={resolution}
           onChange={(e) => setResolution(e.target.value)}
-          className="w-full bg-[#0A0A0A] border border-[#333] text-[#F5F0E8] focus:border-[#C9A84C] focus:outline-none rounded px-3 py-2 text-sm"
+          className="w-full bg-[var(--bg-primary)] border border-[#333] text-[var(--text-primary)] focus:border-[#C9A84C] focus:outline-none rounded px-3 py-2 text-sm"
         >
           {RESOLUTIONS.map((r) => (
             <option key={r} value={r}>{r}</option>
@@ -171,7 +171,7 @@ export function DisputeForm({ preselectedOrderId, onClose }: Props) {
         <button
           type="submit"
           disabled={submitting || loadingOrders}
-          className="bg-[#C9A84C] text-[#0A0A0A] hover:bg-[#b8963f] font-semibold px-4 py-2 rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="bg-[#C9A84C] text-black hover:bg-[#b8963f] font-semibold px-4 py-2 rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {submitting ? 'Submitting…' : 'Open Dispute'}
         </button>

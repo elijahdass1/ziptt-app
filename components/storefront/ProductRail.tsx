@@ -24,8 +24,8 @@ export function ProductRail({ title, subtitle, href, products }: Props) {
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex items-end justify-between mb-4">
         <div>
-          <h2 className="text-xl md:text-2xl font-bold text-[#F5F0E8]">{title}</h2>
-          {subtitle && <p className="text-sm text-[#9A8F7A] mt-0.5">{subtitle}</p>}
+          <h2 className="text-xl md:text-2xl font-bold text-[var(--text-primary)]">{title}</h2>
+          {subtitle && <p className="text-sm text-[var(--text-secondary)] mt-0.5">{subtitle}</p>}
         </div>
         {href && (
           <Link

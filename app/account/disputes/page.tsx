@@ -42,12 +42,12 @@ export default async function DisputesPage({
   })
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#0A0A0A]">
+    <div className="flex flex-col min-h-screen bg-[var(--bg-primary)]">
       <Navbar />
       <main className="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
           <h1
-            className="text-2xl font-semibold text-[#F5F0E8]"
+            className="text-2xl font-semibold text-[var(--text-primary)]"
             style={{ fontFamily: 'Georgia,serif' }}
           >
             My Disputes
@@ -58,9 +58,9 @@ export default async function DisputesPage({
         <DisputeFormWrapper preselectedOrderId={searchParams.orderId} />
 
         {disputes.length === 0 ? (
-          <div className="bg-[#111111] border border-[#1a1a1a] rounded-xl p-12 text-center">
+          <div className="bg-[var(--bg-secondary)] border border-[var(--bg-card)] rounded-xl p-12 text-center">
             <p className="text-4xl mb-3">ð</p>
-            <p className="text-[#F5F0E8] font-semibold mb-1">No disputes opened yet</p>
+            <p className="text-[var(--text-primary)] font-semibold mb-1">No disputes opened yet</p>
             <p className="text-[#888] text-sm">
               If you have an issue with an order, open a dispute above.
             </p>
@@ -70,7 +70,7 @@ export default async function DisputesPage({
             {disputes.map((dispute) => (
               <div
                 key={dispute.id}
-                className="bg-[#111111] border border-[#1a1a1a] rounded-xl p-5"
+                className="bg-[var(--bg-secondary)] border border-[var(--bg-card)] rounded-xl p-5"
               >
                 <div className="flex items-start justify-between gap-4 flex-wrap">
                   <div className="flex-1 min-w-0">
@@ -87,7 +87,7 @@ export default async function DisputesPage({
                       </span>
                     </div>
 
-                    <p className="font-semibold text-[#F5F0E8] mb-0.5">
+                    <p className="font-semibold text-[var(--text-primary)] mb-0.5">
                       {dispute.subject}
                     </p>
                     <p className="text-xs text-[#888] mb-2">

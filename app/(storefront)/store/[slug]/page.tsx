@@ -145,18 +145,18 @@ export default async function VendorStorePage({ params, searchParams }: PageProp
       {/* ─── Cover photo + logo (Facebook-style) ─── */}
       <div className="relative w-full">
         {/* Cover */}
-        <div className="relative h-48 sm:h-64 md:h-80 overflow-hidden bg-[#0A0A0A]">
+        <div className="relative h-48 sm:h-64 md:h-80 overflow-hidden bg-[var(--bg-primary)]">
           {vendor.coverImage ? (
             <img src={vendor.coverImage} alt="" className="w-full h-full object-cover" />
           ) : vendor.banner ? (
             <img src={vendor.banner} alt="" className="w-full h-full object-cover opacity-60" />
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-[#1A1500] via-[#0A0A0A] to-[#1A1500]" />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#1A1500] via-[var(--bg-primary)] to-[#1A1500]" />
           )}
           {/* Subtle dark fade so text on top stays legible */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/80 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)]/80 via-transparent to-transparent" />
           <div className="absolute top-4 left-4">
-            <Link href="/products" className="flex items-center gap-1.5 text-sm text-[#F5F0E8] hover:text-[#C9A84C] transition-colors bg-black/60 px-3 py-1.5 rounded-full backdrop-blur-sm">
+            <Link href="/products" className="flex items-center gap-1.5 text-sm text-[var(--text-primary)] hover:text-[#C9A84C] transition-colors bg-black/60 px-3 py-1.5 rounded-full backdrop-blur-sm">
               <ArrowLeft className="h-3.5 w-3.5" /> All Products
             </Link>
           </div>
@@ -166,7 +166,7 @@ export default async function VendorStorePage({ params, searchParams }: PageProp
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end gap-4 -mt-16 md:-mt-20 relative z-10 pb-4">
             {/* Logo (round, big) */}
-            <div className="h-32 w-32 md:h-40 md:w-40 rounded-full bg-[#111111] border-4 border-[#0A0A0A] ring-2 ring-[#C9A84C]/40 flex items-center justify-center overflow-hidden shadow-2xl shrink-0">
+            <div className="h-32 w-32 md:h-40 md:w-40 rounded-full bg-[var(--bg-secondary)] border-4 border-[var(--bg-primary)] ring-2 ring-[#C9A84C]/40 flex items-center justify-center overflow-hidden shadow-2xl shrink-0">
               {vendor.logo ? (
                 <img src={vendor.logo} alt={vendor.storeName} className="h-full w-full object-cover" />
               ) : (
@@ -177,16 +177,16 @@ export default async function VendorStorePage({ params, searchParams }: PageProp
             {/* Name block */}
             <div className="flex-1 min-w-0 md:pb-2">
               <div className="flex items-center gap-2 flex-wrap">
-                <h1 className="text-2xl md:text-3xl font-black text-[#F5F0E8]">{vendor.storeName}</h1>
+                <h1 className="text-2xl md:text-3xl font-black text-[var(--text-primary)]">{vendor.storeName}</h1>
                 {vendor.idVerified && (
                   <BadgeCheck className="h-5 w-5 text-[#C9A84C]" aria-label="Verified seller" />
                 )}
               </div>
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2 text-xs text-[#9A8F7A]">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2 text-xs text-[var(--text-secondary)]">
                 {vendor.rating > 0 && (
                   <span className="flex items-center gap-1">
                     <Star className="h-3.5 w-3.5 fill-[#C9A84C] text-[#C9A84C]" />
-                    <span className="font-bold text-[#F5F0E8]">{vendor.rating.toFixed(1)}</span>
+                    <span className="font-bold text-[var(--text-primary)]">{vendor.rating.toFixed(1)}</span>
                     <span>({vendor.reviewCount} review{vendor.reviewCount !== 1 ? 's' : ''})</span>
                   </span>
                 )}
@@ -238,7 +238,7 @@ export default async function VendorStorePage({ params, searchParams }: PageProp
                     className={`px-4 py-3 text-sm font-semibold whitespace-nowrap border-b-2 transition-colors ${
                       active
                         ? 'border-[#C9A84C] text-[#C9A84C]'
-                        : 'border-transparent text-[#9A8F7A] hover:text-[#F5F0E8]'
+                        : 'border-transparent text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                     }`}
                   >
                     {t.label}
@@ -308,9 +308,9 @@ async function TopItemsTab({
   if (items.length === 0) {
     return (
       <div className="text-center py-24">
-        <Package className="h-12 w-12 text-[#9A8F7A] mx-auto mb-4" strokeWidth={1.2} />
-        <h3 className="text-lg font-semibold text-[#F5F0E8] mb-1">No products yet</h3>
-        <p className="text-sm text-[#9A8F7A]">This seller hasn&apos;t listed any items.</p>
+        <Package className="h-12 w-12 text-[var(--text-secondary)] mx-auto mb-4" strokeWidth={1.2} />
+        <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-1">No products yet</h3>
+        <p className="text-sm text-[var(--text-secondary)]">This seller hasn&apos;t listed any items.</p>
       </div>
     )
   }
@@ -320,12 +320,12 @@ async function TopItemsTab({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-[#C9A84C]" />
-          <h2 className="text-lg font-bold text-[#F5F0E8]">Featured & Best-Sellers</h2>
+          <h2 className="text-lg font-bold text-[var(--text-primary)]">Featured & Best-Sellers</h2>
         </div>
         {totalProducts > items.length && (
           <Link
             href={`/store/${vendorSlug}?tab=all`}
-            className="text-xs text-[#C9A84C] hover:text-[#F5F0E8] transition-colors"
+            className="text-xs text-[#C9A84C] hover:text-[var(--text-primary)] transition-colors"
           >
             View all {totalProducts} →
           </Link>
@@ -395,8 +395,8 @@ async function AllProductsTab({
               href={buildUrl({ category: undefined })}
               className={`px-3 py-1 text-xs rounded-full border transition-colors ${
                 !category
-                  ? 'bg-[#C9A84C] text-[#0A0A0A] border-[#C9A84C] font-semibold'
-                  : 'text-[#9A8F7A] border-[#C9A84C]/20 hover:border-[#C9A84C]/50 hover:text-[#F5F0E8]'
+                  ? 'bg-[#C9A84C] text-black border-[#C9A84C] font-semibold'
+                  : 'text-[var(--text-secondary)] border-[#C9A84C]/20 hover:border-[#C9A84C]/50 hover:text-[var(--text-primary)]'
               }`}
             >All</Link>
             {categories.map(cat => (
@@ -405,8 +405,8 @@ async function AllProductsTab({
                 href={buildUrl({ category: cat.slug })}
                 className={`px-3 py-1 text-xs rounded-full border transition-colors ${
                   category === cat.slug
-                    ? 'bg-[#C9A84C] text-[#0A0A0A] border-[#C9A84C] font-semibold'
-                    : 'text-[#9A8F7A] border-[#C9A84C]/20 hover:border-[#C9A84C]/50 hover:text-[#F5F0E8]'
+                    ? 'bg-[#C9A84C] text-black border-[#C9A84C] font-semibold'
+                    : 'text-[var(--text-secondary)] border-[#C9A84C]/20 hover:border-[#C9A84C]/50 hover:text-[var(--text-primary)]'
                 }`}
               >{cat.name}</Link>
             ))}
@@ -426,7 +426,7 @@ async function AllProductsTab({
               className={`px-3 py-1 text-xs rounded-full border transition-colors ${
                 sort === opt.value
                   ? 'bg-[#1A1A00] text-[#C9A84C] border-[#C9A84C]/40 font-semibold'
-                  : 'text-[#9A8F7A] border-[#C9A84C]/15 hover:border-[#C9A84C]/40 hover:text-[#F5F0E8]'
+                  : 'text-[var(--text-secondary)] border-[#C9A84C]/15 hover:border-[#C9A84C]/40 hover:text-[var(--text-primary)]'
               }`}
             >{opt.label}</Link>
           ))}
@@ -436,13 +436,13 @@ async function AllProductsTab({
       {/* Products */}
       {products.length === 0 ? (
         <div className="text-center py-24">
-          <Package className="h-12 w-12 text-[#9A8F7A] mx-auto mb-4" strokeWidth={1.2} />
-          <h3 className="text-lg font-semibold text-[#F5F0E8] mb-1">No products found</h3>
-          <p className="text-sm text-[#9A8F7A]">Try a different filter.</p>
+          <Package className="h-12 w-12 text-[var(--text-secondary)] mx-auto mb-4" strokeWidth={1.2} />
+          <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-1">No products found</h3>
+          <p className="text-sm text-[var(--text-secondary)]">Try a different filter.</p>
         </div>
       ) : (
         <>
-          <p className="text-xs text-[#9A8F7A]">
+          <p className="text-xs text-[var(--text-secondary)]">
             Showing {((page - 1) * LIMIT) + 1}–{Math.min(page * LIMIT, total)} of {total.toLocaleString()} products
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
@@ -453,7 +453,7 @@ async function AllProductsTab({
           {pages > 1 && (
             <div className="flex items-center justify-center gap-2 mt-10 mb-6">
               {page > 1 && (
-                <Link href={buildUrl({ page: String(page - 1) })} className="p-2 border border-[#C9A84C]/30 rounded-lg hover:bg-[#1A1A1A] text-[#9A8F7A] hover:text-[#F5F0E8] transition-colors">
+                <Link href={buildUrl({ page: String(page - 1) })} className="p-2 border border-[#C9A84C]/30 rounded-lg hover:bg-[var(--bg-card)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
                   <ChevronLeft className="h-4 w-4" />
                 </Link>
               )}
@@ -467,15 +467,15 @@ async function AllProductsTab({
                   <Link key={p} href={buildUrl({ page: String(p) })}
                     className={`w-9 h-9 flex items-center justify-center rounded-lg text-sm font-medium transition-colors ${
                       p === page
-                        ? 'bg-[#C9A84C] text-[#0A0A0A] font-bold'
-                        : 'border border-[#C9A84C]/20 text-[#9A8F7A] hover:bg-[#1A1A1A] hover:text-[#F5F0E8]'
+                        ? 'bg-[#C9A84C] text-black font-bold'
+                        : 'border border-[#C9A84C]/20 text-[var(--text-secondary)] hover:bg-[var(--bg-card)] hover:text-[var(--text-primary)]'
                     }`}>
                     {p}
                   </Link>
                 )
               })}
               {page < pages && (
-                <Link href={buildUrl({ page: String(page + 1) })} className="p-2 border border-[#C9A84C]/30 rounded-lg hover:bg-[#1A1A1A] text-[#9A8F7A] hover:text-[#F5F0E8] transition-colors">
+                <Link href={buildUrl({ page: String(page + 1) })} className="p-2 border border-[#C9A84C]/30 rounded-lg hover:bg-[var(--bg-card)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
                   <ChevronRight className="h-4 w-4" />
                 </Link>
               )}
@@ -551,25 +551,25 @@ function AboutTab({
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div className="md:col-span-2 space-y-4">
-        <div className="bg-[#111111] border border-[#C9A84C]/15 rounded-xl p-6">
-          <h2 className="text-lg font-bold text-[#F5F0E8] mb-3">About {vendor.storeName}</h2>
+        <div className="bg-[var(--bg-secondary)] border border-[#C9A84C]/15 rounded-xl p-6">
+          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-3">About {vendor.storeName}</h2>
           {vendor.bio ? (
-            <p className="text-sm text-[#9A8F7A] leading-relaxed whitespace-pre-wrap">{vendor.bio}</p>
+            <p className="text-sm text-[var(--text-secondary)] leading-relaxed whitespace-pre-wrap">{vendor.bio}</p>
           ) : vendor.description ? (
-            <p className="text-sm text-[#9A8F7A] leading-relaxed">{vendor.description}</p>
+            <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{vendor.description}</p>
           ) : (
             <p className="text-sm text-[#666] italic">No bio yet.</p>
           )}
         </div>
       </div>
-      <aside className="bg-[#111111] border border-[#C9A84C]/15 rounded-xl p-6 space-y-3 h-fit">
+      <aside className="bg-[var(--bg-secondary)] border border-[#C9A84C]/15 rounded-xl p-6 space-y-3 h-fit">
         <h3 className="text-xs font-semibold uppercase tracking-wider text-[#C9A84C] mb-2">Details</h3>
         {facts.map((f) => (
           <div key={f.label} className="flex items-start gap-2.5">
             <f.icon className="h-4 w-4 text-[#C9A84C] mt-0.5 shrink-0" />
             <div className="flex-1 min-w-0">
-              <p className="text-[10px] uppercase tracking-wider text-[#9A8F7A]">{f.label}</p>
-              <p className="text-sm text-[#F5F0E8] truncate">{f.value}</p>
+              <p className="text-[10px] uppercase tracking-wider text-[var(--text-secondary)]">{f.label}</p>
+              <p className="text-sm text-[var(--text-primary)] truncate">{f.value}</p>
             </div>
           </div>
         ))}

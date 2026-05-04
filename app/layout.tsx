@@ -49,13 +49,38 @@ export const metadata: Metadata = {
   },
 }
 
+// Inline script that runs BEFORE React hydrates. Reads the persisted
+// theme from localStorage (key: ziptt-theme) and applies the `dark`
+// class to <html> so the first paint matches the user's choice — no
+// flash of light-mode page on a returning dark-mode user.
+//
+// Defaults to light when nothing is set (per product spec). System
+// `prefers-color-scheme: dark` is intentionally ignored at first
+// visit so we always start everyone on the brand-correct light mode.
+const themeInitScript = `
+(function(){
+  try {
+    var t = localStorage.getItem('ziptt-theme');
+    if (t === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.documentElement.dataset.theme = 'dark';
+    } else {
+      document.documentElement.dataset.theme = 'light';
+    }
+  } catch(e) { /* ignore — private browsing etc. */ }
+})();
+`
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body className={`${inter.variable} ${notoEmoji.variable}`} style={{ fontFamily: "var(--font-inter), 'Noto Color Emoji', sans-serif" }}>
         <Providers>
           {children}

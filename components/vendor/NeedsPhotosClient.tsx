@@ -58,12 +58,12 @@ export function NeedsPhotosClient({ products }: { products: ProductTile[] }) {
   return (
     <div className="space-y-6">
       {/* Sticky progress bar */}
-      <div className="sticky top-0 z-10 -mx-8 px-8 py-3 bg-[#0A0A0A]/95 backdrop-blur border-b border-[#C9A84C]/20 flex items-center justify-between">
+      <div className="sticky top-0 z-10 -mx-8 px-8 py-3 bg-[var(--bg-primary)]/95 backdrop-blur border-b border-[#C9A84C]/20 flex items-center justify-between">
         <div>
-          <span className="text-sm font-semibold text-[#F5F0E8]">
+          <span className="text-sm font-semibold text-[var(--text-primary)]">
             {fixedCount} of {total} fixed
           </span>
-          <span className="text-xs text-[#9A8F7A] ml-2">in this session</span>
+          <span className="text-xs text-[var(--text-secondary)] ml-2">in this session</span>
         </div>
         <div className="w-48 h-1.5 rounded-full bg-[#C9A84C]/15 overflow-hidden">
           <div
@@ -75,8 +75,8 @@ export function NeedsPhotosClient({ products }: { products: ProductTile[] }) {
 
       {grouped.map(([cat, items]) => (
         <section key={cat}>
-          <h2 className="text-sm font-semibold text-[#9A8F7A] uppercase tracking-wider mb-3">
-            {cat} <span className="text-[#9A8F7A]/50">· {items.length}</span>
+          <h2 className="text-sm font-semibold text-[var(--text-secondary)] uppercase tracking-wider mb-3">
+            {cat} <span className="text-[var(--text-secondary)]/50">· {items.length}</span>
           </h2>
           <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {items.map((p) => {
@@ -113,7 +113,7 @@ export function NeedsPhotosClient({ products }: { products: ProductTile[] }) {
 
                   <div className="p-3 flex-1 flex flex-col gap-1.5">
                     <div className="flex items-start justify-between gap-2">
-                      <p className="text-sm font-medium text-[#F5F0E8] line-clamp-2 leading-tight">
+                      <p className="text-sm font-medium text-[var(--text-primary)] line-clamp-2 leading-tight">
                         {p.name}
                       </p>
                       {!isFixed && (
@@ -124,7 +124,7 @@ export function NeedsPhotosClient({ products }: { products: ProductTile[] }) {
                         </span>
                       )}
                     </div>
-                    <div className="flex items-center justify-between text-xs text-[#9A8F7A]">
+                    <div className="flex items-center justify-between text-xs text-[var(--text-secondary)]">
                       <span>
                         {p.stock} in stock · {p.status}
                       </span>

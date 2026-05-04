@@ -108,8 +108,8 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
             <div className="flex items-center justify-center mb-4">
               <Lock size={48} className="text-[#C9A84C]" strokeWidth={1.2} />
             </div>
-            <h2 className="text-xl font-bold mb-2 text-[#F5F0E8]">Sign in to checkout</h2>
-            <p className="text-[#9A8F7A] mb-6">You need to be logged in to place an order.</p>
+            <h2 className="text-xl font-bold mb-2 text-[var(--text-primary)]">Sign in to checkout</h2>
+            <p className="text-[var(--text-secondary)] mb-6">You need to be logged in to place an order.</p>
             <Link href="/auth/login?callbackUrl=/checkout" className="btn-primary">Sign In</Link>
           </div>
         </main>
@@ -124,10 +124,10 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#0A0A0A]">
+    <div className="flex flex-col min-h-screen bg-[var(--bg-primary)]">
       <Navbar />
       <main className="flex-1 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-        <h1 className="text-2xl font-bold text-[#F5F0E8] mb-8" style={{ fontFamily: 'Georgia, serif' }}>
+        <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-8" style={{ fontFamily: 'Georgia, serif' }}>
           Checkout
         </h1>
 
@@ -145,13 +145,13 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
                 return (
                   <div key={s} className="flex items-center gap-2">
                     <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
-                      active ? 'bg-[#C9A84C] text-[#0A0A0A]'
+                      active ? 'bg-[#C9A84C] text-black'
                       : done ? 'bg-[#C9A84C]/30 text-[#C9A84C]'
-                      : 'bg-[#1A1A1A] text-[#555]'
+                      : 'bg-[var(--bg-card)] text-[#555]'
                     }`}>
                       {i + 1}
                     </div>
-                    <span className={`text-sm font-medium capitalize hidden sm:inline ${active ? 'text-[#F5F0E8]' : 'text-[#555]'}`}>
+                    <span className={`text-sm font-medium capitalize hidden sm:inline ${active ? 'text-[var(--text-primary)]' : 'text-[#555]'}`}>
                       {s}
                     </span>
                     {i < 2 && <div className="w-10 h-px bg-[#333]" />}
@@ -180,22 +180,22 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
                     <div>
                       <div className="flex items-center gap-2 mb-3">
                         <MapPin className="h-4 w-4 text-[#C9A84C]" />
-                        <h3 className="text-sm font-semibold text-[#F5F0E8]">Delivery Coverage Map</h3>
+                        <h3 className="text-sm font-semibold text-[var(--text-primary)]">Delivery Coverage Map</h3>
                       </div>
                       <TrinidadDeliveryMap selectedRegion={form.region} />
                     </div>
 
-                    <div className="bg-[#111111] border border-[#C9A84C]/15 rounded-2xl p-5 space-y-4">
-                      <h2 className="text-base font-bold text-[#F5F0E8]">Your Delivery Address</h2>
+                    <div className="bg-[var(--bg-secondary)] border border-[#C9A84C]/15 rounded-2xl p-5 space-y-4">
+                      <h2 className="text-base font-bold text-[var(--text-primary)]">Your Delivery Address</h2>
 
                       <div>
-                        <label className="block text-xs font-medium text-[#9A8F7A] mb-1.5 uppercase tracking-wide">
+                        <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5 uppercase tracking-wide">
                           Delivery Region *
                         </label>
                         <select
                           value={form.region}
                           onChange={(e) => setForm({ ...form, region: e.target.value as typeof form.region })}
-                          className="w-full bg-[#1A1A1A] border border-[#C9A84C]/20 rounded-xl px-3 py-2.5 text-sm text-[#F5F0E8] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent"
+                          className="w-full bg-[var(--bg-card)] border border-[#C9A84C]/20 rounded-xl px-3 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent"
                         >
                           {DELIVERY_REGIONS.map((r) => (
                             <option key={r} value={r}>{r}</option>
@@ -212,31 +212,31 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
                       </div>
 
                       <div>
-                        <label className="block text-xs font-medium text-[#9A8F7A] mb-1.5 uppercase tracking-wide">
+                        <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5 uppercase tracking-wide">
                           Street Address *
                         </label>
                         <input
                           value={form.street}
                           onChange={(e) => setForm({ ...form, street: e.target.value })}
                           placeholder="e.g. 23 Circular Road, Westmoorings"
-                          className="w-full bg-[#1A1A1A] border border-[#C9A84C]/20 rounded-xl px-3 py-2.5 text-sm text-[#F5F0E8] placeholder-[#555] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent"
+                          className="w-full bg-[var(--bg-card)] border border-[#C9A84C]/20 rounded-xl px-3 py-2.5 text-sm text-[var(--text-primary)] placeholder-[#555] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-xs font-medium text-[#9A8F7A] mb-1.5 uppercase tracking-wide">
+                        <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5 uppercase tracking-wide">
                           City / Town *
                         </label>
                         <input
                           value={form.city}
                           onChange={(e) => setForm({ ...form, city: e.target.value })}
                           placeholder="e.g. Port of Spain"
-                          className="w-full bg-[#1A1A1A] border border-[#C9A84C]/20 rounded-xl px-3 py-2.5 text-sm text-[#F5F0E8] placeholder-[#555] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent"
+                          className="w-full bg-[var(--bg-card)] border border-[#C9A84C]/20 rounded-xl px-3 py-2.5 text-sm text-[var(--text-primary)] placeholder-[#555] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-xs font-medium text-[#9A8F7A] mb-1.5 uppercase tracking-wide">
+                        <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5 uppercase tracking-wide">
                           Delivery Notes (optional)
                         </label>
                         <textarea
@@ -244,13 +244,13 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
                           onChange={(e) => setForm({ ...form, notes: e.target.value })}
                           rows={2}
                           placeholder="Gate code, landmarks, preferred delivery time..."
-                          className="w-full bg-[#1A1A1A] border border-[#C9A84C]/20 rounded-xl px-3 py-2.5 text-sm text-[#F5F0E8] placeholder-[#555] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent resize-none"
+                          className="w-full bg-[var(--bg-card)] border border-[#C9A84C]/20 rounded-xl px-3 py-2.5 text-sm text-[var(--text-primary)] placeholder-[#555] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent resize-none"
                         />
                       </div>
 
                       <button
                         onClick={() => setStep('payment')}
-                        className="w-full py-3 bg-[#C9A84C] hover:bg-[#F0C040] text-[#0A0A0A] font-bold rounded-xl transition-colors"
+                        className="w-full py-3 bg-[#C9A84C] hover:bg-[#F0C040] text-black font-bold rounded-xl transition-colors"
                       >
                         Continue to Payment →
                       </button>
@@ -260,8 +260,8 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
 
                 {/* STEP 2: PAYMENT */}
                 {step === 'payment' && (
-                  <div className="bg-[#111111] border border-[#C9A84C]/15 rounded-2xl p-5 space-y-4">
-                    <h2 className="text-base font-bold text-[#F5F0E8]">Payment Method</h2>
+                  <div className="bg-[var(--bg-secondary)] border border-[#C9A84C]/15 rounded-2xl p-5 space-y-4">
+                    <h2 className="text-base font-bold text-[var(--text-primary)]">Payment Method</h2>
                     <div className="space-y-3">
                       {[
                         {
@@ -293,19 +293,19 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
                           <span className="text-xs font-bold text-[#C9A84C] bg-[#C9A84C]/10 px-2 py-1 rounded">{method.icon}</span>
                           <div className="flex-1">
                             <div className="flex items-center gap-2">
-                              <p className="font-semibold text-[#F5F0E8] text-sm">{method.label}</p>
+                              <p className="font-semibold text-[var(--text-primary)] text-sm">{method.label}</p>
                               {method.badge && (
                                 <span className="text-[10px] px-1.5 py-0.5 bg-green-500/20 text-green-400 border border-green-500/30 rounded-full font-medium">
                                   {method.badge}
                                 </span>
                               )}
                             </div>
-                            <p className="text-xs text-[#9A8F7A]">{method.desc}</p>
+                            <p className="text-xs text-[var(--text-secondary)]">{method.desc}</p>
                           </div>
                           <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
                             form.paymentMethod === method.value ? 'border-[#C9A84C] bg-[#C9A84C]' : 'border-[#444]'
                           }`}>
-                            {form.paymentMethod === method.value && <div className="w-2 h-2 bg-[#0A0A0A] rounded-full" />}
+                            {form.paymentMethod === method.value && <div className="w-2 h-2 bg-[var(--bg-primary)] rounded-full" />}
                           </div>
                         </label>
                       ))}
@@ -314,7 +314,7 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
                       <button onClick={() => setStep('address')} className="flex-1 py-3 border border-[#C9A84C]/30 text-[#C9A84C] hover:bg-[#C9A84C]/8 font-semibold rounded-xl transition-colors text-sm">
                         ← Back
                       </button>
-                      <button onClick={() => setStep('review')} className="flex-1 py-3 bg-[#C9A84C] hover:bg-[#F0C040] text-[#0A0A0A] font-bold rounded-xl transition-colors">
+                      <button onClick={() => setStep('review')} className="flex-1 py-3 bg-[#C9A84C] hover:bg-[#F0C040] text-black font-bold rounded-xl transition-colors">
                         Review Order →
                       </button>
                     </div>
@@ -323,28 +323,28 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
 
                 {/* STEP 3: REVIEW */}
                 {step === 'review' && (
-                  <div className="bg-[#111111] border border-[#C9A84C]/15 rounded-2xl p-5 space-y-4">
-                    <h2 className="text-base font-bold text-[#F5F0E8]">Review Your Order</h2>
+                  <div className="bg-[var(--bg-secondary)] border border-[#C9A84C]/15 rounded-2xl p-5 space-y-4">
+                    <h2 className="text-base font-bold text-[var(--text-primary)]">Review Your Order</h2>
 
-                    <div className="bg-[#0A0A0A] border border-[#1E1E1E] rounded-xl p-4 space-y-1 text-sm">
+                    <div className="bg-[var(--bg-primary)] border border-[#1E1E1E] rounded-xl p-4 space-y-1 text-sm">
                       <p className="font-semibold text-[#C9A84C] text-xs uppercase tracking-wide">Delivery Address</p>
-                      <p className="text-[#F5F0E8]">{form.street}, {form.city}</p>
-                      <p className="text-[#9A8F7A]">{form.region}, Trinidad</p>
+                      <p className="text-[var(--text-primary)]">{form.street}, {form.city}</p>
+                      <p className="text-[var(--text-secondary)]">{form.region}, Trinidad</p>
                       {form.notes && <p className="text-[#555] text-xs mt-1">{form.notes}</p>}
                     </div>
 
-                    <div className="bg-[#0A0A0A] border border-[#1E1E1E] rounded-xl p-4 space-y-1 text-sm">
+                    <div className="bg-[var(--bg-primary)] border border-[#1E1E1E] rounded-xl p-4 space-y-1 text-sm">
                       <p className="font-semibold text-[#C9A84C] text-xs uppercase tracking-wide">Payment</p>
-                      <p className="text-[#F5F0E8]">{form.paymentMethod.replace(/_/g, ' ')}</p>
+                      <p className="text-[var(--text-primary)]">{form.paymentMethod.replace(/_/g, ' ')}</p>
                     </div>
 
                     <div className="space-y-3">
                       {items.map((item) => (
                         <div key={item.productId} className="flex items-center gap-3">
-                          <img src={item.image || ''} alt={item.name} className="w-12 h-12 rounded-xl object-cover bg-[#1A1A1A]" />
+                          <img src={item.image || ''} alt={item.name} className="w-12 h-12 rounded-xl object-cover bg-[var(--bg-card)]" />
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-[#F5F0E8] truncate">{item.name}</p>
-                            <p className="text-xs text-[#9A8F7A]">Qty: {item.quantity}</p>
+                            <p className="text-sm font-medium text-[var(--text-primary)] truncate">{item.name}</p>
+                            <p className="text-xs text-[var(--text-secondary)]">Qty: {item.quantity}</p>
                           </div>
                           <p className="text-sm font-semibold text-[#C9A84C]">{formatTTD(item.price * item.quantity)}</p>
                         </div>
@@ -358,7 +358,7 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
                       <button
                         onClick={handleSubmit}
                         disabled={loading}
-                        className="flex-1 py-3 bg-[#C9A84C] hover:bg-[#F0C040] disabled:bg-[#333] disabled:text-[#555] text-[#0A0A0A] font-bold rounded-xl transition-colors"
+                        className="flex-1 py-3 bg-[#C9A84C] hover:bg-[#F0C040] disabled:bg-[#333] disabled:text-[#555] text-black font-bold rounded-xl transition-colors"
                       >
                         {loading ? 'Placing Order...' : 'Place Order'}
                       </button>
@@ -368,26 +368,26 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
               </div>
 
               {/* ORDER SUMMARY SIDEBAR */}
-              <div className="bg-[#111111] border border-[#C9A84C]/15 rounded-2xl p-5 h-fit space-y-3">
-                <h2 className="font-bold text-[#F5F0E8] text-sm uppercase tracking-wide">Order Summary</h2>
+              <div className="bg-[var(--bg-secondary)] border border-[#C9A84C]/15 rounded-2xl p-5 h-fit space-y-3">
+                <h2 className="font-bold text-[var(--text-primary)] text-sm uppercase tracking-wide">Order Summary</h2>
                 <div className="space-y-2 text-sm">
                   {items.map((item) => (
-                    <div key={item.productId} className="flex justify-between text-[#9A8F7A]">
+                    <div key={item.productId} className="flex justify-between text-[var(--text-secondary)]">
                       <span className="truncate">{item.name} ×{item.quantity}</span>
-                      <span className="shrink-0 ml-2 text-[#F5F0E8]">{formatTTD(item.price * item.quantity)}</span>
+                      <span className="shrink-0 ml-2 text-[var(--text-primary)]">{formatTTD(item.price * item.quantity)}</span>
                     </div>
                   ))}
                   <div className="border-t border-[#1E1E1E] pt-3 space-y-1.5">
-                    <div className="flex justify-between text-[#9A8F7A] text-sm">
+                    <div className="flex justify-between text-[var(--text-secondary)] text-sm">
                       <span>Delivery</span>
-                      <span className={deliveryFee === 0 ? 'text-green-400 font-medium' : 'text-[#F5F0E8]'}>
+                      <span className={deliveryFee === 0 ? 'text-green-400 font-medium' : 'text-[var(--text-primary)]'}>
                         {deliveryFee === 0 ? 'FREE' : formatTTD(deliveryFee)}
                       </span>
                     </div>
                     {subtotal < 500 && (
                       <p className="text-[10px] text-[#555]">Add {formatTTD(500 - subtotal)} more for free delivery</p>
                     )}
-                    <div className="flex justify-between font-bold text-[#F5F0E8] pt-1 text-base">
+                    <div className="flex justify-between font-bold text-[var(--text-primary)] pt-1 text-base">
                       <span>Total</span>
                       <span className="text-[#C9A84C]">{formatTTD(grandTotal)}</span>
                     </div>

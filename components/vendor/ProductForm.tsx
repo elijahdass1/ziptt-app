@@ -194,7 +194,7 @@ export function ProductForm({ categories, vendorId, product }: ProductFormProps)
                 toast({ title: 'Upload failed — try a URL instead', variant: 'destructive' })
               }}
               appearance={{
-                button: 'bg-[#C9A84C] hover:bg-[#F0C040] text-[#0A0A0A] font-semibold rounded-xl px-4 py-2 text-sm ut-uploading:bg-[#8B6914]',
+                button: 'bg-[#C9A84C] hover:bg-[#F0C040] text-black font-semibold rounded-xl px-4 py-2 text-sm ut-uploading:bg-[#8B6914]',
                 allowedContent: 'text-xs text-gray-400',
               }}
             />

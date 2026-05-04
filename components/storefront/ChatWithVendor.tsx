@@ -158,7 +158,7 @@ export function ChatWithVendor({
       {/* Trigger button — sits inline next to the vendor name in the profile header */}
       <button
         onClick={handleOpen}
-        className="inline-flex items-center gap-2 bg-[#C9A84C] text-[#0A0A0A] hover:bg-[#b8963f] px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm"
+        className="inline-flex items-center gap-2 bg-[#C9A84C] text-black hover:bg-[#b8963f] px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm"
       >
         <MessageSquare className="h-4 w-4" />
         Message Seller
@@ -166,10 +166,10 @@ export function ChatWithVendor({
 
       {/* Floating panel */}
       {open && (
-        <div className="fixed bottom-4 right-4 z-50 w-[min(380px,calc(100vw-2rem))] h-[520px] max-h-[80vh] flex flex-col bg-[#0A0A0A] border border-[#C9A84C]/30 rounded-2xl shadow-2xl overflow-hidden">
+        <div className="fixed bottom-4 right-4 z-50 w-[min(380px,calc(100vw-2rem))] h-[520px] max-h-[80vh] flex flex-col bg-[var(--bg-primary)] border border-[#C9A84C]/30 rounded-2xl shadow-2xl overflow-hidden">
           {/* Header */}
-          <div className="flex items-center gap-2.5 px-4 py-3 border-b border-[#C9A84C]/15 bg-[#111111]">
-            <div className="h-8 w-8 rounded-full bg-[#1A1A1A] border border-[#C9A84C]/30 flex items-center justify-center overflow-hidden shrink-0">
+          <div className="flex items-center gap-2.5 px-4 py-3 border-b border-[#C9A84C]/15 bg-[var(--bg-secondary)]">
+            <div className="h-8 w-8 rounded-full bg-[var(--bg-card)] border border-[#C9A84C]/30 flex items-center justify-center overflow-hidden shrink-0">
               {vendorLogo ? (
                 <img src={vendorLogo} alt="" className="h-full w-full object-cover" />
               ) : (
@@ -177,12 +177,12 @@ export function ChatWithVendor({
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-[#F5F0E8] truncate">{vendorName}</p>
-              <p className="text-[10px] text-[#9A8F7A]">Usually replies in a few hours</p>
+              <p className="text-sm font-semibold text-[var(--text-primary)] truncate">{vendorName}</p>
+              <p className="text-[10px] text-[var(--text-secondary)]">Usually replies in a few hours</p>
             </div>
             <button
               onClick={() => setOpen(false)}
-              className="text-[#9A8F7A] hover:text-[#F5F0E8] transition-colors"
+              className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
               aria-label="Close chat"
             >
               <X className="h-4 w-4" />
@@ -190,11 +190,11 @@ export function ChatWithVendor({
           </div>
 
           {/* Messages */}
-          <div ref={scrollRef} className="flex-1 overflow-y-auto px-3 py-3 space-y-2 bg-[#0A0A0A]">
+          <div ref={scrollRef} className="flex-1 overflow-y-auto px-3 py-3 space-y-2 bg-[var(--bg-primary)]">
             {bootstrapping ? (
-              <p className="text-xs text-[#9A8F7A] text-center py-6">Loading…</p>
+              <p className="text-xs text-[var(--text-secondary)] text-center py-6">Loading…</p>
             ) : messages.length === 0 ? (
-              <p className="text-xs text-[#9A8F7A] text-center py-6">
+              <p className="text-xs text-[var(--text-secondary)] text-center py-6">
                 Say hello — your message goes straight to the seller.
               </p>
             ) : (
@@ -206,8 +206,8 @@ export function ChatWithVendor({
                   <div
                     className={`max-w-[80%] px-3 py-2 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap break-words ${
                       m.fromMe
-                        ? 'bg-[#C9A84C] text-[#0A0A0A] rounded-br-sm'
-                        : 'bg-[#1A1A1A] text-[#F5F0E8] rounded-bl-sm border border-[#C9A84C]/10'
+                        ? 'bg-[#C9A84C] text-black rounded-br-sm'
+                        : 'bg-[var(--bg-card)] text-[var(--text-primary)] rounded-bl-sm border border-[#C9A84C]/10'
                     }`}
                   >
                     {m.body}
@@ -219,7 +219,7 @@ export function ChatWithVendor({
           </div>
 
           {/* Composer */}
-          <form onSubmit={send} className="border-t border-[#C9A84C]/15 bg-[#111111] p-2 flex items-end gap-2">
+          <form onSubmit={send} className="border-t border-[#C9A84C]/15 bg-[var(--bg-secondary)] p-2 flex items-end gap-2">
             <textarea
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
@@ -231,12 +231,12 @@ export function ChatWithVendor({
               }}
               rows={1}
               placeholder="Write a message…"
-              className="flex-1 bg-[#0A0A0A] border border-[#333] text-[#F5F0E8] focus:border-[#C9A84C] focus:outline-none rounded-xl px-3 py-2 text-sm placeholder:text-[#555] resize-none max-h-24"
+              className="flex-1 bg-[var(--bg-primary)] border border-[#333] text-[var(--text-primary)] focus:border-[#C9A84C] focus:outline-none rounded-xl px-3 py-2 text-sm placeholder:text-[#555] resize-none max-h-24"
             />
             <button
               type="submit"
               disabled={!draft.trim() || sending}
-              className="bg-[#C9A84C] text-[#0A0A0A] hover:bg-[#b8963f] disabled:opacity-40 disabled:cursor-not-allowed h-9 w-9 rounded-full flex items-center justify-center shrink-0 transition-colors"
+              className="bg-[#C9A84C] text-black hover:bg-[#b8963f] disabled:opacity-40 disabled:cursor-not-allowed h-9 w-9 rounded-full flex items-center justify-center shrink-0 transition-colors"
               aria-label="Send"
             >
               <Send className="h-4 w-4" />

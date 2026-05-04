@@ -146,14 +146,14 @@ export function ZipChatWidget() {
         className={cn(
           'fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-xl flex items-center justify-center transition-all duration-200',
           open
-            ? 'bg-[#1A1A1A] border border-[#C9A84C]/30'
+            ? 'bg-[var(--bg-card)] border border-[#C9A84C]/30'
             : 'bg-[#C9A84C] hover:bg-[#F0C040] hover:scale-105 shadow-[0_0_20px_rgba(201,168,76,0.4)]'
         )}
         aria-label="Chat with Zip"
       >
         {open
           ? <X className="h-6 w-6 text-[#C9A84C]" />
-          : <MessageCircle className="h-6 w-6 text-[#0A0A0A]" />
+          : <MessageCircle className="h-6 w-6 text-[var(--bg-primary)]" />
         }
         {!open && messages.length === 1 && (
           <span className="absolute -top-1 -right-1 flex h-4 w-4">
@@ -166,17 +166,17 @@ export function ZipChatWidget() {
       {/* Chat panel */}
       {open && (
         <div
-          className="fixed bottom-24 right-6 z-50 w-[380px] max-w-[calc(100vw-24px)] bg-[#111111] rounded-2xl shadow-2xl border border-[#C9A84C]/25 flex flex-col overflow-hidden"
+          className="fixed bottom-24 right-6 z-50 w-[380px] max-w-[calc(100vw-24px)] bg-[var(--bg-secondary)] rounded-2xl shadow-2xl border border-[#C9A84C]/25 flex flex-col overflow-hidden"
           style={{ height: '520px' }}
         >
           {/* Header */}
-          <div className="bg-gradient-to-r from-[#0A0A0A] to-[#1A1A1A] border-b border-[#C9A84C]/20 px-4 py-3 flex items-center gap-3 shrink-0">
-            <div className="h-9 w-9 rounded-full bg-[#C9A84C] flex items-center justify-center text-[#0A0A0A] text-sm font-black shadow-[0_0_12px_rgba(201,168,76,0.5)] shrink-0">
+          <div className="bg-gradient-to-r from-[var(--bg-primary)] to-[var(--bg-card)] border-b border-[#C9A84C]/20 px-4 py-3 flex items-center gap-3 shrink-0">
+            <div className="h-9 w-9 rounded-full bg-[#C9A84C] flex items-center justify-center text-black text-sm font-black shadow-[0_0_12px_rgba(201,168,76,0.5)] shrink-0">
               Z
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-1.5">
-                <p className="font-semibold text-sm text-[#F5F0E8]">Zip Assistant</p>
+                <p className="font-semibold text-sm text-[var(--text-primary)]">Zip Assistant</p>
                 <Sparkles className="h-3 w-3 text-[#C9A84C]" />
               </div>
               <p className="text-xs text-[#C9A84C]">zip.tt • Powered by Groq AI 🇹🇹</p>
@@ -192,7 +192,7 @@ export function ZipChatWidget() {
               )}
               <button
                 onClick={() => setMessages([{ id: '0', role: 'assistant', content: WELCOME }])}
-                className="p-1 hover:bg-[#C9A84C]/15 rounded-full transition-colors text-[#9A8F7A] hover:text-[#C9A84C]"
+                className="p-1 hover:bg-[#C9A84C]/15 rounded-full transition-colors text-[var(--text-secondary)] hover:text-[#C9A84C]"
                 title="Clear chat"
               >
                 <RotateCcw className="h-3.5 w-3.5" />
@@ -201,11 +201,11 @@ export function ZipChatWidget() {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-[#0A0A0A]">
+          <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-[var(--bg-primary)]">
             {messages.map((msg) => (
               <div key={msg.id} className={cn('flex', msg.role === 'user' ? 'justify-end' : 'justify-start')}>
                 {msg.role === 'assistant' && (
-                  <div className="h-7 w-7 rounded-full bg-[#C9A84C] text-[#0A0A0A] text-xs font-black flex items-center justify-center shrink-0 mr-2 mt-0.5">
+                  <div className="h-7 w-7 rounded-full bg-[#C9A84C] text-black text-xs font-black flex items-center justify-center shrink-0 mr-2 mt-0.5">
                     Z
                   </div>
                 )}
@@ -213,8 +213,8 @@ export function ZipChatWidget() {
                   className={cn(
                     'max-w-[78%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed',
                     msg.role === 'user'
-                      ? 'bg-[#C9A84C] text-[#0A0A0A] font-medium rounded-tr-sm'
-                      : 'bg-[#1A1A1A] text-[#F5F0E8] border border-[#C9A84C]/10 rounded-tl-sm'
+                      ? 'bg-[#C9A84C] text-black font-medium rounded-tr-sm'
+                      : 'bg-[var(--bg-card)] text-[var(--text-primary)] border border-[#C9A84C]/10 rounded-tl-sm'
                   )}
                 >
                   {msg.content ? (
@@ -226,7 +226,7 @@ export function ZipChatWidget() {
                         <div className="h-1.5 w-1.5 bg-[#C9A84C] rounded-full animate-bounce [animation-delay:-0.15s]" />
                         <div className="h-1.5 w-1.5 bg-[#C9A84C] rounded-full animate-bounce" />
                       </div>
-                      <span className="text-xs text-[#9A8F7A]">Zip is thinking...</span>
+                      <span className="text-xs text-[var(--text-secondary)]">Zip is thinking...</span>
                     </div>
                   )}
                 </div>
@@ -237,12 +237,12 @@ export function ZipChatWidget() {
 
           {/* Quick suggestion chips */}
           {messages.length <= 2 && (
-            <div className="px-4 pb-2 flex gap-2 flex-wrap bg-[#0A0A0A] shrink-0">
+            <div className="px-4 pb-2 flex gap-2 flex-wrap bg-[var(--bg-primary)] shrink-0">
               {SUGGESTIONS.map((s) => (
                 <button
                   key={s}
                   onClick={() => { setInput(s); inputRef.current?.focus() }}
-                  className="text-xs bg-[#1A1A1A] hover:bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/20 px-3 py-1.5 rounded-full transition-colors whitespace-nowrap"
+                  className="text-xs bg-[var(--bg-card)] hover:bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/20 px-3 py-1.5 rounded-full transition-colors whitespace-nowrap"
                 >
                   {s}
                 </button>
@@ -251,7 +251,7 @@ export function ZipChatWidget() {
           )}
 
           {/* Input */}
-          <div className="p-3 border-t border-[#C9A84C]/15 bg-[#111111] shrink-0">
+          <div className="p-3 border-t border-[#C9A84C]/15 bg-[var(--bg-secondary)] shrink-0">
             <div className="flex gap-2">
               <input
                 ref={inputRef}
@@ -260,13 +260,13 @@ export function ZipChatWidget() {
                 onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && sendMessage()}
                 placeholder="Ask Zip anything..."
                 maxLength={500}
-                className="flex-1 text-sm bg-[#1A1A1A] border border-[#C9A84C]/20 rounded-full px-4 py-2.5 text-[#F5F0E8] placeholder-[#9A8F7A] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent"
+                className="flex-1 text-sm bg-[var(--bg-card)] border border-[#C9A84C]/20 rounded-full px-4 py-2.5 text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent"
                 disabled={loading}
               />
               <button
                 onClick={sendMessage}
                 disabled={loading || !input.trim()}
-                className="h-10 w-10 bg-[#C9A84C] hover:bg-[#F0C040] disabled:bg-[#1A1A1A] text-[#0A0A0A] disabled:text-[#9A8F7A] rounded-full flex items-center justify-center transition-colors shrink-0"
+                className="h-10 w-10 bg-[#C9A84C] hover:bg-[#F0C040] disabled:bg-[var(--bg-card)] text-black disabled:text-[var(--text-secondary)] rounded-full flex items-center justify-center transition-colors shrink-0"
               >
                 {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
               </button>

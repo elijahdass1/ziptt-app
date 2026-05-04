@@ -94,11 +94,11 @@ export function VendorAnalyticsCharts({ data }: { data: AnalyticsData }) {
       {/* Stat cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {statCards.map((card) => (
-          <div key={card.label} className="bg-[#111111] border border-[#1a1a1a] rounded-xl p-5">
+          <div key={card.label} className="bg-[var(--bg-secondary)] border border-[var(--bg-card)] rounded-xl p-5">
             <p className="text-xs text-[#888] mb-1">{card.label}</p>
             <p
               className={`text-2xl font-bold ${
-                card.highlight ? 'text-[#C9A84C]' : 'text-[#F5F0E8]'
+                card.highlight ? 'text-[#C9A84C]' : 'text-[var(--text-primary)]'
               }`}
             >
               {card.value}
@@ -109,8 +109,8 @@ export function VendorAnalyticsCharts({ data }: { data: AnalyticsData }) {
       </div>
 
       {/* Revenue by month bar chart */}
-      <div className="bg-[#111111] border border-[#1a1a1a] rounded-xl p-5">
-        <h2 className="font-semibold text-[#F5F0E8] mb-4" style={{ fontFamily: 'Georgia,serif' }}>
+      <div className="bg-[var(--bg-secondary)] border border-[var(--bg-card)] rounded-xl p-5">
+        <h2 className="font-semibold text-[var(--text-primary)] mb-4" style={{ fontFamily: 'Georgia,serif' }}>
           Revenue — Last 6 Months (TTD)
         </h2>
         <ResponsiveContainer width="100%" height={240}>
@@ -148,9 +148,9 @@ export function VendorAnalyticsCharts({ data }: { data: AnalyticsData }) {
       {/* Top sellers + Recent orders row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Top sellers */}
-        <div className="bg-[#111111] border border-[#1a1a1a] rounded-xl overflow-hidden">
-          <div className="p-5 border-b border-[#1a1a1a]">
-            <h2 className="font-semibold text-[#F5F0E8]" style={{ fontFamily: 'Georgia,serif' }}>
+        <div className="bg-[var(--bg-secondary)] border border-[var(--bg-card)] rounded-xl overflow-hidden">
+          <div className="p-5 border-b border-[var(--bg-card)]">
+            <h2 className="font-semibold text-[var(--text-primary)]" style={{ fontFamily: 'Georgia,serif' }}>
               Top Sellers
             </h2>
           </div>
@@ -159,7 +159,7 @@ export function VendorAnalyticsCharts({ data }: { data: AnalyticsData }) {
           ) : (
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#1a1a1a]">
+                <tr className="border-b border-[var(--bg-card)]">
                   <th className="px-5 py-2 text-left text-xs font-medium text-[#555] uppercase">#</th>
                   <th className="px-5 py-2 text-left text-xs font-medium text-[#555] uppercase">Product</th>
                   <th className="px-5 py-2 text-right text-xs font-medium text-[#555] uppercase">Units</th>
@@ -168,11 +168,11 @@ export function VendorAnalyticsCharts({ data }: { data: AnalyticsData }) {
               </thead>
               <tbody>
                 {topSellers.map((s, i) => (
-                  <tr key={s.name} className="border-b border-[#1a1a1a] last:border-0">
+                  <tr key={s.name} className="border-b border-[var(--bg-card)] last:border-0">
                     <td className="px-5 py-3 text-[#C9A84C] font-bold">{i + 1}</td>
-                    <td className="px-5 py-3 text-[#F5F0E8] truncate max-w-[140px]">{s.name}</td>
+                    <td className="px-5 py-3 text-[var(--text-primary)] truncate max-w-[140px]">{s.name}</td>
                     <td className="px-5 py-3 text-[#888] text-right">{s.unitsSold}</td>
-                    <td className="px-5 py-3 text-[#F5F0E8] font-semibold text-right">{TTDFormatter(s.revenue)}</td>
+                    <td className="px-5 py-3 text-[var(--text-primary)] font-semibold text-right">{TTDFormatter(s.revenue)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -181,9 +181,9 @@ export function VendorAnalyticsCharts({ data }: { data: AnalyticsData }) {
         </div>
 
         {/* Recent orders */}
-        <div className="bg-[#111111] border border-[#1a1a1a] rounded-xl overflow-hidden">
-          <div className="p-5 border-b border-[#1a1a1a]">
-            <h2 className="font-semibold text-[#F5F0E8]" style={{ fontFamily: 'Georgia,serif' }}>
+        <div className="bg-[var(--bg-secondary)] border border-[var(--bg-card)] rounded-xl overflow-hidden">
+          <div className="p-5 border-b border-[var(--bg-card)]">
+            <h2 className="font-semibold text-[var(--text-primary)]" style={{ fontFamily: 'Georgia,serif' }}>
               Recent Orders
             </h2>
           </div>
@@ -192,7 +192,7 @@ export function VendorAnalyticsCharts({ data }: { data: AnalyticsData }) {
           ) : (
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#1a1a1a]">
+                <tr className="border-b border-[var(--bg-card)]">
                   <th className="px-5 py-2 text-left text-xs font-medium text-[#555] uppercase">Order</th>
                   <th className="px-5 py-2 text-left text-xs font-medium text-[#555] uppercase">Date</th>
                   <th className="px-5 py-2 text-right text-xs font-medium text-[#555] uppercase">Items</th>
@@ -202,7 +202,7 @@ export function VendorAnalyticsCharts({ data }: { data: AnalyticsData }) {
               </thead>
               <tbody>
                 {recentOrders.map((o) => (
-                  <tr key={o.id} className="border-b border-[#1a1a1a] last:border-0">
+                  <tr key={o.id} className="border-b border-[var(--bg-card)] last:border-0">
                     <td className="px-5 py-3 font-mono text-xs text-[#888]">
                       #{o.id.slice(-6).toUpperCase()}
                     </td>
@@ -210,7 +210,7 @@ export function VendorAnalyticsCharts({ data }: { data: AnalyticsData }) {
                       {new Date(o.createdAt).toLocaleDateString('en-TT', { month: 'short', day: 'numeric' })}
                     </td>
                     <td className="px-5 py-3 text-[#888] text-right">{o.itemCount}</td>
-                    <td className="px-5 py-3 text-[#F5F0E8] font-semibold text-right">{TTDFormatter(o.total)}</td>
+                    <td className="px-5 py-3 text-[var(--text-primary)] font-semibold text-right">{TTDFormatter(o.total)}</td>
                     <td className="px-5 py-3 text-right">
                       <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium ${STATUS_BADGE[o.status] ?? 'bg-[#333] text-[#888]'}`}>
                         {o.status}

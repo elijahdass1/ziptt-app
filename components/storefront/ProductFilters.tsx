@@ -49,7 +49,7 @@ export function ProductFilters({ categories, vendors, searchParams }: ProductFil
 
       {/* Sort */}
       <div>
-        <h3 className="text-xs font-semibold text-[#9A8F7A] uppercase tracking-widest mb-2">Sort By</h3>
+        <h3 className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-widest mb-2">Sort By</h3>
         <div className="space-y-0.5">
           {[
             { value: 'featured',   label: 'Featured' },
@@ -65,7 +65,7 @@ export function ProductFilters({ categories, vendors, searchParams }: ProductFil
               className={`w-full text-left text-sm px-3 py-1.5 rounded-lg transition-colors ${
                 (searchParams.sort ?? 'featured') === opt.value
                   ? 'bg-[#1A1A00] text-[#C9A84C] font-medium border border-[#C9A84C]/30'
-                  : 'text-[#9A8F7A] hover:bg-[#1A1A1A] hover:text-[#F5F0E8]'
+                  : 'text-[var(--text-secondary)] hover:bg-[var(--bg-card)] hover:text-[var(--text-primary)]'
               }`}
             >
               {opt.label}
@@ -76,14 +76,14 @@ export function ProductFilters({ categories, vendors, searchParams }: ProductFil
 
       {/* Vendor */}
       <div>
-        <h3 className="text-xs font-semibold text-[#9A8F7A] uppercase tracking-widest mb-2">Store</h3>
+        <h3 className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-widest mb-2">Store</h3>
         <div className="space-y-0.5">
           <button
             onClick={() => router.push(buildParams({ vendor: undefined }))}
             className={`w-full text-left text-sm px-3 py-1.5 rounded-lg transition-colors ${
               !searchParams.vendor
                 ? 'bg-[#1A1A00] text-[#C9A84C] font-medium border border-[#C9A84C]/30'
-                : 'text-[#9A8F7A] hover:bg-[#1A1A1A] hover:text-[#F5F0E8]'
+                : 'text-[var(--text-secondary)] hover:bg-[var(--bg-card)] hover:text-[var(--text-primary)]'
             }`}
           >
             All Stores
@@ -95,7 +95,7 @@ export function ProductFilters({ categories, vendors, searchParams }: ProductFil
               className={`w-full text-left text-sm px-3 py-1.5 rounded-lg transition-colors ${
                 searchParams.vendor === v.slug
                   ? 'bg-[#1A1A00] text-[#C9A84C] font-medium border border-[#C9A84C]/30'
-                  : 'text-[#9A8F7A] hover:bg-[#1A1A1A] hover:text-[#F5F0E8]'
+                  : 'text-[var(--text-secondary)] hover:bg-[var(--bg-card)] hover:text-[var(--text-primary)]'
               }`}
             >
               {v.storeName}
@@ -106,14 +106,14 @@ export function ProductFilters({ categories, vendors, searchParams }: ProductFil
 
       {/* Categories */}
       <div>
-        <h3 className="text-xs font-semibold text-[#9A8F7A] uppercase tracking-widest mb-2">Category</h3>
+        <h3 className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-widest mb-2">Category</h3>
         <div className="space-y-0.5">
           <button
             onClick={() => router.push(buildParams({ category: undefined }))}
             className={`w-full text-left text-sm px-3 py-1.5 rounded-lg transition-colors ${
               !searchParams.category
                 ? 'bg-[#1A1A00] text-[#C9A84C] font-medium border border-[#C9A84C]/30'
-                : 'text-[#9A8F7A] hover:bg-[#1A1A1A] hover:text-[#F5F0E8]'
+                : 'text-[var(--text-secondary)] hover:bg-[var(--bg-card)] hover:text-[var(--text-primary)]'
             }`}
           >
             All Categories
@@ -125,7 +125,7 @@ export function ProductFilters({ categories, vendors, searchParams }: ProductFil
               className={`w-full text-left text-sm px-3 py-1.5 rounded-lg transition-colors ${
                 searchParams.category === cat.slug
                   ? 'bg-[#1A1A00] text-[#C9A84C] font-medium border border-[#C9A84C]/30'
-                  : 'text-[#9A8F7A] hover:bg-[#1A1A1A] hover:text-[#F5F0E8]'
+                  : 'text-[var(--text-secondary)] hover:bg-[var(--bg-card)] hover:text-[var(--text-primary)]'
               }`}
             >
               {cat.name}
@@ -136,7 +136,7 @@ export function ProductFilters({ categories, vendors, searchParams }: ProductFil
 
       {/* Price Range */}
       <div>
-        <h3 className="text-xs font-semibold text-[#9A8F7A] uppercase tracking-widest mb-2">Price (TTD)</h3>
+        <h3 className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-widest mb-2">Price (TTD)</h3>
         <div className="space-y-0.5">
           {[
             { label: 'Under $100',        min: '0',    max: '100' },
@@ -151,7 +151,7 @@ export function ProductFilters({ categories, vendors, searchParams }: ProductFil
               className={`w-full text-left text-sm px-3 py-1.5 rounded-lg transition-colors ${
                 searchParams.minPrice === range.min && searchParams.maxPrice === range.max
                   ? 'bg-[#1A1A00] text-[#C9A84C] font-medium border border-[#C9A84C]/30'
-                  : 'text-[#9A8F7A] hover:bg-[#1A1A1A] hover:text-[#F5F0E8]'
+                  : 'text-[var(--text-secondary)] hover:bg-[var(--bg-card)] hover:text-[var(--text-primary)]'
               }`}
             >
               {range.label}

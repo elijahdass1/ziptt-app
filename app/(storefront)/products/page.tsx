@@ -84,13 +84,13 @@ export default async function ProductsPage({ searchParams }: PageProps) {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-[#F5F0E8]">{heading}</h1>
-        <p className="text-sm text-[#9A8F7A] mt-1">{total} products found</p>
+        <h1 className="text-2xl font-bold text-[var(--text-primary)]">{heading}</h1>
+        <p className="text-sm text-[var(--text-secondary)] mt-1">{total} products found</p>
       </div>
 
       {/* Carnival season urgency banner */}
       {searchParams.category === 'carnival' && (
-        <div className="mb-6 flex items-center gap-2 rounded-lg bg-[#C9A84C] px-4 py-2.5 text-sm font-medium text-[#0A0A0A]">
+        <div className="mb-6 flex items-center gap-2 rounded-lg bg-[#C9A84C] px-4 py-2.5 text-sm font-medium text-black">
           <Sparkles className="h-4 w-4 shrink-0" />
           <span>Carnival season orders — allow 3–5 business days for delivery. Order early to avoid disappointment.</span>
         </div>

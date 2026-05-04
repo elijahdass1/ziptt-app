@@ -58,16 +58,16 @@ export default async function AdminDisputesPage({
   ]
 
   return (
-    <div className="bg-[#0A0A0A] min-h-full">
+    <div className="bg-[var(--bg-primary)] min-h-full">
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-[#F5F0E8]" style={{ fontFamily: 'Georgia,serif' }}>
+        <h1 className="text-2xl font-semibold text-[var(--text-primary)]" style={{ fontFamily: 'Georgia,serif' }}>
           Disputes
         </h1>
         <p className="text-sm text-[#888] mt-1">{total.toLocaleString()} disputes total</p>
       </div>
 
       {/* Status tabs */}
-      <div className="flex gap-1 mb-6 border-b border-[#1a1a1a] overflow-x-auto">
+      <div className="flex gap-1 mb-6 border-b border-[var(--bg-card)] overflow-x-auto">
         {tabs.map((tab) => (
           <a
             key={tab.value}
@@ -75,7 +75,7 @@ export default async function AdminDisputesPage({
             className={`whitespace-nowrap px-4 py-2 text-sm font-medium rounded-t-lg -mb-px border-b-2 transition-colors ${
               statusFilter === tab.value
                 ? 'border-[#C9A84C] text-[#C9A84C]'
-                : 'border-transparent text-[#888] hover:text-[#F5F0E8]'
+                : 'border-transparent text-[#888] hover:text-[var(--text-primary)]'
             }`}
           >
             {tab.label}
@@ -85,11 +85,11 @@ export default async function AdminDisputesPage({
 
       <div className="space-y-4">
         {disputes.length === 0 ? (
-          <div className="bg-[#111111] border border-[#1a1a1a] rounded-xl p-10 text-center text-[#888]">
+          <div className="bg-[var(--bg-secondary)] border border-[var(--bg-card)] rounded-xl p-10 text-center text-[#888]">
             No disputes found
           </div>
         ) : disputes.map((dispute) => (
-          <div key={dispute.id} className="bg-[#111111] border border-[#1a1a1a] rounded-xl p-5">
+          <div key={dispute.id} className="bg-[var(--bg-secondary)] border border-[var(--bg-card)] rounded-xl p-5">
             <div className="flex items-start justify-between gap-4">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-2 flex-wrap">
@@ -100,7 +100,7 @@ export default async function AdminDisputesPage({
                   <span className="text-xs text-[#555]">â¢ {formatDate(dispute.createdAt)}</span>
                 </div>
 
-                <h3 className="font-semibold text-[#F5F0E8] mb-1">{dispute.subject}</h3>
+                <h3 className="font-semibold text-[var(--text-primary)] mb-1">{dispute.subject}</h3>
                 {dispute.description && (
                   <p className="text-sm text-[#888] mb-3 line-clamp-2">{dispute.description}</p>
                 )}
@@ -108,29 +108,29 @@ export default async function AdminDisputesPage({
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
                     <p className="text-xs text-[#555] mb-0.5">Customer</p>
-                    <p className="font-medium text-[#F5F0E8]">{dispute.customer.name}</p>
+                    <p className="font-medium text-[var(--text-primary)]">{dispute.customer.name}</p>
                     <p className="text-xs text-[#888]">{dispute.customer.email}</p>
                   </div>
                   <div>
                     <p className="text-xs text-[#555] mb-0.5">Vendor</p>
-                    <p className="font-medium text-[#F5F0E8]">{dispute.vendor.storeName}</p>
+                    <p className="font-medium text-[var(--text-primary)]">{dispute.vendor.storeName}</p>
                   </div>
                   <div>
                     <p className="text-xs text-[#555] mb-0.5">Order #</p>
-                    <p className="font-mono font-medium text-[#F5F0E8]">
+                    <p className="font-mono font-medium text-[var(--text-primary)]">
                       #{dispute.order.orderNumber.slice(-8).toUpperCase()}
                     </p>
                   </div>
                   <div>
                     <p className="text-xs text-[#555] mb-0.5">Order Total</p>
-                    <p className="font-medium text-[#F5F0E8]">{formatTTD(dispute.order.total)}</p>
+                    <p className="font-medium text-[var(--text-primary)]">{formatTTD(dispute.order.total)}</p>
                   </div>
                 </div>
 
                 {dispute.resolution && (
-                  <div className="mt-3 p-3 bg-[#0A0A0A] border border-[#1a1a1a] rounded-lg">
+                  <div className="mt-3 p-3 bg-[var(--bg-primary)] border border-[var(--bg-card)] rounded-lg">
                     <p className="text-xs text-[#555] mb-0.5">Requested Resolution</p>
-                    <p className="text-sm text-[#F5F0E8]">{dispute.resolution}</p>
+                    <p className="text-sm text-[var(--text-primary)]">{dispute.resolution}</p>
                   </div>
                 )}
               </div>
@@ -149,11 +149,11 @@ export default async function AdminDisputesPage({
           <div className="flex gap-2">
             {page > 1 && (
               <a href={`?status=${statusFilter}&page=${page - 1}`}
-                className="text-sm px-3 py-1 border border-[#333] text-[#888] rounded-lg hover:bg-[#111111] transition-colors">Prev</a>
+                className="text-sm px-3 py-1 border border-[#333] text-[#888] rounded-lg hover:bg-[var(--bg-secondary)] transition-colors">Prev</a>
             )}
             {page < pages && (
               <a href={`?status=${statusFilter}&page=${page + 1}`}
-                className="text-sm px-3 py-1 border border-[#333] text-[#888] rounded-lg hover:bg-[#111111] transition-colors">Next</a>
+                className="text-sm px-3 py-1 border border-[#333] text-[#888] rounded-lg hover:bg-[var(--bg-secondary)] transition-colors">Next</a>
             )}
           </div>
         </div>

@@ -142,7 +142,7 @@ export function VendorReviewSection({
     <section>
       <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
         <div>
-          <h2 className="text-xl font-semibold text-[#F5F0E8]" style={{ fontFamily: 'Georgia,serif' }}>
+          <h2 className="text-xl font-semibold text-[var(--text-primary)]" style={{ fontFamily: 'Georgia,serif' }}>
             Seller Reviews
           </h2>
           {reviews.length > 0 && (
@@ -167,7 +167,7 @@ export function VendorReviewSection({
 
       {/* Eligibility hint when user is signed in but hasn't bought yet */}
       {userSession?.user && !canReview && !isOwnStore && reviews.length === 0 && (
-        <div className="mb-6 p-3 bg-[#0F0F0F] border border-[#1a1a1a] rounded-lg text-[#888] text-xs">
+        <div className="mb-6 p-3 bg-[#0F0F0F] border border-[var(--bg-card)] rounded-lg text-[#888] text-xs">
           You can leave a seller review after a delivered order from this vendor.
         </div>
       )}
@@ -175,9 +175,9 @@ export function VendorReviewSection({
       {showForm && (
         <form
           onSubmit={handleSubmit}
-          className="mb-8 p-5 bg-[#111111] border border-[#1a1a1a] rounded-xl space-y-4"
+          className="mb-8 p-5 bg-[var(--bg-secondary)] border border-[var(--bg-card)] rounded-xl space-y-4"
         >
-          <h3 className="text-[#F5F0E8] font-semibold">Rate this Seller</h3>
+          <h3 className="text-[var(--text-primary)] font-semibold">Rate this Seller</h3>
 
           <div>
             <label className="block text-xs text-[#888] mb-1">Rating</label>
@@ -191,7 +191,7 @@ export function VendorReviewSection({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Summarise your experience with this seller"
-              className="w-full bg-[#0A0A0A] border border-[#333] text-[#F5F0E8] focus:border-[#C9A84C] focus:outline-none rounded px-3 py-2 text-sm placeholder:text-[#555]"
+              className="w-full bg-[var(--bg-primary)] border border-[#333] text-[var(--text-primary)] focus:border-[#C9A84C] focus:outline-none rounded px-3 py-2 text-sm placeholder:text-[#555]"
             />
           </div>
 
@@ -204,7 +204,7 @@ export function VendorReviewSection({
               onChange={(e) => setBody(e.target.value)}
               rows={4}
               placeholder="How was the seller's communication, packaging, delivery?"
-              className="w-full bg-[#0A0A0A] border border-[#333] text-[#F5F0E8] focus:border-[#C9A84C] focus:outline-none rounded px-3 py-2 text-sm placeholder:text-[#555] resize-none"
+              className="w-full bg-[var(--bg-primary)] border border-[#333] text-[var(--text-primary)] focus:border-[#C9A84C] focus:outline-none rounded px-3 py-2 text-sm placeholder:text-[#555] resize-none"
             />
             <p className="text-xs text-[#555] mt-1">{body.length} / 20 min characters</p>
           </div>
@@ -214,7 +214,7 @@ export function VendorReviewSection({
           <button
             type="submit"
             disabled={submitting || rating === 0}
-            className="bg-[#C9A84C] text-[#0A0A0A] hover:bg-[#b8963f] font-semibold px-4 py-2 rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="bg-[#C9A84C] text-black hover:bg-[#b8963f] font-semibold px-4 py-2 rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {submitting ? 'Submitting…' : 'Submit Review'}
           </button>
@@ -229,14 +229,14 @@ export function VendorReviewSection({
       ) : (
         <div className="space-y-4">
           {reviews.map((review) => (
-            <div key={review.id} className="bg-[#111111] border border-[#1a1a1a] rounded-xl p-5">
+            <div key={review.id} className="bg-[var(--bg-secondary)] border border-[var(--bg-card)] rounded-xl p-5">
               <div className="flex items-start gap-3">
-                <div className="h-9 w-9 rounded-full bg-[#C9A84C] flex items-center justify-center text-sm font-bold text-[#0A0A0A] shrink-0">
+                <div className="h-9 w-9 rounded-full bg-[#C9A84C] flex items-center justify-center text-sm font-bold text-black shrink-0">
                   {getInitials(review.user.name)}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2 flex-wrap">
-                    <span className="text-sm font-semibold text-[#F5F0E8]">
+                    <span className="text-sm font-semibold text-[var(--text-primary)]">
                       {review.user.name ?? 'Anonymous'}
                     </span>
                     <span className="text-xs text-[#888]">
@@ -249,7 +249,7 @@ export function VendorReviewSection({
                   </div>
                   <StarRating rating={review.rating} />
                   {review.title && (
-                    <p className="text-sm font-bold text-[#F5F0E8] mt-2">{review.title}</p>
+                    <p className="text-sm font-bold text-[var(--text-primary)] mt-2">{review.title}</p>
                   )}
                   {review.body && (
                     <p className="text-sm text-[#888] mt-1 leading-relaxed">{review.body}</p>

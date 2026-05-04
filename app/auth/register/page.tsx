@@ -140,13 +140,13 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-[var(--bg-primary)] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-0.5">
             <span className="text-3xl font-black gold-shimmer">zip</span>
-            <span className="text-3xl font-black text-[#F5F0E8]">.tt</span>
+            <span className="text-3xl font-black text-[var(--text-primary)]">.tt</span>
           </Link>
         </div>
 
@@ -155,69 +155,69 @@ export default function RegisterPage() {
           {[1, 2, 3].map((s) => (
             <div key={s} className="flex items-center gap-2">
               <div className={`h-8 w-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
-                s < step ? 'bg-[#C9A84C] text-[#0A0A0A]' :
-                s === step ? 'bg-[#C9A84C] text-[#0A0A0A] ring-4 ring-[#C9A84C]/25' :
-                'bg-[#1A1A1A] text-[#9A8F7A] border border-[#C9A84C]/20'
+                s < step ? 'bg-[#C9A84C] text-black' :
+                s === step ? 'bg-[#C9A84C] text-black ring-4 ring-[#C9A84C]/25' :
+                'bg-[var(--bg-card)] text-[var(--text-secondary)] border border-[#C9A84C]/20'
               }`}>
                 {s < step ? <CheckCircle className="h-4 w-4" /> : s}
               </div>
-              {s < 3 && <div className={`h-px w-8 transition-all ${s < step ? 'bg-[#C9A84C]' : 'bg-[#1A1A1A]'}`} />}
+              {s < 3 && <div className={`h-px w-8 transition-all ${s < step ? 'bg-[#C9A84C]' : 'bg-[var(--bg-card)]'}`} />}
             </div>
           ))}
         </div>
 
-        <div className="bg-[#111111] border border-[#C9A84C]/15 rounded-2xl p-6 shadow-2xl">
+        <div className="bg-[var(--bg-secondary)] border border-[#C9A84C]/15 rounded-2xl p-6 shadow-2xl">
           {/* Step 1 */}
           {step === 1 && (
             <>
-              <h1 className="text-xl font-bold text-[#F5F0E8] mb-1">Create your account</h1>
-              <p className="text-sm text-[#9A8F7A] mb-6">Join thousands of shoppers on zip.tt</p>
+              <h1 className="text-xl font-bold text-[var(--text-primary)] mb-1">Create your account</h1>
+              <p className="text-sm text-[var(--text-secondary)] mb-6">Join thousands of shoppers on zip.tt</p>
               <form onSubmit={handleStep1} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-[#F5F0E8] mb-1">Full Name</label>
+                  <label className="block text-sm font-medium text-[var(--text-primary)] mb-1">Full Name</label>
                   <input value={name} onChange={e => setName(e.target.value)} required
                     placeholder="Your full name"
-                    className="w-full bg-[#1A1A1A] border border-[#C9A84C]/20 rounded-xl px-4 py-2.5 text-sm text-[#F5F0E8] placeholder-[#9A8F7A] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent" />
+                    className="w-full bg-[var(--bg-card)] border border-[#C9A84C]/20 rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#F5F0E8] mb-1">Email</label>
+                  <label className="block text-sm font-medium text-[var(--text-primary)] mb-1">Email</label>
                   <input type="email" value={email} onChange={e => setEmail(e.target.value)} required
                     placeholder="your@email.com"
-                    className="w-full bg-[#1A1A1A] border border-[#C9A84C]/20 rounded-xl px-4 py-2.5 text-sm text-[#F5F0E8] placeholder-[#9A8F7A] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent" />
+                    className="w-full bg-[var(--bg-card)] border border-[#C9A84C]/20 rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#F5F0E8] mb-1">Phone Number</label>
+                  <label className="block text-sm font-medium text-[var(--text-primary)] mb-1">Phone Number</label>
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-base select-none">868</span>
                     <input value={phone} onChange={e => setPhone(formatPhone(e.target.value))} required
                       placeholder="868-123-4567"
                       maxLength={8}
-                      className="w-full bg-[#1A1A1A] border border-[#C9A84C]/20 rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#F5F0E8] placeholder-[#9A8F7A] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent" />
+                      className="w-full bg-[var(--bg-card)] border border-[#C9A84C]/20 rounded-xl pl-10 pr-4 py-2.5 text-sm text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent" />
                   </div>
-                  <p className="text-xs text-[#9A8F7A] mt-1">e.g. 868-123-4567 - used for delivery &amp; verification</p>
+                  <p className="text-xs text-[var(--text-secondary)] mt-1">e.g. 868-123-4567 - used for delivery &amp; verification</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#F5F0E8] mb-1">Password</label>
+                  <label className="block text-sm font-medium text-[var(--text-primary)] mb-1">Password</label>
                   <div className="relative">
                     <input type={showPass ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)} required minLength={8}
                       placeholder="Min 8 chars, at least 1 number"
-                      className="w-full bg-[#1A1A1A] border border-[#C9A84C]/20 rounded-xl px-4 pr-10 py-2.5 text-sm text-[#F5F0E8] placeholder-[#9A8F7A] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent" />
+                      className="w-full bg-[var(--bg-card)] border border-[#C9A84C]/20 rounded-xl px-4 pr-10 py-2.5 text-sm text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent" />
                     <button type="button" onClick={() => setShowPass(!showPass)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9A8F7A] hover:text-[#C9A84C]">
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-secondary)] hover:text-[#C9A84C]">
                       {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#F5F0E8] mb-1">Confirm Password</label>
+                  <label className="block text-sm font-medium text-[var(--text-primary)] mb-1">Confirm Password</label>
                   <input type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required
                     placeholder="Repeat your password"
-                    className="w-full bg-[#1A1A1A] border border-[#C9A84C]/20 rounded-xl px-4 py-2.5 text-sm text-[#F5F0E8] placeholder-[#9A8F7A] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent" />
+                    className="w-full bg-[var(--bg-card)] border border-[#C9A84C]/20 rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent" />
                 </div>
                 <label className="flex items-start gap-3 cursor-pointer">
                   <input type="checkbox" checked={agreed} onChange={e => setAgreed(e.target.checked)}
                     className="mt-0.5 accent-[#C9A84C]" />
-                  <span className="text-sm text-[#9A8F7A]">
+                  <span className="text-sm text-[var(--text-secondary)]">
                     I agree to the{' '}
                     <Link href="/terms" className="text-[#C9A84C] hover:underline">Terms of Service</Link>
                     {' '}and{' '}
@@ -225,7 +225,7 @@ export default function RegisterPage() {
                   </span>
                 </label>
                 <button type="submit" disabled={loading}
-                  className="w-full py-3 bg-[#C9A84C] hover:bg-[#F0C040] disabled:bg-[#1A1A1A] disabled:text-[#9A8F7A] text-[#0A0A0A] font-bold rounded-xl transition-colors flex items-center justify-center gap-2">
+                  className="w-full py-3 bg-[#C9A84C] hover:bg-[#F0C040] disabled:bg-[var(--bg-card)] disabled:text-[var(--text-secondary)] text-black font-bold rounded-xl transition-colors flex items-center justify-center gap-2">
                   {loading && <Loader2 className="h-4 w-4 animate-spin" />}
                   {loading ? 'Sending code...' : 'Send Verification Code'}
                 </button>
@@ -236,8 +236,8 @@ export default function RegisterPage() {
           {/* Step 2 */}
           {step === 2 && (
             <>
-              <h1 className="text-xl font-bold text-[#F5F0E8] mb-1">Verify your phone</h1>
-              <p className="text-sm text-[#9A8F7A] mb-6">
+              <h1 className="text-xl font-bold text-[var(--text-primary)] mb-1">Verify your phone</h1>
+              <p className="text-sm text-[var(--text-secondary)] mb-6">
                 We sent a 6-digit code to <span className="text-[#C9A84C] font-medium">+1 (868) {phone}</span>.<br/>
                 Check your terminal for the code in dev mode.
               </p>
@@ -253,18 +253,18 @@ export default function RegisterPage() {
                       value={digit}
                       onChange={e => handleOtpChange(i, e.target.value)}
                       onKeyDown={e => handleOtpKeyDown(i, e)}
-                      className="w-12 h-12 text-center text-xl font-bold bg-[#1A1A1A] border-2 border-[#C9A84C]/20 rounded-xl text-[#F5F0E8] focus:outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/25 transition-all"
+                      className="w-12 h-12 text-center text-xl font-bold bg-[var(--bg-card)] border-2 border-[#C9A84C]/20 rounded-xl text-[var(--text-primary)] focus:outline-none focus:border-[#C9A84C] focus:ring-2 focus:ring-[#C9A84C]/25 transition-all"
                     />
                   ))}
                 </div>
                 <button type="submit" disabled={loading || otp.join('').length !== 6}
-                  className="w-full py-3 bg-[#C9A84C] hover:bg-[#F0C040] disabled:bg-[#1A1A1A] disabled:text-[#9A8F7A] text-[#0A0A0A] font-bold rounded-xl transition-colors flex items-center justify-center gap-2">
+                  className="w-full py-3 bg-[#C9A84C] hover:bg-[#F0C040] disabled:bg-[var(--bg-card)] disabled:text-[var(--text-secondary)] text-black font-bold rounded-xl transition-colors flex items-center justify-center gap-2">
                   {loading && <Loader2 className="h-4 w-4 animate-spin" />}
                   {loading ? 'Verifying...' : 'Verify Phone'}
                 </button>
                 <div className="text-center">
                   {resendCountdown > 0 ? (
-                    <p className="text-sm text-[#9A8F7A]">Resend in <span className="text-[#C9A84C] font-medium">{resendCountdown}s</span></p>
+                    <p className="text-sm text-[var(--text-secondary)]">Resend in <span className="text-[#C9A84C] font-medium">{resendCountdown}s</span></p>
                   ) : (
                     <button type="button" onClick={handleResend} disabled={loading}
                       className="text-sm text-[#C9A84C] hover:underline">
@@ -273,7 +273,7 @@ export default function RegisterPage() {
                   )}
                 </div>
               </form>
-              <button onClick={() => setStep(1)} className="mt-4 text-sm text-[#9A8F7A] hover:text-[#F5F0E8] w-full text-center">
+              <button onClick={() => setStep(1)} className="mt-4 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] w-full text-center">
                 Change phone number
               </button>
             </>
@@ -283,8 +283,8 @@ export default function RegisterPage() {
           {step === 3 && (
             <div className="text-center py-8 space-y-4">
               <div className="text-2xl font-bold text-[#C9A84C]">zip.tt</div>
-              <h1 className="text-2xl font-bold text-[#F5F0E8]">Welcome to zip.tt!</h1>
-              <p className="text-[#9A8F7A]">Your account is ready. Redirecting you now...</p>
+              <h1 className="text-2xl font-bold text-[var(--text-primary)]">Welcome to zip.tt!</h1>
+              <p className="text-[var(--text-secondary)]">Your account is ready. Redirecting you now...</p>
               <div className="flex justify-center">
                 <Loader2 className="h-6 w-6 animate-spin text-[#C9A84C]" />
               </div>
@@ -293,7 +293,7 @@ export default function RegisterPage() {
         </div>
 
         {step === 1 && (
-          <p className="text-center text-sm text-[#9A8F7A] mt-4">
+          <p className="text-center text-sm text-[var(--text-secondary)] mt-4">
             Already have an account?{' '}
             <Link href="/auth/login" className="text-[#C9A84C] hover:underline font-medium">Sign in</Link>
           </p>

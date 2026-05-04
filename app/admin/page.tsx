@@ -66,9 +66,9 @@ export default async function AdminOverviewPage() {
   const stats = await getAdminStats()
 
   return (
-    <div className="bg-[#0A0A0A] min-h-full">
+    <div className="bg-[var(--bg-primary)] min-h-full">
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-[#F5F0E8]" style={{ fontFamily: 'Georgia,serif' }}>
+        <h1 className="text-2xl font-semibold text-[var(--text-primary)]" style={{ fontFamily: 'Georgia,serif' }}>
           Platform Overview
         </h1>
         <p className="text-sm text-[#888] mt-1">Real-time stats for zip.tt marketplace</p>
@@ -110,14 +110,14 @@ export default async function AdminOverviewPage() {
           { label: 'Active Products', value: stats.totalProducts.toLocaleString() },
           { label: 'Total Orders', value: stats.totalOrders.toLocaleString() },
         ].map((card) => (
-          <div key={card.label} className="bg-[#111111] border border-[#1a1a1a] rounded-xl p-5">
+          <div key={card.label} className="bg-[var(--bg-secondary)] border border-[var(--bg-card)] rounded-xl p-5">
             <p className="text-xs text-[#888] mb-1">{card.label}</p>
-            <p className="text-2xl font-bold text-[#F5F0E8]">{card.value}</p>
+            <p className="text-2xl font-bold text-[var(--text-primary)]">{card.value}</p>
           </div>
         ))}
 
         {/* GMV â full width */}
-        <div className="col-span-2 lg:col-span-4 bg-[#111111] border border-[#C9A84C]/20 rounded-xl p-5">
+        <div className="col-span-2 lg:col-span-4 bg-[var(--bg-secondary)] border border-[#C9A84C]/20 rounded-xl p-5">
           <p className="text-xs text-[#888] mb-1">Gross Merchandise Value (all time)</p>
           <p className="text-3xl font-bold text-[#C9A84C]">{formatTTD(stats.gmv)}</p>
         </div>
@@ -134,20 +134,20 @@ export default async function AdminOverviewPage() {
           <Link
             key={link.href}
             href={link.href}
-            className="bg-[#111111] border border-[#1a1a1a] hover:border-[#C9A84C]/30 rounded-xl p-4 transition-colors"
+            className="bg-[var(--bg-secondary)] border border-[var(--bg-card)] hover:border-[#C9A84C]/30 rounded-xl p-4 transition-colors"
           >
             <p className={`text-xs font-medium ${link.color}`}>{link.label}</p>
             {link.count !== null && (
-              <p className="text-xl font-bold text-[#F5F0E8] mt-1">{link.count}</p>
+              <p className="text-xl font-bold text-[var(--text-primary)] mt-1">{link.count}</p>
             )}
           </Link>
         ))}
       </div>
 
       {/* Recent orders */}
-      <div className="bg-[#111111] border border-[#1a1a1a] rounded-xl overflow-hidden">
-        <div className="p-5 border-b border-[#1a1a1a] flex items-center justify-between">
-          <h2 className="font-semibold text-[#F5F0E8]" style={{ fontFamily: 'Georgia,serif' }}>
+      <div className="bg-[var(--bg-secondary)] border border-[var(--bg-card)] rounded-xl overflow-hidden">
+        <div className="p-5 border-b border-[var(--bg-card)] flex items-center justify-between">
+          <h2 className="font-semibold text-[var(--text-primary)]" style={{ fontFamily: 'Georgia,serif' }}>
             Recent Orders
           </h2>
           <Link href="/admin/orders" className="text-sm text-[#C9A84C] hover:underline">
@@ -157,7 +157,7 @@ export default async function AdminOverviewPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#1a1a1a] bg-[#0A0A0A]">
+              <tr className="border-b border-[var(--bg-card)] bg-[var(--bg-primary)]">
                 {['Order ID', 'Customer', 'Vendor', 'Total', 'Status', 'Date'].map((h) => (
                   <th key={h} className="px-5 py-3 text-left text-xs font-medium text-[#555] uppercase tracking-wide">
                     {h}
@@ -174,16 +174,16 @@ export default async function AdminOverviewPage() {
                 </tr>
               ) : (
                 stats.recentOrders.map((order) => (
-                  <tr key={order.id} className="border-b border-[#1a1a1a] hover:bg-[#0A0A0A] transition-colors">
+                  <tr key={order.id} className="border-b border-[var(--bg-card)] hover:bg-[var(--bg-primary)] transition-colors">
                     <td className="px-5 py-3 font-mono text-xs text-[#555]">
                       {order.id.slice(0, 8)}â¦
                     </td>
                     <td className="px-5 py-3">
-                      <p className="font-medium text-[#F5F0E8]">{order.customer.name}</p>
+                      <p className="font-medium text-[var(--text-primary)]">{order.customer.name}</p>
                       <p className="text-xs text-[#555]">{order.customer.email}</p>
                     </td>
                     <td className="px-5 py-3 text-[#888]">{order.vendor?.storeName ?? 'â'}</td>
-                    <td className="px-5 py-3 font-medium text-[#F5F0E8]">{formatTTD(order.total)}</td>
+                    <td className="px-5 py-3 font-medium text-[var(--text-primary)]">{formatTTD(order.total)}</td>
                     <td className="px-5 py-3">
                       <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium ${STATUS_COLOR[order.status] ?? 'bg-[#333] text-[#888]'}`}>
                         {order.status}

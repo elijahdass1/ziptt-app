@@ -8,6 +8,7 @@ import {
   Zap, Shirt, Flame, Sparkles, Gamepad2, Wine, Home, Plug, ShoppingBasket, Cloud, type LucideIcon,
 } from 'lucide-react'
 import { useCartStore } from '@/lib/store'
+import { ThemeToggle } from '@/components/ThemeToggle'
 
 // Polls /api/conversations/unread on a slow interval so the badge stays
 // roughly fresh without burning requests. Returns 0 when signed out.
@@ -57,9 +58,9 @@ export function Navbar() {
   const unreadMessages = useUnreadMessages(!!session)
 
   return (
-    <header className="sticky top-0 z-50 bg-[#0A0A0A] border-b border-[#C9A84C]/20 shadow-[0_2px_20px_rgba(0,0,0,0.5)]">
+    <header className="sticky top-0 z-50 bg-[var(--bg-primary)] border-b border-[#C9A84C]/20 shadow-[0_2px_20px_rgba(0,0,0,0.5)]">
       {/* Top bar */}
-      <div className="bg-[#C9A84C] text-[#0A0A0A] text-xs py-1.5 text-center font-semibold">
+      <div className="bg-[#C9A84C] text-black text-xs py-1.5 text-center font-semibold">
         Free delivery on orders over TTD $500 across Trinidad
       </div>
 
@@ -69,7 +70,7 @@ export function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-0.5 shrink-0">
             <span className="text-2xl font-black gold-shimmer">zip</span>
-            <span className="text-2xl font-black text-[#F5F0E8]">.tt</span>
+            <span className="text-2xl font-black text-[var(--text-primary)]">.tt</span>
           </Link>
 
           {/* Search */}
@@ -80,9 +81,9 @@ export function Navbar() {
                   name="q"
                   type="text"
                   placeholder="Search products, vendors..."
-                  className="w-full pl-4 pr-12 py-2.5 bg-[#1A1A1A] border border-[#C9A84C]/30 rounded-full text-sm text-[#F5F0E8] placeholder-[#9A8F7A] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent"
+                  className="w-full pl-4 pr-12 py-2.5 bg-[var(--bg-card)] border border-[#C9A84C]/30 rounded-full text-sm text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent"
                 />
-                <button type="submit" className="absolute right-1 top-1 p-1.5 bg-[#C9A84C] text-[#0A0A0A] rounded-full hover:bg-[#F0C040] transition-colors">
+                <button type="submit" className="absolute right-1 top-1 p-1.5 bg-[#C9A84C] text-black rounded-full hover:bg-[#F0C040] transition-colors">
                   <Search className="h-4 w-4" />
                 </button>
               </div>
@@ -91,11 +92,15 @@ export function Navbar() {
 
           {/* Actions */}
           <div className="flex items-center gap-2 ml-auto">
+            {/* Theme toggle — sits left of cart so it's always reachable
+                regardless of sign-in state. */}
+            <ThemeToggle />
+
             {/* Cart */}
             <Link href="/cart" className="relative p-2 hover:bg-[#C9A84C]/10 rounded-full transition-colors">
-              <ShoppingCart className="h-5 w-5 text-[#F5F0E8]" />
+              <ShoppingCart className="h-5 w-5 text-[var(--text-primary)]" />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#C9A84C] text-[#0A0A0A] text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+                <span className="absolute -top-1 -right-1 bg-[#C9A84C] text-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
                   {cartCount > 99 ? '99+' : cartCount}
                 </span>
               )}
@@ -104,7 +109,7 @@ export function Navbar() {
             {/* Orders */}
             {session && (
               <Link href="/orders" className="hidden sm:flex p-2 hover:bg-[#C9A84C]/10 rounded-full transition-colors">
-                <Package className="h-5 w-5 text-[#F5F0E8]" />
+                <Package className="h-5 w-5 text-[var(--text-primary)]" />
               </Link>
             )}
 
@@ -118,32 +123,32 @@ export function Navbar() {
                   {session.user.image ? (
                     <img src={session.user.image} alt="" className="h-7 w-7 rounded-full object-cover ring-2 ring-[#C9A84C]/40" />
                   ) : (
-                    <div className="h-7 w-7 rounded-full bg-[#C9A84C] text-[#0A0A0A] text-xs font-bold flex items-center justify-center">
+                    <div className="h-7 w-7 rounded-full bg-[#C9A84C] text-black text-xs font-bold flex items-center justify-center">
                       {session.user.name?.[0] ?? 'U'}
                     </div>
                   )}
-                  <ChevronDown className="h-3.5 w-3.5 text-[#9A8F7A] hidden sm:block" />
+                  <ChevronDown className="h-3.5 w-3.5 text-[var(--text-secondary)] hidden sm:block" />
                   {unreadMessages > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 bg-[#D62828] text-white text-[10px] font-bold rounded-full h-4 min-w-[16px] px-1 flex items-center justify-center leading-none ring-2 ring-[#0A0A0A]">
+                    <span className="absolute -top-0.5 -right-0.5 bg-[#D62828] text-white text-[10px] font-bold rounded-full h-4 min-w-[16px] px-1 flex items-center justify-center leading-none ring-2 ring-[var(--bg-primary)]">
                       {unreadMessages > 9 ? '9+' : unreadMessages}
                     </span>
                   )}
                 </button>
 
                 {userMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-52 bg-[#111111] rounded-xl shadow-2xl border border-[#C9A84C]/20 py-1 z-50"
+                  <div className="absolute right-0 mt-2 w-52 bg-[var(--bg-secondary)] rounded-xl shadow-2xl border border-[#C9A84C]/20 py-1 z-50"
                     onMouseLeave={() => setUserMenuOpen(false)}>
                     <div className="px-4 py-2.5 border-b border-[#C9A84C]/10">
-                      <p className="text-sm font-semibold text-[#F5F0E8] truncate">{session.user.name}</p>
-                      <p className="text-xs text-[#9A8F7A] truncate">{session.user.email}</p>
+                      <p className="text-sm font-semibold text-[var(--text-primary)] truncate">{session.user.name}</p>
+                      <p className="text-xs text-[var(--text-secondary)] truncate">{session.user.email}</p>
                     </div>
-                    <Link href="/account" className="flex items-center gap-2 px-4 py-2 text-sm text-[#9A8F7A] hover:text-[#C9A84C] hover:bg-[#C9A84C]/5" onClick={() => setUserMenuOpen(false)}>
+                    <Link href="/account" className="flex items-center gap-2 px-4 py-2 text-sm text-[var(--text-secondary)] hover:text-[#C9A84C] hover:bg-[#C9A84C]/5" onClick={() => setUserMenuOpen(false)}>
                       <User className="h-4 w-4" /> My Account
                     </Link>
-                    <Link href="/orders" className="flex items-center gap-2 px-4 py-2 text-sm text-[#9A8F7A] hover:text-[#C9A84C] hover:bg-[#C9A84C]/5" onClick={() => setUserMenuOpen(false)}>
+                    <Link href="/orders" className="flex items-center gap-2 px-4 py-2 text-sm text-[var(--text-secondary)] hover:text-[#C9A84C] hover:bg-[#C9A84C]/5" onClick={() => setUserMenuOpen(false)}>
                       <Package className="h-4 w-4" /> My Orders
                     </Link>
-                    <Link href="/messages" className="flex items-center gap-2 px-4 py-2 text-sm text-[#9A8F7A] hover:text-[#C9A84C] hover:bg-[#C9A84C]/5" onClick={() => setUserMenuOpen(false)}>
+                    <Link href="/messages" className="flex items-center gap-2 px-4 py-2 text-sm text-[var(--text-secondary)] hover:text-[#C9A84C] hover:bg-[#C9A84C]/5" onClick={() => setUserMenuOpen(false)}>
                       <MessageSquare className="h-4 w-4" /> Messages
                       {unreadMessages > 0 && (
                         <span className="ml-auto bg-[#D62828] text-white text-[10px] font-bold rounded-full h-4 min-w-[16px] px-1 flex items-center justify-center leading-none">
@@ -152,12 +157,12 @@ export function Navbar() {
                       )}
                     </Link>
                     {(session.user.role === 'VENDOR' || session.user.role === 'ADMIN') && (
-                      <Link href="/vendor" className="flex items-center gap-2 px-4 py-2 text-sm text-[#9A8F7A] hover:text-[#C9A84C] hover:bg-[#C9A84C]/5" onClick={() => setUserMenuOpen(false)}>
+                      <Link href="/vendor" className="flex items-center gap-2 px-4 py-2 text-sm text-[var(--text-secondary)] hover:text-[#C9A84C] hover:bg-[#C9A84C]/5" onClick={() => setUserMenuOpen(false)}>
                         <Store className="h-4 w-4" /> Vendor Dashboard
                       </Link>
                     )}
                     {session.user.role === 'ADMIN' && (
-                      <Link href="/admin" className="flex items-center gap-2 px-4 py-2 text-sm text-[#9A8F7A] hover:text-[#C9A84C] hover:bg-[#C9A84C]/5" onClick={() => setUserMenuOpen(false)}>
+                      <Link href="/admin" className="flex items-center gap-2 px-4 py-2 text-sm text-[var(--text-secondary)] hover:text-[#C9A84C] hover:bg-[#C9A84C]/5" onClick={() => setUserMenuOpen(false)}>
                         <Settings className="h-4 w-4" /> Admin Panel
                       </Link>
                     )}
@@ -174,10 +179,10 @@ export function Navbar() {
               </div>
             ) : (
               <div className="hidden sm:flex items-center gap-2">
-                <Link href="/auth/login" className="text-sm font-medium text-[#9A8F7A] hover:text-[#C9A84C] transition-colors px-3 py-1.5">
+                <Link href="/auth/login" className="text-sm font-medium text-[var(--text-secondary)] hover:text-[#C9A84C] transition-colors px-3 py-1.5">
                   Sign in
                 </Link>
-                <Link href="/auth/register" className="text-sm font-semibold bg-[#C9A84C] text-[#0A0A0A] px-4 py-1.5 rounded-full hover:bg-[#F0C040] transition-colors">
+                <Link href="/auth/register" className="text-sm font-semibold bg-[#C9A84C] text-black px-4 py-1.5 rounded-full hover:bg-[#F0C040] transition-colors">
                   Join Free
                 </Link>
               </div>
@@ -188,7 +193,7 @@ export function Navbar() {
               className="sm:hidden p-2 hover:bg-[#C9A84C]/10 rounded-full"
               onClick={() => setMobileOpen(!mobileOpen)}
             >
-              {mobileOpen ? <X className="h-5 w-5 text-[#F5F0E8]" /> : <Menu className="h-5 w-5 text-[#F5F0E8]" />}
+              {mobileOpen ? <X className="h-5 w-5 text-[var(--text-primary)]" /> : <Menu className="h-5 w-5 text-[var(--text-primary)]" />}
             </button>
           </div>
         </div>
@@ -201,7 +206,7 @@ export function Navbar() {
               <Link
                 key={cat.slug}
                 href={`/products?category=${encodeURIComponent(cat.slug)}`}
-                className="group flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-[#9A8F7A] hover:text-[#F5F0E8] hover:bg-[#1A1A1A] rounded-md whitespace-nowrap transition-all duration-150"
+                className="group flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-card)] rounded-md whitespace-nowrap transition-all duration-150"
               >
                 <Icon
                   className="h-3.5 w-3.5 shrink-0 transition-transform group-hover:scale-110"
@@ -221,12 +226,12 @@ export function Navbar() {
           </Link>
           <Link
             href="/vendors"
-            className="group flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-[#9A8F7A] hover:text-[#F5F0E8] hover:bg-[#1A1A1A] rounded-md whitespace-nowrap transition-all"
+            className="group flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-card)] rounded-md whitespace-nowrap transition-all"
           >
             <Store className="h-3.5 w-3.5 text-[#C9A84C] shrink-0" />
             <span className="tracking-wide">Sellers</span>
           </Link>
-          <Link href="/products" className="ml-auto px-2.5 py-1 text-xs font-medium text-[#9A8F7A] hover:text-[#C9A84C] whitespace-nowrap transition-colors">
+          <Link href="/products" className="ml-auto px-2.5 py-1 text-xs font-medium text-[var(--text-secondary)] hover:text-[#C9A84C] whitespace-nowrap transition-colors">
             All →
           </Link>
         </nav>
@@ -234,12 +239,12 @@ export function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="sm:hidden border-t border-[#C9A84C]/20 bg-[#111111] px-4 py-4 space-y-3">
+        <div className="sm:hidden border-t border-[#C9A84C]/20 bg-[var(--bg-secondary)] px-4 py-4 space-y-3">
           <form action="/products" method="get">
             <div className="relative">
               <input name="q" type="text" placeholder="Search products..."
-                className="w-full pl-4 pr-10 py-2.5 bg-[#1A1A1A] border border-[#C9A84C]/30 rounded-full text-sm text-[#F5F0E8] placeholder-[#9A8F7A] focus:outline-none focus:ring-2 focus:ring-[#C9A84C]" />
-              <button type="submit" className="absolute right-1 top-1 p-1.5 bg-[#C9A84C] text-[#0A0A0A] rounded-full">
+                className="w-full pl-4 pr-10 py-2.5 bg-[var(--bg-card)] border border-[#C9A84C]/30 rounded-full text-sm text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[#C9A84C]" />
+              <button type="submit" className="absolute right-1 top-1 p-1.5 bg-[#C9A84C] text-black rounded-full">
                 <Search className="h-4 w-4" />
               </button>
             </div>
@@ -249,7 +254,7 @@ export function Navbar() {
               const Icon = cat.icon
               return (
                 <Link key={cat.slug} href={`/products?category=${encodeURIComponent(cat.slug)}`} onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-2 px-3 py-2 text-sm text-[#9A8F7A] hover:text-[#F5F0E8] hover:bg-[#1A1A1A] rounded-lg transition-colors">
+                  className="flex items-center gap-2 px-3 py-2 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-card)] rounded-lg transition-colors">
                   <Icon className="h-4 w-4 shrink-0" style={{ color: cat.color }} />
                   <span className="text-xs">{cat.label}</span>
                 </Link>
@@ -262,7 +267,7 @@ export function Navbar() {
             <Link
               href="/vendors"
               onClick={() => setMobileOpen(false)}
-              className="flex items-center gap-2 px-3 py-2 text-sm text-[#9A8F7A] hover:text-[#F5F0E8] hover:bg-[#1A1A1A] rounded-lg transition-colors"
+              className="flex items-center gap-2 px-3 py-2 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-card)] rounded-lg transition-colors"
             >
               <Store className="h-4 w-4 text-[#C9A84C] shrink-0" />
               <span className="text-xs font-medium">All Sellers</span>
@@ -279,7 +284,7 @@ export function Navbar() {
               <Link
                 href="/messages"
                 onClick={() => setMobileOpen(false)}
-                className="col-span-2 flex items-center gap-2 px-3 py-2 text-sm text-[#9A8F7A] hover:text-[#F5F0E8] hover:bg-[#1A1A1A] rounded-lg transition-colors relative"
+                className="col-span-2 flex items-center gap-2 px-3 py-2 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-card)] rounded-lg transition-colors relative"
               >
                 <MessageSquare className="h-4 w-4 text-[#C9A84C] shrink-0" />
                 <span className="text-xs font-medium">Messages</span>
@@ -294,7 +299,7 @@ export function Navbar() {
           {!session && (
             <div className="flex gap-2 pt-2 border-t border-[#C9A84C]/10">
               <Link href="/auth/login" className="flex-1 text-center py-2 text-sm font-medium border border-[#C9A84C]/40 text-[#C9A84C] rounded-lg" onClick={() => setMobileOpen(false)}>Sign in</Link>
-              <Link href="/auth/register" className="flex-1 text-center py-2 text-sm font-semibold bg-[#C9A84C] text-[#0A0A0A] rounded-lg" onClick={() => setMobileOpen(false)}>Join Free</Link>
+              <Link href="/auth/register" className="flex-1 text-center py-2 text-sm font-semibold bg-[#C9A84C] text-black rounded-lg" onClick={() => setMobileOpen(false)}>Join Free</Link>
             </div>
           )}
         </div>

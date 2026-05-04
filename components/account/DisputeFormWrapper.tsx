@@ -15,7 +15,7 @@ export function DisputeFormWrapper({ preselectedOrderId }: Props) {
       {!showForm ? (
         <button
           onClick={() => setShowForm(true)}
-          className="bg-[#C9A84C] text-[#0A0A0A] hover:bg-[#b8963f] font-semibold px-4 py-2 rounded text-sm transition-colors"
+          className="bg-[#C9A84C] text-black hover:bg-[#b8963f] font-semibold px-4 py-2 rounded text-sm transition-colors"
         >
           Open New Dispute
         </button>

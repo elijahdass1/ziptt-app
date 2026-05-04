@@ -93,11 +93,11 @@ export function DriverDashboardClient({ driverName }: { driverName: string }) {
   }
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-[#F5F0E8]">
-      <header className="border-b border-[#1A1A1A] px-4 sm:px-6 py-4 sticky top-0 bg-[#0A0A0A]/95 backdrop-blur z-10">
+    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
+      <header className="border-b border-[var(--bg-card)] px-4 sm:px-6 py-4 sticky top-0 bg-[var(--bg-primary)]/95 backdrop-blur z-10">
         <div className="max-w-4xl mx-auto flex items-center justify-between gap-4">
           <div>
-            <p className="text-xs uppercase tracking-wide text-[#9A8F7A]">zip.tt Driver</p>
+            <p className="text-xs uppercase tracking-wide text-[var(--text-secondary)]">zip.tt Driver</p>
             <h1 className="text-lg font-bold" style={{ fontFamily: 'Georgia, serif' }}>
               {driverName}
             </h1>
@@ -121,8 +121,8 @@ export function DriverDashboardClient({ driverName }: { driverName: string }) {
               onClick={() => setTab(t)}
               className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
                 tab === t
-                  ? 'bg-[#C9A84C] text-[#0A0A0A]'
-                  : 'bg-[#111] text-[#9A8F7A] border border-[#1A1A1A] hover:text-[#F5F0E8]'
+                  ? 'bg-[#C9A84C] text-black'
+                  : 'bg-[#111] text-[var(--text-secondary)] border border-[var(--bg-card)] hover:text-[var(--text-primary)]'
               }`}
             >
               {t === 'mine' ? 'My Deliveries' : 'Available'}
@@ -131,12 +131,12 @@ export function DriverDashboardClient({ driverName }: { driverName: string }) {
         </div>
 
         {loading && orders.length === 0 ? (
-          <div className="text-center py-16 text-[#9A8F7A]">
+          <div className="text-center py-16 text-[var(--text-secondary)]">
             <div className="inline-block w-6 h-6 border-2 border-[#C9A84C] border-b-transparent rounded-full animate-spin" />
             <p className="mt-3 text-sm">Loading orders…</p>
           </div>
         ) : orders.length === 0 ? (
-          <div className="text-center py-16 text-[#9A8F7A]">
+          <div className="text-center py-16 text-[var(--text-secondary)]">
             <Package size={36} className="mx-auto mb-3 text-[#2A2A2A]" strokeWidth={1.2} />
             <p className="text-sm">
               {tab === 'mine'
@@ -149,14 +149,14 @@ export function DriverDashboardClient({ driverName }: { driverName: string }) {
             {orders.map((o) => (
               <article
                 key={o.id}
-                className="bg-[#111] border border-[#1A1A1A] rounded-2xl p-5 space-y-4"
+                className="bg-[#111] border border-[var(--bg-card)] rounded-2xl p-5 space-y-4"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <p className="text-xs text-[#9A8F7A] uppercase tracking-wide">
+                    <p className="text-xs text-[var(--text-secondary)] uppercase tracking-wide">
                       Order #{o.orderNumber.slice(0, 8)}
                     </p>
-                    <p className="text-sm text-[#F5F0E8] font-semibold mt-0.5">
+                    <p className="text-sm text-[var(--text-primary)] font-semibold mt-0.5">
                       {formatTTD(o.total)} · {o.items.reduce((s, i) => s + i.quantity, 0)} item
                       {o.items.length !== 1 ? 's' : ''}
                     </p>
@@ -173,12 +173,12 @@ export function DriverDashboardClient({ driverName }: { driverName: string }) {
                 </div>
 
                 <div className="grid sm:grid-cols-2 gap-3 text-sm">
-                  <div className="bg-[#0A0A0A] border border-[#1E1E1E] rounded-xl p-3">
-                    <p className="text-[10px] uppercase tracking-wide text-[#9A8F7A] mb-1">
+                  <div className="bg-[var(--bg-primary)] border border-[#1E1E1E] rounded-xl p-3">
+                    <p className="text-[10px] uppercase tracking-wide text-[var(--text-secondary)] mb-1">
                       Pickup from
                     </p>
-                    <p className="text-[#F5F0E8] font-medium">{o.vendor.storeName}</p>
-                    <p className="text-[#9A8F7A] text-xs">
+                    <p className="text-[var(--text-primary)] font-medium">{o.vendor.storeName}</p>
+                    <p className="text-[var(--text-secondary)] text-xs">
                       {[o.vendor.address, o.vendor.region].filter(Boolean).join(', ') || 'Address pending'}
                     </p>
                     {o.vendor.phone && (
@@ -191,17 +191,17 @@ export function DriverDashboardClient({ driverName }: { driverName: string }) {
                     )}
                   </div>
 
-                  <div className="bg-[#0A0A0A] border border-[#1E1E1E] rounded-xl p-3">
-                    <p className="text-[10px] uppercase tracking-wide text-[#9A8F7A] mb-1">
+                  <div className="bg-[var(--bg-primary)] border border-[#1E1E1E] rounded-xl p-3">
+                    <p className="text-[10px] uppercase tracking-wide text-[var(--text-secondary)] mb-1">
                       Deliver to
                     </p>
-                    <p className="text-[#F5F0E8] font-medium">{o.customer.name ?? 'Customer'}</p>
+                    <p className="text-[var(--text-primary)] font-medium">{o.customer.name ?? 'Customer'}</p>
                     {o.address ? (
-                      <p className="text-[#9A8F7A] text-xs">
+                      <p className="text-[var(--text-secondary)] text-xs">
                         {o.address.street}, {o.address.city}, {o.address.region}
                       </p>
                     ) : (
-                      <p className="text-[#9A8F7A] text-xs italic">
+                      <p className="text-[var(--text-secondary)] text-xs italic">
                         See order notes for address
                       </p>
                     )}
@@ -217,19 +217,19 @@ export function DriverDashboardClient({ driverName }: { driverName: string }) {
                 </div>
 
                 {o.instructions && (
-                  <div className="bg-[#0A0A0A] border border-[#C9A84C]/20 rounded-xl p-3">
+                  <div className="bg-[var(--bg-primary)] border border-[#C9A84C]/20 rounded-xl p-3">
                     <p className="text-[10px] uppercase tracking-wide text-[#C9A84C] mb-1 flex items-center gap-1">
                       <MapPin size={11} /> Instructions
                     </p>
-                    <p className="text-sm text-[#F5F0E8] whitespace-pre-wrap">{o.instructions}</p>
+                    <p className="text-sm text-[var(--text-primary)] whitespace-pre-wrap">{o.instructions}</p>
                   </div>
                 )}
 
                 <details className="text-sm">
-                  <summary className="cursor-pointer text-xs text-[#9A8F7A] hover:text-[#F5F0E8]">
+                  <summary className="cursor-pointer text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)]">
                     Items ({o.items.length})
                   </summary>
-                  <ul className="mt-2 space-y-1 text-xs text-[#9A8F7A]">
+                  <ul className="mt-2 space-y-1 text-xs text-[var(--text-secondary)]">
                     {o.items.map((it, i) => (
                       <li key={i}>
                         {it.quantity} × {it.product.name}
@@ -255,7 +255,7 @@ export function DriverDashboardClient({ driverName }: { driverName: string }) {
                     <button
                       onClick={() => accept(o.id)}
                       disabled={busyId === o.id}
-                      className="px-4 py-2 bg-[#C9A84C] hover:bg-[#F0C040] disabled:bg-[#333] disabled:text-[#555] text-[#0A0A0A] text-sm font-bold rounded-lg transition-colors"
+                      className="px-4 py-2 bg-[#C9A84C] hover:bg-[#F0C040] disabled:bg-[#333] disabled:text-[#555] text-black text-sm font-bold rounded-lg transition-colors"
                     >
                       {busyId === o.id ? 'Accepting…' : 'Accept Order'}
                     </button>
@@ -263,7 +263,7 @@ export function DriverDashboardClient({ driverName }: { driverName: string }) {
                     <button
                       onClick={() => deliver(o.id)}
                       disabled={busyId === o.id}
-                      className="px-4 py-2 bg-green-500 hover:bg-green-400 disabled:bg-[#333] disabled:text-[#555] text-[#0A0A0A] text-sm font-bold rounded-lg transition-colors flex items-center gap-1.5"
+                      className="px-4 py-2 bg-green-500 hover:bg-green-400 disabled:bg-[#333] disabled:text-[#555] text-[var(--bg-primary)] text-sm font-bold rounded-lg transition-colors flex items-center gap-1.5"
                     >
                       <CheckCircle2 size={14} />
                       {busyId === o.id ? 'Saving…' : 'Mark Delivered'}

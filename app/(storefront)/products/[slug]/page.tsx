@@ -106,7 +106,7 @@ export default async function ProductPage({ params }: PageProps) {
 
       {related.length > 0 && (
         <section>
-          <h2 className="text-xl font-bold text-[#F5F0E8] mb-6">More from {product.category?.name}</h2>
+          <h2 className="text-xl font-bold text-[var(--text-primary)] mb-6">More from {product.category?.name}</h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {related.map((p) => <ProductCard key={p.id} product={p} />)}
           </div>

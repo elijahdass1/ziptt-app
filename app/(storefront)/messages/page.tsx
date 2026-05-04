@@ -45,19 +45,19 @@ export default async function MessagesPage() {
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center gap-2 mb-6">
         <MessageSquare className="h-5 w-5 text-[#C9A84C]" />
-        <h1 className="text-2xl font-bold text-[#F5F0E8]">Messages</h1>
+        <h1 className="text-2xl font-bold text-[var(--text-primary)]">Messages</h1>
       </div>
 
       {conversations.length === 0 ? (
-        <div className="bg-[#111111] border border-[#C9A84C]/15 rounded-xl p-12 text-center">
-          <MessageSquare className="h-10 w-10 text-[#9A8F7A] mx-auto mb-3" strokeWidth={1.2} />
-          <p className="text-sm text-[#F5F0E8] font-semibold mb-1">No conversations yet</p>
-          <p className="text-xs text-[#9A8F7A]">
+        <div className="bg-[var(--bg-secondary)] border border-[#C9A84C]/15 rounded-xl p-12 text-center">
+          <MessageSquare className="h-10 w-10 text-[var(--text-secondary)] mx-auto mb-3" strokeWidth={1.2} />
+          <p className="text-sm text-[var(--text-primary)] font-semibold mb-1">No conversations yet</p>
+          <p className="text-xs text-[var(--text-secondary)]">
             Start a chat from any seller&apos;s store page.
           </p>
         </div>
       ) : (
-        <div className="bg-[#111111] border border-[#C9A84C]/15 rounded-xl divide-y divide-[#C9A84C]/10 overflow-hidden">
+        <div className="bg-[var(--bg-secondary)] border border-[#C9A84C]/15 rounded-xl divide-y divide-[#C9A84C]/10 overflow-hidden">
           {conversations.map((c) => {
             const isMineAsVendor = !!myVendor && c.vendorId === myVendor.id
             const other = isMineAsVendor
@@ -69,9 +69,9 @@ export default async function MessagesPage() {
               <Link
                 key={c.id}
                 href={`/messages/${c.id}`}
-                className="flex items-center gap-3 px-4 py-3 hover:bg-[#1A1A1A] transition-colors"
+                className="flex items-center gap-3 px-4 py-3 hover:bg-[var(--bg-card)] transition-colors"
               >
-                <div className="h-11 w-11 rounded-full bg-[#1A1A1A] border border-[#C9A84C]/20 flex items-center justify-center overflow-hidden shrink-0">
+                <div className="h-11 w-11 rounded-full bg-[var(--bg-card)] border border-[#C9A84C]/20 flex items-center justify-center overflow-hidden shrink-0">
                   {other.image ? (
                     <img src={other.image} alt="" className="h-full w-full object-cover" />
                   ) : other.kind === 'vendor' ? (
@@ -82,16 +82,16 @@ export default async function MessagesPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2">
-                    <p className={`text-sm truncate ${unread ? 'font-bold text-[#F5F0E8]' : 'font-semibold text-[#F5F0E8]'}`}>
+                    <p className={`text-sm truncate ${unread ? 'font-bold text-[var(--text-primary)]' : 'font-semibold text-[var(--text-primary)]'}`}>
                       {other.name}
                     </p>
-                    <span className="text-[10px] text-[#9A8F7A] shrink-0">
+                    <span className="text-[10px] text-[var(--text-secondary)] shrink-0">
                       {new Date(c.lastMessageAt).toLocaleDateString('en-TT', {
                         month: 'short', day: 'numeric',
                       })}
                     </span>
                   </div>
-                  <p className={`text-xs truncate mt-0.5 ${unread ? 'text-[#F5F0E8] font-semibold' : 'text-[#9A8F7A]'}`}>
+                  <p className={`text-xs truncate mt-0.5 ${unread ? 'text-[var(--text-primary)] font-semibold' : 'text-[var(--text-secondary)]'}`}>
                     {lastMsg
                       ? `${lastMsg.senderId === session.user.id ? 'You: ' : ''}${lastMsg.body}`
                       : 'No messages yet'}

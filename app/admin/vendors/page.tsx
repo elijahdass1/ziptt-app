@@ -52,16 +52,16 @@ export default async function AdminVendorsPage({
   ]
 
   return (
-    <div className="bg-[#0A0A0A] min-h-full">
+    <div className="bg-[var(--bg-primary)] min-h-full">
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-[#F5F0E8]" style={{ fontFamily: 'Georgia,serif' }}>
+        <h1 className="text-2xl font-semibold text-[var(--text-primary)]" style={{ fontFamily: 'Georgia,serif' }}>
           Vendors
         </h1>
         <p className="text-sm text-[#888] mt-1">{total.toLocaleString()} vendor{total !== 1 ? 's' : ''}</p>
       </div>
 
       {/* Status tabs */}
-      <div className="flex gap-1 mb-6 border-b border-[#1a1a1a]">
+      <div className="flex gap-1 mb-6 border-b border-[var(--bg-card)]">
         {tabs.map((tab) => (
           <a
             key={tab.value}
@@ -69,7 +69,7 @@ export default async function AdminVendorsPage({
             className={`px-4 py-2 text-sm font-medium rounded-t-lg -mb-px border-b-2 transition-colors ${
               activeTab === tab.value
                 ? 'border-[#C9A84C] text-[#C9A84C]'
-                : 'border-transparent text-[#888] hover:text-[#F5F0E8]'
+                : 'border-transparent text-[#888] hover:text-[var(--text-primary)]'
             }`}
           >
             {tab.label}
@@ -77,11 +77,11 @@ export default async function AdminVendorsPage({
         ))}
       </div>
 
-      <div className="bg-[#111111] border border-[#1a1a1a] rounded-xl overflow-hidden">
+      <div className="bg-[var(--bg-secondary)] border border-[var(--bg-card)] rounded-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#1a1a1a] bg-[#0A0A0A]">
+              <tr className="border-b border-[var(--bg-card)] bg-[var(--bg-primary)]">
                 {['Store', 'Owner', 'ID Verified', 'Region', 'Status', 'Products', 'Chargebacks', 'Applied', 'Actions'].map((h, i) => (
                   <th
                     key={h}
@@ -103,13 +103,13 @@ export default async function AdminVendorsPage({
                 </tr>
               ) : (
                 pagedVendors.map((vendor) => (
-                  <tr key={vendor.id} className="border-b border-[#1a1a1a] hover:bg-[#0A0A0A] transition-colors">
+                  <tr key={vendor.id} className="border-b border-[var(--bg-card)] hover:bg-[var(--bg-primary)] transition-colors">
                     <td className="px-5 py-3">
-                      <p className="font-medium text-[#F5F0E8]">{vendor.storeName}</p>
+                      <p className="font-medium text-[var(--text-primary)]">{vendor.storeName}</p>
                       <p className="text-xs text-[#555]">/{vendor.slug}</p>
                     </td>
                     <td className="px-5 py-3">
-                      <p className="text-[#F5F0E8]">{vendor.user.name}</p>
+                      <p className="text-[var(--text-primary)]">{vendor.user.name}</p>
                       <p className="text-xs text-[#555]">{vendor.user.email}</p>
                     </td>
                     <td className="px-5 py-3">
@@ -153,13 +153,13 @@ export default async function AdminVendorsPage({
         </div>
 
         {pages > 1 && (
-          <div className="px-5 py-4 border-t border-[#1a1a1a] flex items-center justify-between">
+          <div className="px-5 py-4 border-t border-[var(--bg-card)] flex items-center justify-between">
             <p className="text-xs text-[#888]">Page {page} of {pages}</p>
             <div className="flex gap-2">
               {page > 1 && (
                 <a
                   href={`?status=${activeTab}&page=${page - 1}`}
-                  className="text-sm px-3 py-1 border border-[#333] text-[#888] rounded-lg hover:bg-[#111111] transition-colors"
+                  className="text-sm px-3 py-1 border border-[#333] text-[#888] rounded-lg hover:bg-[var(--bg-secondary)] transition-colors"
                 >
                   Prev
                 </a>
@@ -167,7 +167,7 @@ export default async function AdminVendorsPage({
               {page < pages && (
                 <a
                   href={`?status=${activeTab}&page=${page + 1}`}
-                  className="text-sm px-3 py-1 border border-[#333] text-[#888] rounded-lg hover:bg-[#111111] transition-colors"
+                  className="text-sm px-3 py-1 border border-[#333] text-[#888] rounded-lg hover:bg-[var(--bg-secondary)] transition-colors"
                 >
                   Next
                 </a>

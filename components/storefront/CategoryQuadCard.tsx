@@ -42,7 +42,7 @@ export function CategoryQuadCard({ title, href, cta = 'See more', products, acce
   while (tiles.length < 4) tiles.push(null as unknown as Thumb)
 
   return (
-    <div className="bg-[#111111] border border-[#C9A84C]/15 rounded-lg p-4 flex flex-col ziptt-tilt hover:border-[#C9A84C]/45 relative overflow-hidden">
+    <div className="bg-[var(--bg-secondary)] border border-[#C9A84C]/15 rounded-lg p-4 flex flex-col ziptt-tilt hover:border-[#C9A84C]/45 relative overflow-hidden">
       {accent && (
         <span
           className="absolute inset-x-0 top-0 h-[3px]"
@@ -50,14 +50,14 @@ export function CategoryQuadCard({ title, href, cta = 'See more', products, acce
           aria-hidden
         />
       )}
-      <h3 className="text-base font-bold text-[#F5F0E8] mb-3 truncate">{title}</h3>
+      <h3 className="text-base font-bold text-[var(--text-primary)] mb-3 truncate">{title}</h3>
       <div className="grid grid-cols-2 gap-2 mb-3">
         {tiles.map((t, i) =>
           t ? (
             <Link
               key={t.id}
               href={`/products/${t.slug}`}
-              className="aspect-square bg-[#1A1A1A] rounded overflow-hidden group/tile relative"
+              className="aspect-square bg-[var(--bg-card)] rounded overflow-hidden group/tile relative"
             >
               <img
                 src={firstImage(t.images)}
@@ -70,11 +70,11 @@ export function CategoryQuadCard({ title, href, cta = 'See more', products, acce
                 }}
               />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-1.5">
-                <p className="text-[10px] text-[#F5F0E8] line-clamp-1 leading-tight">{t.name}</p>
+                <p className="text-[10px] text-[var(--text-primary)] line-clamp-1 leading-tight">{t.name}</p>
               </div>
             </Link>
           ) : (
-            <div key={`empty-${i}`} className="aspect-square bg-[#1A1A1A] rounded" />
+            <div key={`empty-${i}`} className="aspect-square bg-[var(--bg-card)] rounded" />
           )
         )}
       </div>

@@ -8,47 +8,107 @@ body {
     'Noto Color Emoji', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
+/*
+ * zip.tt theme tokens.
+ *
+ * The site supports two modes — light (default for new visitors,
+ * white + gold) and dark (black + gold) — toggled by adding the
+ * `dark` class to <html>. Components that have been migrated read
+ * the named hex tokens (`var(--bg-primary)` etc.) and respond to the
+ * toggle automatically.
+ *
+ * The original HSL token block (--background, --foreground, --card,
+ * etc.) is still here because shadcn-style utility classes in the
+ * codebase reference them via `hsl(var(--…))`. Those tokens flip too
+ * so the existing classes also respond to the toggle.
+ *
+ * The gold accent (--gold, --gold-light, --primary, --accent) is the
+ * SAME hex in both modes by design — the brand's anchor.
+ */
 @layer base {
+  /* ─── Light mode (default) ────────────────────────────────────── */
   :root {
-    /* zip.tt Black & Gold Theme */
-    --background: 0 0% 4%;           /* #0A0A0A */
-    --foreground: 39 33% 95%;        /* #F5F0E8 warm white */
-    --card: 0 0% 7%;                 /* #111111 */
-    --card-foreground: 39 33% 95%;
-    --surface: 0 0% 10%;             /* #1A1A1A */
-    --primary: 42 51% 55%;           /* #C9A84C gold */
-    --primary-foreground: 0 0% 4%;   /* black text on gold */
-    --secondary: 0 0% 10%;
-    --secondary-foreground: 39 33% 95%;
-    --muted: 0 0% 10%;
-    --muted-foreground: 35 11% 54%;  /* #9A8F7A */
-    --accent: 45 85% 60%;            /* #F0C040 gold light */
-    --accent-foreground: 0 0% 4%;
-    --destructive: 0 60% 33%;        /* #8B2222 */
-    --destructive-foreground: 39 33% 95%;
-    --border: 42 51% 55% / 0.2;      /* gold border 20% opacity */
-    --input: 0 0% 10%;
+    /* Named tokens (preferred for new components) */
+    --bg-primary:    #FFFFFF;
+    --bg-secondary:  #F9F7F2;
+    --bg-card:       #FFFFFF;
+    --bg-surface:    #F1EDE3;  /* slightly darker for inputs/buttons */
+    --text-primary:  #1A1A1A;
+    --text-secondary: #555555;
+    --border-color:  #E8E0D0;
+    --gold:          #C9A84C;
+    --gold-hover:    #B8963E;
+    --gold-text:     #8B6914;
+    --gold-light:    #F0C040;
+    --gold-dark:     #8B6914;
+    --success:       #2A7D4F;
+    --error:         #8B2222;
+
+    /* HSL channel tokens (consumed by hsl(var(--…)) utility classes) */
+    --background: 0 0% 100%;          /* #FFFFFF */
+    --foreground: 0 0% 10%;           /* #1A1A1A */
+    --card: 0 0% 100%;                /* #FFFFFF */
+    --card-foreground: 0 0% 10%;
+    --surface: 39 33% 92%;            /* #F1EDE3 */
+    --primary: 42 51% 55%;            /* #C9A84C — same gold both modes */
+    --primary-foreground: 0 0% 10%;
+    --secondary: 39 33% 96%;          /* #F9F7F2 */
+    --secondary-foreground: 0 0% 10%;
+    --muted: 39 33% 96%;
+    --muted-foreground: 0 0% 33%;     /* #555555 */
+    --accent: 45 85% 60%;             /* #F0C040 */
+    --accent-foreground: 0 0% 10%;
+    --destructive: 0 60% 33%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 39 33% 86%;             /* #E8E0D0 — solid in light, opaque */
+    --input: 39 33% 92%;
     --ring: 42 51% 55%;
     --radius: 0.5rem;
-    /* Named tokens */
-    --gold: #C9A84C;
-    --gold-light: #F0C040;
-    --gold-dark: #8B6914;
-    --bg-primary: #0A0A0A;
-    --bg-card: #111111;
-    --bg-surface: #1A1A1A;
-    --text-primary: #F5F0E8;
-    --text-secondary: #9A8F7A;
-    --success: #2A7D4F;
-    --error: #8B2222;
+  }
+
+  /* ─── Dark mode ───────────────────────────────────────────────── */
+  .dark {
+    --bg-primary:    #0A0A0A;
+    --bg-secondary:  #111111;
+    --bg-card:       #1A1A1A;
+    --bg-surface:    #1A1A1A;
+    --text-primary:  #FFFFFF;
+    --text-secondary: #AAAAAA;
+    --border-color:  #2A2A2A;
+    --gold:          #C9A84C;
+    --gold-hover:    #D4B96A;
+    --gold-text:     #C9A84C;
+    --gold-light:    #F0C040;
+    --gold-dark:     #8B6914;
+    --success:       #2A7D4F;
+    --error:         #8B2222;
+
+    --background: 0 0% 4%;            /* #0A0A0A */
+    --foreground: 0 0% 100%;          /* #FFFFFF */
+    --card: 0 0% 10%;                 /* #1A1A1A */
+    --card-foreground: 0 0% 100%;
+    --surface: 0 0% 10%;
+    --primary: 42 51% 55%;
+    --primary-foreground: 0 0% 4%;
+    --secondary: 0 0% 7%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 67%;     /* #AAAAAA */
+    --accent: 45 85% 60%;
+    --accent-foreground: 0 0% 4%;
+    --destructive: 0 60% 33%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 16%;               /* #2A2A2A */
+    --input: 0 0% 10%;
+    --ring: 42 51% 55%;
   }
 }
 
 @layer base {
   * { @apply border-border; }
   body {
-    background-color: #0A0A0A;
-    color: #F5F0E8;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }

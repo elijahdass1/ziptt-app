@@ -46,9 +46,9 @@ export default function VendorGuidePage() {
           <div className="p-2.5 rounded-full bg-[#C9A84C]/10 border border-[#C9A84C]/20">
             <Store className="h-5 w-5 text-[#C9A84C]" />
           </div>
-          <h1 className="text-3xl font-black text-[#F5F0E8]">Seller Guide</h1>
+          <h1 className="text-3xl font-black text-[var(--text-primary)]">Seller Guide</h1>
         </div>
-        <p className="text-[#9A8F7A] leading-relaxed">
+        <p className="text-[var(--text-secondary)] leading-relaxed">
           Everything you need to set up and run a successful store on zip.tt.
         </p>
       </div>
@@ -60,19 +60,19 @@ export default function VendorGuidePage() {
           { value: '10%',    label: 'Commission only' },
           { value: 'Friday', label: 'Weekly payouts' },
         ].map((s) => (
-          <div key={s.label} className="bg-[#111111] border border-[#C9A84C]/15 rounded-xl p-4 text-center">
+          <div key={s.label} className="bg-[var(--bg-secondary)] border border-[#C9A84C]/15 rounded-xl p-4 text-center">
             <p className="text-xl font-black text-[#C9A84C]">{s.value}</p>
-            <p className="text-xs text-[#9A8F7A] mt-1">{s.label}</p>
+            <p className="text-xs text-[var(--text-secondary)] mt-1">{s.label}</p>
           </div>
         ))}
       </div>
 
       {/* Steps */}
       <div>
-        <h2 className="text-xl font-bold text-[#F5F0E8] mb-6">Getting Started â Step by Step</h2>
+        <h2 className="text-xl font-bold text-[var(--text-primary)] mb-6">Getting Started â Step by Step</h2>
         <div className="space-y-5">
           {steps.map((s) => (
-            <div key={s.step} className="bg-[#111111] border border-[#C9A84C]/15 rounded-2xl p-5 flex gap-5">
+            <div key={s.step} className="bg-[var(--bg-secondary)] border border-[#C9A84C]/15 rounded-2xl p-5 flex gap-5">
               <div className="shrink-0">
                 <div className="h-10 w-10 rounded-full bg-[#C9A84C]/10 border border-[#C9A84C]/30 flex items-center justify-center">
                   <s.icon className="h-5 w-5 text-[#C9A84C]" />
@@ -81,9 +81,9 @@ export default function VendorGuidePage() {
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-xs font-mono text-[#C9A84C]/60">{s.step}</span>
-                  <p className="font-bold text-[#F5F0E8]">{s.title}</p>
+                  <p className="font-bold text-[var(--text-primary)]">{s.title}</p>
                 </div>
-                <p className="text-sm text-[#9A8F7A] leading-relaxed">{s.desc}</p>
+                <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{s.desc}</p>
               </div>
             </div>
           ))}
@@ -92,8 +92,8 @@ export default function VendorGuidePage() {
 
       {/* Tips */}
       <div>
-        <h2 className="text-xl font-bold text-[#F5F0E8] mb-4">Pro Tips ð¹ð¹</h2>
-        <div className="space-y-3 text-sm text-[#9A8F7A]">
+        <h2 className="text-xl font-bold text-[var(--text-primary)] mb-4">Pro Tips ð¹ð¹</h2>
+        <div className="space-y-3 text-sm text-[var(--text-secondary)]">
           {[
             'Set competitive prices â browse similar products on zip.tt to gauge the market.',
             'Carnival season (JanuaryâFebruary) is the busiest time of year. Stock up and list early.',
@@ -111,9 +111,9 @@ export default function VendorGuidePage() {
       </div>
 
       {/* Rules */}
-      <div className="bg-[#111111] border border-red-500/20 rounded-2xl p-5 text-sm">
-        <p className="font-semibold text-[#F5F0E8] mb-3">Vendor Rules</p>
-        <div className="space-y-2 text-[#9A8F7A]">
+      <div className="bg-[var(--bg-secondary)] border border-red-500/20 rounded-2xl p-5 text-sm">
+        <p className="font-semibold text-[var(--text-primary)] mb-3">Vendor Rules</p>
+        <div className="space-y-2 text-[var(--text-secondary)]">
           <p>â¢ All listings must be accurate â misrepresenting products results in account suspension.</p>
           <p>â¢ No counterfeit, illegal, or prohibited items (firearms, drugs, etc.).</p>
           <p>â¢ Orders must be confirmed within 24 hours of placement.</p>
@@ -124,10 +124,10 @@ export default function VendorGuidePage() {
 
       <div className="text-center pt-2">
         <Link href="/vendor/register"
-          className="inline-flex items-center gap-2 bg-[#C9A84C] text-[#0A0A0A] font-bold px-8 py-3 rounded-full hover:bg-[#F0C040] transition-colors">
+          className="inline-flex items-center gap-2 bg-[#C9A84C] text-black font-bold px-8 py-3 rounded-full hover:bg-[#F0C040] transition-colors">
           Apply to Sell <ArrowRight className="h-4 w-4" />
         </Link>
-        <p className="text-xs text-[#9A8F7A] mt-3">Questions? Email <a href="mailto:support@zip.tt" className="text-[#C9A84C] hover:underline">support@zip.tt</a></p>
+        <p className="text-xs text-[var(--text-secondary)] mt-3">Questions? Email <a href="mailto:support@zip.tt" className="text-[#C9A84C] hover:underline">support@zip.tt</a></p>
       </div>
     </div>
   )
