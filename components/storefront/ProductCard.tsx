@@ -59,13 +59,39 @@ export function ProductCard({ product }: ProductCardProps) {
         aria-label={product.name}
       />
 
-      {/* Image */}
+      {/* Image — 3-step fallback chain so a single dead URL doesn't
+          turn the card into a grey square:
+            1. images[0]                         (the primary photo)
+            2. images[1]                         (vendor often uploads
+                                                   multiple — second
+                                                   shot is usually fine
+                                                   even if the first
+                                                   404s)
+            3. /placeholder-product.svg          (branded zip.tt SVG —
+                                                   served from /public)
+          We use a data-attribute on the <img> to track which step
+          we're at, so onError can advance without ever looping back to
+          a URL that already failed. */}
       <div className="relative overflow-hidden aspect-square bg-[var(--bg-card)]">
         <img
           src={imgUrl}
+          data-step="0"
+          data-img1={allImages[1] ?? ''}
           alt={product.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600' }}
+          onError={(e) => {
+            const el = e.target as HTMLImageElement
+            const step = Number(el.dataset.step ?? '0')
+            const next = el.dataset.img1
+            if (step === 0 && next) {
+              el.dataset.step = '1'
+              el.src = next
+            } else {
+              el.dataset.step = '2'
+              el.src = '/placeholder-product.svg'
+              el.onerror = null   // never recurse — placeholder is local
+            }
+          }}
         />
         {discount > 0 && (
           <div className="absolute top-2 left-2 bg-[#C9A84C] text-black text-xs font-bold px-2 py-0.5 rounded-full">

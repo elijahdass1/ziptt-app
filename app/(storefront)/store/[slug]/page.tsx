@@ -148,13 +148,17 @@ export default async function VendorStorePage({ params, searchParams }: PageProp
     <div className="min-h-screen">
       {/* ─── Cover photo + logo (Facebook-style) ─── */}
       <div className="relative w-full">
-        {/* Cover — schema has only `banner`, no separate coverImage. */}
+        {/* Cover — schema has only `banner`, no separate coverImage.
+            Falls back to the branded /public/placeholder-vendor-banner.svg
+            so vendors without a banner still get a clean gold-on-black
+            "zip.tt — Trinidad &amp; Tobago Marketplace" graphic instead
+            of an empty hero. */}
         <div className="relative h-48 sm:h-64 md:h-80 overflow-hidden bg-[var(--bg-primary)]">
-          {vendor.banner ? (
-            <img src={vendor.banner} alt="" className="w-full h-full object-cover opacity-60" />
-          ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-[#1A1500] via-[var(--bg-primary)] to-[#1A1500]" />
-          )}
+          <img
+            src={vendor.banner ?? '/placeholder-vendor-banner.svg'}
+            alt=""
+            className={`w-full h-full object-cover ${vendor.banner ? 'opacity-60' : ''}`}
+          />
           {/* Subtle dark fade so text on top stays legible */}
           <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)]/80 via-transparent to-transparent" />
           <div className="absolute top-4 left-4">
@@ -167,13 +171,16 @@ export default async function VendorStorePage({ params, searchParams }: PageProp
         {/* Identity row — overlapping bottom of cover */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end gap-4 -mt-16 md:-mt-20 relative z-10 pb-4">
-            {/* Logo (round, big) */}
+            {/* Logo (round, big). Falls back to the branded
+                placeholder SVG so vendors without a logo still get a
+                gold-on-black storefront crest instead of a generic
+                Lucide icon. */}
             <div className="h-32 w-32 md:h-40 md:w-40 rounded-full bg-[var(--bg-secondary)] border-4 border-[var(--bg-primary)] ring-2 ring-[#C9A84C]/40 flex items-center justify-center overflow-hidden shadow-2xl shrink-0">
-              {vendor.logo ? (
-                <img src={vendor.logo} alt={vendor.storeName} className="h-full w-full object-cover" />
-              ) : (
-                <Store className="h-14 w-14 text-[#C9A84C]" />
-              )}
+              <img
+                src={vendor.logo ?? '/placeholder-vendor-logo.svg'}
+                alt={vendor.storeName}
+                className="h-full w-full object-cover"
+              />
             </div>
 
             {/* Name block */}

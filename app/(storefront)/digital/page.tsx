@@ -1,10 +1,40 @@
+// /digital — instant-delivery store. Catalog of digital products
+// (Netflix, Spotify, ChatGPT etc.) with a category tab strip on top.
+//
+// Note on icons: previous version embedded raw emoji directly in the
+// source ("⚡ INSTANT", "📺 Streaming", etc.) but the file got saved
+// with a non-UTF-8 encoding at some point so production rendered the
+// mojibake `â¡`, `ðº`, `ð»`. Switched to Lucide React icons
+// everywhere — they're SVG components so encoding can never break
+// them.
 export const dynamic = 'force-dynamic'
+
 import prisma from '@/lib/prisma'
 import Link from 'next/link'
 import Image from 'next/image'
+import {
+  Zap, Tv, Code, Gamepad2, GraduationCap, ShieldCheck, Mail, ArrowRight,
+} from 'lucide-react'
+
+type CategoryKey = '' | 'streaming' | 'software' | 'gaming' | 'education'
+
+const CATEGORIES: { key: CategoryKey; label: string; Icon: typeof Tv | null }[] = [
+  { key: '',          label: 'All',        Icon: null },
+  { key: 'streaming', label: 'Streaming',  Icon: Tv },
+  { key: 'software',  label: 'Software',   Icon: Code },
+  { key: 'gaming',    label: 'Gaming',     Icon: Gamepad2 },
+  { key: 'education', label: 'Education',  Icon: GraduationCap },
+]
+
+const TRUST_BADGES: { Icon: typeof Zap; label: string }[] = [
+  { Icon: Zap,         label: 'Instant Delivery' },
+  { Icon: ShieldCheck, label: 'Secure Checkout' },
+  { Icon: Mail,        label: 'Email Delivery' },
+  { Icon: Zap,         label: 'TTD Prices' },
+]
 
 export default async function DigitalPage({ searchParams }: { searchParams: { category?: string } }) {
-  const category = searchParams.category
+  const category = searchParams.category as CategoryKey | undefined
 
   const products = await prisma.digitalProduct.findMany({
     where: {
@@ -18,78 +48,102 @@ export default async function DigitalPage({ searchParams }: { searchParams: { ca
     orderBy: [{ featured: 'desc' }, { soldCount: 'desc' }],
   })
 
-  const categories = [
-    { key: '', label: 'All' },
-    { key: 'streaming', label: 'ðº Streaming' },
-    { key: 'software', label: 'ð» Software' },
-    { key: 'gaming', label: 'ð® Gaming' },
-    { key: 'education', label: 'ð Education' },
-  ]
-
   return (
-    <div style={{ background: 'var(--bg-primary)', minHeight: '100vh', color: 'var(--text-primary)' }}>
+    <div className="bg-[var(--bg-primary)] min-h-screen text-[var(--text-primary)]">
       {/* Hero */}
-      <div style={{ padding: '60px 24px', textAlign: 'center', borderBottom: '1px solid #1A1A1A' }}>
-        <div style={{ fontSize: '14px', color: '#C9A84C', marginBottom: '12px', letterSpacing: '2px' }}>â¡ INSTANT DELIVERY</div>
-        <h1 style={{ fontFamily: 'Georgia, serif', fontSize: '42px', fontWeight: 'bold', marginBottom: '16px' }}>
+      <div className="px-6 py-14 text-center border-b border-[var(--bg-card)]">
+        <div className="inline-flex items-center gap-2 text-[#C9A84C] text-xs font-bold tracking-[2px] mb-3">
+          <Zap className="h-3.5 w-3.5" />
+          INSTANT DELIVERY
+        </div>
+        <h1 className="text-4xl md:text-5xl font-black mb-3" style={{ fontFamily: 'Georgia,serif' }}>
           Digital Products
         </h1>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '18px', maxWidth: '500px', margin: '0 auto 32px' }}>
-          Netflix, Spotify, ChatGPT & more â paid in TTD, delivered instantly.
+        <p className="text-base md:text-lg text-[var(--text-secondary)] max-w-xl mx-auto mb-6">
+          Netflix, Spotify, ChatGPT &amp; more — paid in TTD, delivered instantly.
         </p>
-        {/* Trust badges */}
-        <div style={{ display: 'flex', gap: '24px', justifyContent: 'center', flexWrap: 'wrap' }}>
-          {['â¡ Instant Delivery', 'ð Secure Checkout', 'ð§ Email Delivery', 'ð¹ð¹ TTD Prices'].map(b => (
-            <span key={b} style={{ background: 'var(--bg-card)', border: '1px solid #2A2A2A', borderRadius: '20px', padding: '6px 16px', fontSize: '13px', color: 'var(--text-secondary)' }}>{b}</span>
+        <div className="flex gap-3 justify-center flex-wrap">
+          {TRUST_BADGES.map((b) => (
+            <span
+              key={b.label}
+              className="inline-flex items-center gap-1.5 bg-[var(--bg-card)] border border-[var(--border-color)] rounded-full px-4 py-1.5 text-xs text-[var(--text-secondary)]"
+            >
+              <b.Icon className="h-3.5 w-3.5 text-[#C9A84C]" />
+              {b.label}
+            </span>
           ))}
         </div>
       </div>
 
       {/* Category tabs */}
-      <div style={{ padding: '24px', display: 'flex', gap: '12px', overflowX: 'auto', borderBottom: '1px solid #1A1A1A' }}>
-        {categories.map(c => (
-          <Link key={c.key} href={`/digital${c.key ? `?category=${c.key}` : ''}`}
-            style={{
-              padding: '8px 20px', borderRadius: '20px', textDecoration: 'none', fontSize: '14px', whiteSpace: 'nowrap',
-              background: category === c.key || (!category && !c.key) ? '#C9A84C' : 'var(--bg-card)',
-              color: category === c.key || (!category && !c.key) ? 'var(--bg-primary)' : 'var(--text-primary)',
-              border: '1px solid #2A2A2A',
-            }}>
-            {c.label}
-          </Link>
-        ))}
+      <div className="px-6 py-5 flex gap-2 overflow-x-auto border-b border-[var(--bg-card)] scrollbar-thin">
+        {CATEGORIES.map((c) => {
+          const active = category === c.key || (!category && !c.key)
+          const Icon = c.Icon
+          return (
+            <Link
+              key={c.key}
+              href={`/digital${c.key ? `?category=${c.key}` : ''}`}
+              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm whitespace-nowrap border transition-colors ${
+                active
+                  ? 'bg-[#C9A84C] text-black border-[#C9A84C] font-semibold'
+                  : 'bg-[var(--bg-card)] text-[var(--text-primary)] border-[var(--border-color)] hover:border-[#C9A84C]/50'
+              }`}
+            >
+              {Icon && <Icon className="h-3.5 w-3.5" />}
+              {c.label}
+            </Link>
+          )
+        })}
       </div>
 
       {/* Product grid */}
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 24px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '24px' }}>
-          {products.map(product => (
-            <Link key={product.id} href={`/digital/${product.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-              <div style={{ background: 'var(--bg-secondary)', borderRadius: '12px', overflow: 'hidden', border: '1px solid #1A1A1A' }}>
-                <div style={{ position: 'relative', height: '180px', background: 'var(--bg-card)' }}>
-                  {product.thumbnail && (
-                    <Image src={product.thumbnail} alt={product.name} fill style={{ objectFit: 'cover' }} />
-                  )}
-                  <span style={{ position: 'absolute', top: '12px', left: '12px', background: '#C9A84C', color: 'var(--bg-primary)', fontSize: '11px', fontWeight: 'bold', padding: '3px 8px', borderRadius: '4px' }}>
-                    â¡ INSTANT
-                  </span>
-                </div>
-                <div style={{ padding: '16px' }}>
-                  <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '6px' }}>{product.vendor.storeName}</p>
-                  <h3 style={{ fontSize: '15px', fontWeight: '600', marginBottom: '8px', lineHeight: '1.3' }}>{product.name}</h3>
-                  <p style={{ fontSize: '12px', color: product._count.codes < 5 ? '#ef4444' : 'var(--text-secondary)', marginBottom: '12px' }}>
-                    {product._count.codes} codes available
-                  </p>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div>
-                      <span style={{ fontSize: '18px', fontWeight: 'bold', color: '#C9A84C' }}>${product.price.toFixed(2)}</span>
-                      {product.comparePrice && (
-                        <span style={{ fontSize: '13px', color: 'var(--text-secondary)', textDecoration: 'line-through', marginLeft: '8px' }}>${product.comparePrice.toFixed(2)}</span>
-                      )}
-                      <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'block' }}>TTD</span>
-                    </div>
-                    <span style={{ background: '#C9A84C', color: 'var(--bg-primary)', fontSize: '12px', fontWeight: 'bold', padding: '6px 14px', borderRadius: '6px' }}>Buy â</span>
+      <div className="max-w-6xl mx-auto px-6 py-10">
+        <div className="grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))' }}>
+          {products.map((product) => (
+            <Link
+              key={product.id}
+              href={`/digital/${product.slug}`}
+              className="group bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl overflow-hidden hover:border-[#C9A84C]/45 transition-colors"
+            >
+              <div className="relative h-44 bg-[var(--bg-card)]">
+                {product.thumbnail && (
+                  <Image
+                    src={product.thumbnail}
+                    alt={product.name}
+                    fill
+                    sizes="(max-width: 600px) 50vw, 240px"
+                    style={{ objectFit: 'cover' }}
+                  />
+                )}
+                <span className="absolute top-3 left-3 inline-flex items-center gap-1 bg-[#C9A84C] text-black text-[11px] font-bold px-2 py-0.5 rounded">
+                  <Zap className="h-3 w-3" />
+                  INSTANT
+                </span>
+              </div>
+              <div className="p-4">
+                <p className="text-xs text-[var(--text-secondary)] mb-1.5">{product.vendor.storeName}</p>
+                <h3 className="text-[15px] font-semibold leading-tight mb-2">{product.name}</h3>
+                <p
+                  className={`text-xs mb-3 ${
+                    product._count.codes < 5 ? 'text-red-500' : 'text-[var(--text-secondary)]'
+                  }`}
+                >
+                  {product._count.codes} codes available
+                </p>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="text-lg font-bold text-[#C9A84C]">${product.price.toFixed(2)}</span>
+                    {product.comparePrice && (
+                      <span className="text-xs text-[var(--text-secondary)] line-through ml-2">
+                        ${product.comparePrice.toFixed(2)}
+                      </span>
+                    )}
+                    <span className="block text-[11px] text-[var(--text-secondary)]">TTD</span>
                   </div>
+                  <span className="inline-flex items-center gap-1 bg-[#C9A84C] text-black text-xs font-bold px-3 py-1.5 rounded-md group-hover:bg-[#F0C040] transition-colors">
+                    Buy <ArrowRight className="h-3.5 w-3.5" />
+                  </span>
                 </div>
               </div>
             </Link>

@@ -106,7 +106,29 @@ export default async function AdminVendorsPage({
                   <tr key={vendor.id} className="border-b border-[var(--bg-card)] hover:bg-[var(--bg-primary)] transition-colors">
                     <td className="px-5 py-3">
                       <p className="font-medium text-[var(--text-primary)]">{vendor.storeName}</p>
-                      <p className="text-xs text-[#555]">/{vendor.slug}</p>
+                      <div className="flex items-center gap-1.5 mt-0.5">
+                        <p className="text-xs text-[#555]">/{vendor.slug}</p>
+                        {/* Asset-completeness chips. Yellow = something
+                            missing the storefront falls back on a
+                            placeholder for. Click-to-action lives in the
+                            Actions column. */}
+                        {!vendor.banner && (
+                          <span
+                            title="Vendor has no banner image — storefront falls back to the zip.tt placeholder banner. Email the vendor to upload."
+                            className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-yellow-500/15 text-yellow-400 border border-yellow-500/30"
+                          >
+                            ⚠ No banner
+                          </span>
+                        )}
+                        {!vendor.logo && (
+                          <span
+                            title="Vendor has no logo — storefront falls back to the zip.tt placeholder crest."
+                            className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-yellow-500/15 text-yellow-400 border border-yellow-500/30"
+                          >
+                            ⚠ No logo
+                          </span>
+                        )}
+                      </div>
                     </td>
                     <td className="px-5 py-3">
                       <p className="text-[var(--text-primary)]">{vendor.user.name}</p>
