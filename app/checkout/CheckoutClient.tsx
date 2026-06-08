@@ -273,7 +273,6 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
                         },
                         { value: 'LINX', label: 'Linx Card', desc: 'Local debit card payment', icon: 'LINX', badge: null },
                         { value: 'ONLINE_BANKING', label: 'Online Banking', desc: 'Scotiabank, RBC, Republic Bank etc.', icon: 'BANK', badge: null },
-                        { value: 'WIPAY', label: 'Pay with WiPay', desc: 'Secure card or Linx payment via WiPay', icon: 'WIPAY', badge: null },
                       ].map((method) => (
                         <label
                           key={method.value}

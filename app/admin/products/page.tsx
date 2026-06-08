@@ -3,7 +3,8 @@ import prisma from '@/lib/prisma'
 import { formatTTD } from '@/lib/utils'
 import { AdminProductActions } from '@/components/admin/AdminProductActions'
 import Image from 'next/image'
-import { Search } from 'lucide-react'
+import { Search, Plus } from 'lucide-react'
+import Link from 'next/link'
 
 const STATUS_COLOR: Record<string, string> = {
   ACTIVE: 'bg-green-500/20 text-green-400 border border-green-500/30',
@@ -49,11 +50,20 @@ export default async function AdminProductsPage({
 
   return (
     <div className="bg-[var(--bg-primary)] min-h-full">
-      <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-[var(--text-primary)]" style={{ fontFamily: 'Georgia,serif' }}>
-          Products
-        </h1>
-        <p className="text-sm text-[#888] mt-1">{total.toLocaleString()} product{total !== 1 ? 's' : ''}</p>
+      <div className="mb-6 flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-semibold text-[var(--text-primary)]" style={{ fontFamily: 'Georgia,serif' }}>
+            Products
+          </h1>
+          <p className="text-sm text-[#888] mt-1">{total.toLocaleString()} product{total !== 1 ? 's' : ''}</p>
+        </div>
+        <Link
+          href="/admin/products/new"
+          className="flex items-center gap-2 bg-[#C9A84C] hover:bg-[#b8963f] text-black font-semibold px-4 py-2 rounded-xl text-sm transition-colors shrink-0"
+        >
+          <Plus className="h-4 w-4" />
+          Add Product
+        </Link>
       </div>
 
       {/* Search and filter */}
@@ -142,7 +152,15 @@ export default async function AdminProductsPage({
                         </span>
                       </td>
                       <td className="px-5 py-3 text-right">
-                        <AdminProductActions productId={product.id} currentStatus={product.status} />
+                        <div className="flex items-center justify-end gap-2">
+                          <Link
+                            href={`/admin/products/${product.id}/edit`}
+                            className="text-xs px-2.5 py-1 border border-[#333] text-[#888] rounded-lg hover:border-[#C9A84C] hover:text-[#C9A84C] transition-colors"
+                          >
+                            Edit
+                          </Link>
+                          <AdminProductActions productId={product.id} currentStatus={product.status} />
+                        </div>
                       </td>
                     </tr>
                   )
