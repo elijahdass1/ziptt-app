@@ -99,7 +99,7 @@ export async function GET(req: NextRequest) {
   ])
 
   // Resolve driver names in one query (no relation defined on Order.driverId).
-  const driverIds = Array.from(new Set(orders.map((o) => o.driverId).filter((x): x is string => !!x)))
+  const driverIds = Array.from(new Set(orders.map((o) => o.driverId).filter((x): x is NonNullable<typeof x> => !!x)))
   const drivers = driverIds.length
     ? await prisma.user.findMany({
         where: { id: { in: driverIds } },

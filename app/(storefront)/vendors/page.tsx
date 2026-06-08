@@ -157,9 +157,9 @@ export default async function VendorsDirectoryPage({ searchParams }: PageProps) 
             >
               {/* Cover */}
               <div className="relative aspect-[16/6] bg-gradient-to-br from-[#1A1500] to-[var(--bg-primary)] overflow-hidden">
-                {(v.coverImage || v.banner) && (
+                {v.banner && (
                   <img
-                    src={v.coverImage ?? v.banner!}
+                    src={v.banner}
                     alt=""
                     className="absolute inset-0 h-full w-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
                   />
@@ -191,9 +191,9 @@ export default async function VendorsDirectoryPage({ searchParams }: PageProps) 
                   </div>
                 </div>
 
-                {(v.description || v.bio) && (
+                {v.description && (
                   <p className="text-xs text-[var(--text-secondary)] mt-3 line-clamp-2 leading-relaxed">
-                    {v.description || v.bio}
+                    {v.description}
                   </p>
                 )}
 
@@ -205,7 +205,7 @@ export default async function VendorsDirectoryPage({ searchParams }: PageProps) 
                     <span className="flex items-center gap-1">
                       <Star className="h-3.5 w-3.5 fill-[#C9A84C] text-[#C9A84C]" />
                       <span className="font-bold text-[var(--text-primary)]">{v.rating.toFixed(1)}</span>
-                      <span>({v.reviewCount})</span>
+                      <span>({v._count.products})</span>
                     </span>
                   )}
                 </div>

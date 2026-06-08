@@ -4,7 +4,7 @@ import { Pool } from 'pg'
 import bcrypt from 'bcryptjs'
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL })
-const adapter = new PrismaPg(pool)
+const adapter = new PrismaPg(pool as any)
 const prisma = new PrismaClient({ adapter })
 
 async function main() {

@@ -3,6 +3,7 @@ import { Pool } from 'pg'
 import { PrismaPg } from '@prisma/adapter-pg'
 
 export default defineConfig({
+  // @ts-expect-error earlyAccess is valid at runtime for Prisma 7 but not yet in the TS types
   earlyAccess: true,
   schema: 'prisma/schema.prisma',
   datasource: {
@@ -13,7 +14,7 @@ export default defineConfig({
       const pool = new Pool({
         connectionString: process.env.DATABASE_URL,
       })
-      return new PrismaPg(pool)
+      return new PrismaPg(pool as any)
     },
   },
 })

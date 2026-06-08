@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
           instructions: product.instructions ?? null,
           orderId: order.id,
         })
-        await sendEmail({ to: user.email, subject: tpl.subject, html: tpl.html })
+        await sendEmail({ to: user.email!, subject: tpl.subject, html: tpl.html })
           .catch((err) => console.warn('[digital] email failed:', err))
       })()
     }

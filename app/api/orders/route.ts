@@ -369,7 +369,7 @@ async function sendOrderNotifications({
       orderNumber: o.orderNumber,
       customerName: o.customer?.name ?? 'a customer',
       customerEmail: o.customer?.email ?? '',
-      customerPhone: o.phone ?? o.customer?.phone ?? null,
+      customerPhone: o.customer?.phone ?? null,
       vendorStoreName: o.vendor.storeName,
       total: o.total,
       subtotal: o.subtotal,
@@ -377,7 +377,7 @@ async function sendOrderNotifications({
       paymentMethod: o.paymentMethod,
       items: o.items.map((i) => ({ name: i.product.name, quantity: i.quantity, price: i.price })),
       address: o.address,
-      instructions: o.instructions,
+      instructions: o.notes ?? null,
     }
 
     // Vendor email — only send if the owning user has an email on file.

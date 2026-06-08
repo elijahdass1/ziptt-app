@@ -6,6 +6,13 @@ export const PAYMENT_METHODS = {
 
 export type PaymentMethod = keyof typeof PAYMENT_METHODS
 
+// Server-side allowlist — any method not here gets coerced to CASH_ON_DELIVERY.
+export const ENABLED_METHODS = new Set([
+  'CASH_ON_DELIVERY',
+  'LINX',
+  'ONLINE_BANKING',
+] as const)
+
 export function getPaymentMethodLabel(method: string): string {
     return PAYMENT_METHODS[method as PaymentMethod] ?? method
 }
