@@ -3,6 +3,7 @@ import { Inter, Noto_Color_Emoji } from 'next/font/google'
 import './globals.css'
 import { Providers } from '@/components/Providers'
 import { ZipChatWidget } from '@/components/chat/ZipChatWidget'
+import { ServiceWorkerRegistration } from '@/components/ServiceWorkerRegistration'
 import { validateEnv } from '@/lib/env'
 
 // Fail loudly at server boot if a required env var is missing rather
@@ -80,11 +81,18 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="zip.tt" />
+        <meta name="theme-color" content="#C9A84C" />
+        <link rel="apple-touch-icon" href="/icons/icon-192.svg" />
       </head>
       <body className={`${inter.variable} ${notoEmoji.variable}`} style={{ fontFamily: "var(--font-inter), 'Noto Color Emoji', sans-serif" }}>
         <Providers>
           {children}
           <ZipChatWidget />
+          <ServiceWorkerRegistration />
         </Providers>
       </body>
     </html>

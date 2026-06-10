@@ -217,13 +217,15 @@ export function Navbar() {
             )
           })}
           <div className="w-px h-4 bg-[#C9A84C]/20 mx-1 shrink-0" />
-          <Link
-            href="/digital"
-            className="group flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/25 rounded-md whitespace-nowrap hover:bg-[#C9A84C]/20 transition-all"
-          >
-            <Cloud className="h-3.5 w-3.5 shrink-0" />
-            <span className="tracking-wide">Digital</span>
-          </Link>
+          {process.env.NEXT_PUBLIC_PLATFORM !== 'ios' && (
+            <Link
+              href="/digital"
+              className="group flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/25 rounded-md whitespace-nowrap hover:bg-[#C9A84C]/20 transition-all"
+            >
+              <Cloud className="h-3.5 w-3.5 shrink-0" />
+              <span className="tracking-wide">Digital</span>
+            </Link>
+          )}
           <Link
             href="/vendors"
             className="group flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-card)] rounded-md whitespace-nowrap transition-all"
@@ -272,14 +274,16 @@ export function Navbar() {
               <Store className="h-4 w-4 text-[#C9A84C] shrink-0" />
               <span className="text-xs font-medium">All Sellers</span>
             </Link>
-            <Link
-              href="/digital"
-              onClick={() => setMobileOpen(false)}
-              className="flex items-center gap-2 px-3 py-2 text-sm text-[#C9A84C] bg-[#C9A84C]/10 border border-[#C9A84C]/25 rounded-lg"
-            >
-              <Cloud className="h-4 w-4 shrink-0" />
-              <span className="text-xs font-medium">Digital</span>
-            </Link>
+            {process.env.NEXT_PUBLIC_PLATFORM !== 'ios' && (
+              <Link
+                href="/digital"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-2 px-3 py-2 text-sm text-[#C9A84C] bg-[#C9A84C]/10 border border-[#C9A84C]/25 rounded-lg"
+              >
+                <Cloud className="h-4 w-4 shrink-0" />
+                <span className="text-xs font-medium">Digital</span>
+              </Link>
+            )}
             {session && (
               <Link
                 href="/messages"

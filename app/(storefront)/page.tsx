@@ -179,7 +179,7 @@ export default async function HomePage() {
       getNewArrivals(),
       getFeaturedVendors(),
       getAllVendorsForMarquee(),
-      getFeaturedDigitalProducts(),
+      process.env.NEXT_PUBLIC_PLATFORM === 'ios' ? Promise.resolve([]) : getFeaturedDigitalProducts(),
     ])
 
   const band1 = categories.slice(0, 4)
