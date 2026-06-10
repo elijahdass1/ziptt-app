@@ -72,7 +72,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
              <ul style="padding-left:18px;color:#9A8F7A;font-size:13px;">${itemsList}</ul>
              <p style="margin-top:16px;color:#9A8F7A;font-size:13px;">Order total: <strong style="color:#C9A84C;">${formatTTD(order.total)}</strong></p>
              <p style="font-size:13px;margin-top:18px;">No payment was taken — Cash on Delivery orders settle on delivery. If you change your mind you can reorder anytime.</p>`,
-      cta: { label: 'Browse zip.tt', url: 'https://ziptt-prod.vercel.app/products' },
+      cta: { label: 'Browse zip.tt', url: 'https://zip.tt/products' },
     })
     if (order.customer?.email) {
       await sendEmail({
@@ -88,7 +88,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
       body: `<p><strong style="color:#F5F0E8;">${escapeHtml(order.customer?.name ?? 'A customer')}</strong> cancelled order #${escapeHtml(order.orderNumber)} before fulfilment.</p>
              <ul style="padding-left:18px;color:#9A8F7A;font-size:13px;">${itemsList}</ul>
              <p style="margin-top:16px;color:#9A8F7A;font-size:13px;">Stock for these items has been restored automatically.</p>`,
-      cta: { label: 'Open vendor dashboard', url: 'https://ziptt-prod.vercel.app/vendor/orders' },
+      cta: { label: 'Open vendor dashboard', url: 'https://zip.tt/vendor/orders' },
     })
     if (order.vendor.user?.email) {
       await sendEmail({

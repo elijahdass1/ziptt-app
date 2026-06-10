@@ -22,7 +22,7 @@ const notoEmoji = Noto_Color_Emoji({
 // generateMetadata(). Pages that DO override (product detail, store
 // page) get richer OG tags — the values here are the fallback that
 // ships when a link to "/" is shared, e.g. on WhatsApp.
-const SITE_URL = 'https://ziptt-prod.vercel.app'
+const SITE_URL = 'https://zip.tt'
 const DEFAULT_TITLE = "zip.tt — Trinidad & Tobago's #1 Online Marketplace"
 const DEFAULT_DESC =
   "Shop local. Shop smart. zip.tt is Trinidad & Tobago's online marketplace — groceries, electronics, fashion, Carnival costumes, rum & spirits delivered to your door."

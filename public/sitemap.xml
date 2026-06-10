@@ -2,168 +2,168 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
-    <loc>https://ziptt-prod.vercel.app/</loc>
+    <loc>https://zip.tt/</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
   <url>
-    <loc>https://ziptt-prod.vercel.app/products</loc>
+    <loc>https://zip.tt/products</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://ziptt-prod.vercel.app/products?category=electronics</loc>
+    <loc>https://zip.tt/products?category=electronics</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://ziptt-prod.vercel.app/products?category=fashion</loc>
+    <loc>https://zip.tt/products?category=fashion</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://ziptt-prod.vercel.app/products?category=urban-fashion</loc>
+    <loc>https://zip.tt/products?category=urban-fashion</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://ziptt-prod.vercel.app/products?category=carnival</loc>
+    <loc>https://zip.tt/products?category=carnival</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://ziptt-prod.vercel.app/products?category=groceries</loc>
+    <loc>https://zip.tt/products?category=groceries</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://ziptt-prod.vercel.app/products?category=home-garden</loc>
+    <loc>https://zip.tt/products?category=home-garden</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://ziptt-prod.vercel.app/products?category=rum-spirits</loc>
+    <loc>https://zip.tt/products?category=rum-spirits</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://ziptt-prod.vercel.app/products?category=toys</loc>
+    <loc>https://zip.tt/products?category=toys</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://ziptt-prod.vercel.app/products?category=beauty</loc>
+    <loc>https://zip.tt/products?category=beauty</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://ziptt-prod.vercel.app/products?category=sports</loc>
+    <loc>https://zip.tt/products?category=sports</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://ziptt-prod.vercel.app/products?category=appliances</loc>
+    <loc>https://zip.tt/products?category=appliances</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://ziptt-prod.vercel.app/products?category=automotive</loc>
+    <loc>https://zip.tt/products?category=automotive</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://ziptt-prod.vercel.app/vendors</loc>
+    <loc>https://zip.tt/vendors</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://ziptt-prod.vercel.app/sell</loc>
+    <loc>https://zip.tt/sell</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://ziptt-prod.vercel.app/login</loc>
-    <lastmod>2026-06-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-
-  <url>
-    <loc>https://ziptt-prod.vercel.app/register</loc>
+    <loc>https://zip.tt/login</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
 
   <url>
-    <loc>https://ziptt-prod.vercel.app/privacy</loc>
+    <loc>https://zip.tt/register</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>https://zip.tt/privacy</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
 
   <url>
-    <loc>https://ziptt-prod.vercel.app/privacy-policy</loc>
+    <loc>https://zip.tt/privacy-policy</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
 
   <url>
-    <loc>https://ziptt-prod.vercel.app/terms</loc>
+    <loc>https://zip.tt/terms</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
 
   <url>
-    <loc>https://ziptt-prod.vercel.app/help/delivery</loc>
+    <loc>https://zip.tt/help/delivery</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
 
   <url>
-    <loc>https://ziptt-prod.vercel.app/help/returns</loc>
+    <loc>https://zip.tt/help/returns</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
 
   <url>
-    <loc>https://ziptt-prod.vercel.app/help/payments</loc>
+    <loc>https://zip.tt/help/payments</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>

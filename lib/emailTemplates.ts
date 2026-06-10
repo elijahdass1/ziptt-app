@@ -80,8 +80,8 @@ export function vendorOrderEmail(ctx: OrderEmailCtx) {
       preheader: `New ${formatTTD(ctx.total)} order on zip.tt — confirm to start fulfilment.`,
       heading: `New order #${ctx.orderNumber}`,
       body,
-      cta: { label: 'Confirm order →', url: 'https://ziptt-prod.vercel.app/vendor/orders' },
-      footer: `You\'re receiving this because you have a vendor account on zip.tt. Manage notifications in your <a href="https://ziptt-prod.vercel.app/vendor/settings" style="color:#C9A84C;">store settings</a>.`,
+      cta: { label: 'Confirm order →', url: 'https://zip.tt/vendor/orders' },
+      footer: `You\'re receiving this because you have a vendor account on zip.tt. Manage notifications in your <a href="https://zip.tt/vendor/settings" style="color:#C9A84C;">store settings</a>.`,
     }),
   }
 }
@@ -105,7 +105,7 @@ export function adminOrderEmail(ctx: OrderEmailCtx) {
       preheader: `${ctx.vendorStoreName} sold ${formatTTD(ctx.total)} to ${ctx.customerEmail}.`,
       heading: `Order #${ctx.orderNumber}`,
       body,
-      cta: { label: 'Open in admin', url: 'https://ziptt-prod.vercel.app/admin/orders' },
+      cta: { label: 'Open in admin', url: 'https://zip.tt/admin/orders' },
       footer: `Sent automatically to platform admins on every order.`,
     }),
   }
@@ -126,7 +126,7 @@ export function digitalDeliveryEmail(ctx: {
       <div style="font-family:'Courier New',monospace;font-size:18px;font-weight:700;color:#C9A84C;letter-spacing:2px;word-break:break-all;">${escape(ctx.code)}</div>
     </div>
     ${ctx.instructions ? `<p style="margin:12px 0 4px;color:#C9A84C;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;">How to redeem</p><p style="font-size:13px;color:#9A8F7A;line-height:1.55;white-space:pre-line;">${escape(ctx.instructions)}</p>` : ''}
-    <p style="margin:18px 0 0;font-size:12px;color:#9A8F7A;">This code is also saved in your <a href="https://ziptt-prod.vercel.app/orders/digital" style="color:#C9A84C;">My Digital Orders</a>.</p>`
+    <p style="margin:18px 0 0;font-size:12px;color:#9A8F7A;">This code is also saved in your <a href="https://zip.tt/orders/digital" style="color:#C9A84C;">My Digital Orders</a>.</p>`
   return {
     subject: `Your zip.tt access code — ${ctx.productName}`,
     html: emailLayout({

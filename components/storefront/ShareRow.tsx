@@ -25,7 +25,7 @@ export function ShareRow({ product }: Props) {
   const productUrl =
     typeof window !== 'undefined'
       ? `${window.location.origin}/products/${product.slug}`
-      : `https://ziptt-prod.vercel.app/products/${product.slug}`
+      : `https://zip.tt/products/${product.slug}`
 
   const message = `Check out ${product.name} on zip.tt for $${product.price.toFixed(2)} TTD! ${productUrl}`
   const whatsappHref = `https://wa.me/?text=${encodeURIComponent(message)}`
