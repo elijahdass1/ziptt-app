@@ -542,7 +542,7 @@ export default async function HomePage() {
               Join hundreds of Trinbagonian vendors reaching customers across Trinidad.
               Only 10% commission. Weekly payouts. Free to list.
             </p>
-            <Link href="/vendor/register"
+            <Link href="/sell"
               className="inline-flex items-center gap-2 btn-primary font-bold px-7 py-3 rounded-full mt-1 text-sm shadow-lg shadow-[#C9A84C]/25">
               Become a Vendor <ArrowRight className="h-4 w-4" />
             </Link>

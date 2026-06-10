@@ -32,15 +32,15 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
     city: '',
     region: 'Port of Spain' as (typeof DELIVERY_REGIONS)[number],
     notes: '',
-    paymentMethod: 'CASH_ON_DELIVERY' as 'CASH_ON_DELIVERY' | 'LINX' | 'ONLINE_BANKING' | 'WIPAY',
+    paymentMethod: 'CASH_ON_DELIVERY' as 'CASH_ON_DELIVERY' | 'LINX' | 'ONLINE_BANKING',
   })
 
   useEffect(() => {
     const payment = searchParams.get('payment')
     if (payment === 'success') {
-      toast({ title: 'Payment successful!', description: 'Your WiPay payment was processed successfully.' })
+      toast({ title: 'Payment successful!', description: 'Your payment was processed successfully.' })
     } else if (payment === 'failed') {
-      toast({ title: 'Payment failed', description: 'Your WiPay payment could not be processed. Please try again.', variant: 'destructive' })
+      toast({ title: 'Payment failed', description: 'Your payment could not be processed. Please try again.', variant: 'destructive' })
     }
   }, [searchParams])
 

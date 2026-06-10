@@ -16,10 +16,10 @@ export default function PaymentsPage() {
     {
       icon: CreditCard,
       emoji: 'ð³',
-      title: 'Linx / WiPay',
+      title: 'Linx Card',
       subtitle: 'Local debit card',
-      desc: 'Pay securely online using your Linx debit card through WiPay, Trinidad\'s leading local payment gateway. Your card details are never stored by zip.tt.',
-      notes: ['All major local bank cards accepted', 'Powered by WiPay â local & trusted', 'Instant payment confirmation'],
+      desc: 'Pay securely online using your Linx debit card. Secure checkout — your card details are never stored by zip.tt.',
+      notes: ['All major local bank cards accepted', 'Secure checkout', 'Instant payment confirmation'],
     },
     {
       icon: Building2,
@@ -84,7 +84,7 @@ export default function PaymentsPage() {
         <p className="font-semibold text-[var(--text-primary)]">Frequently Asked</p>
         <div>
           <p className="text-[var(--text-primary)] font-medium">Is my payment information secure?</p>
-          <p className="text-[var(--text-secondary)] mt-1">Yes. zip.tt never stores card numbers. Online card payments are processed entirely by WiPay on their secure servers.</p>
+          <p className="text-[var(--text-secondary)] mt-1">Yes. zip.tt never stores your card number, CVV or PIN. All payments are processed on secure, encrypted servers.</p>
         </div>
         <div>
           <p className="text-[var(--text-primary)] font-medium">Can I change my payment method after ordering?</p>

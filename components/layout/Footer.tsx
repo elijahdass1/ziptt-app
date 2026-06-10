@@ -67,7 +67,7 @@ export function Footer() {
           <div>
             <h4 className="text-[#C9A84C] font-semibold mb-4">Sell on zip.tt</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/vendor/register" className="hover:text-[#C9A84C] transition-colors">Start Selling</Link></li>
+              <li><Link href="/sell" className="hover:text-[#C9A84C] transition-colors">Start Selling</Link></li>
               <li><Link href="/vendor" className="hover:text-[#C9A84C] transition-colors">Vendor Dashboard</Link></li>
               <li><Link href="/help/vendor-fees" className="hover:text-[#C9A84C] transition-colors">Fees &amp; Commission</Link></li>
               <li><Link href="/help/vendor-guide" className="hover:text-[#C9A84C] transition-colors">Seller Guide</Link></li>
