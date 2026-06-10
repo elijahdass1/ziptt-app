@@ -77,7 +77,13 @@ export function validateEnv(): void {
       `for ALL three environments (Production, Preview, Development).`,
       `See .env.example for the full list.`,
     ].join('\n  ')
-    throw new Error(msg)
+    // Throw only when DATABASE_URL is missing — without it every request
+    // crashes anyway. For auth vars, log loudly but let the app boot so
+    // non-authenticated pages still render.
+    if (missing.includes('DATABASE_URL')) {
+      throw new Error(msg)
+    }
+    console.error(msg)
   }
 
   // Soft warnings for the optional set so the dev terminal makes it
