@@ -1,9 +1,8 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter, Noto_Color_Emoji } from 'next/font/google'
 import './globals.css'
 import { Providers } from '@/components/Providers'
 import { ZipChatWidget } from '@/components/chat/ZipChatWidget'
-import { ServiceWorkerRegistration } from '@/components/ServiceWorkerRegistration'
 import { validateEnv } from '@/lib/env'
 
 // Fail loudly at server boot if a required env var is missing rather
@@ -33,6 +32,16 @@ export const metadata: Metadata = {
   title: { default: DEFAULT_TITLE, template: '%s | zip.tt' },
   description: DEFAULT_DESC,
   keywords: ['Trinidad', 'Tobago', 'marketplace', 'shopping', 'online store', 'Caribbean', 'delivery', 'carnival', 'rum'],
+  manifest: '/manifest.json',
+  applicationName: 'zip.tt',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'zip.tt',
+  },
+  icons: {
+    apple: '/icons/apple-touch-icon.png',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_TT',
@@ -48,6 +57,10 @@ export const metadata: Metadata = {
     description: DEFAULT_DESC,
     images: [DEFAULT_OG_IMAGE],
   },
+}
+
+export const viewport: Viewport = {
+  themeColor: '#b8860b',
 }
 
 // Inline script that runs BEFORE React hydrates. Reads the persisted
@@ -81,18 +94,11 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="zip.tt" />
-        <meta name="theme-color" content="#C9A84C" />
-        <link rel="apple-touch-icon" href="/icons/icon-192.svg" />
       </head>
       <body className={`${inter.variable} ${notoEmoji.variable}`} style={{ fontFamily: "var(--font-inter), 'Noto Color Emoji', sans-serif" }}>
         <Providers>
           {children}
           <ZipChatWidget />
-          <ServiceWorkerRegistration />
         </Providers>
       </body>
     </html>

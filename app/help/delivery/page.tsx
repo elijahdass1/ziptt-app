@@ -85,7 +85,7 @@ export default function DeliveryInfoPage() {
         <p className="font-semibold text-[var(--text-primary)] mb-2">Good to know</p>
         <p>â¢ Delivery times are business days (MondayâFriday, excluding public holidays).</p>
         <p>â¢ Large or bulky items may require additional time to dispatch.</p>
-        <p>â¢ You can track your order status in <Link href="/orders" className="text-[#C9A84C] hover:underline">My Orders</Link>.</p>
+        <p>â¢ You can track your order status in <Link href="/account/orders" className="text-[#C9A84C] hover:underline">My Orders</Link>.</p>
         <p>â¢ Need delivery to an area not listed? <Link href="/help/contact" className="text-[#C9A84C] hover:underline">Contact us</Link> for special arrangements.</p>
       </div>
     </div>

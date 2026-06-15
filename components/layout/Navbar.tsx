@@ -108,7 +108,7 @@ export function Navbar() {
 
             {/* Orders */}
             {session && (
-              <Link href="/orders" className="hidden sm:flex p-2 hover:bg-[#C9A84C]/10 rounded-full transition-colors">
+              <Link href="/account/orders" className="hidden sm:flex p-2 hover:bg-[#C9A84C]/10 rounded-full transition-colors min-h-11 min-w-11 items-center justify-center">
                 <Package className="h-5 w-5 text-[var(--text-primary)]" />
               </Link>
             )}
@@ -145,7 +145,7 @@ export function Navbar() {
                     <Link href="/account" className="flex items-center gap-2 px-4 py-2 text-sm text-[var(--text-secondary)] hover:text-[#C9A84C] hover:bg-[#C9A84C]/5" onClick={() => setUserMenuOpen(false)}>
                       <User className="h-4 w-4" /> My Account
                     </Link>
-                    <Link href="/orders" className="flex items-center gap-2 px-4 py-2 text-sm text-[var(--text-secondary)] hover:text-[#C9A84C] hover:bg-[#C9A84C]/5" onClick={() => setUserMenuOpen(false)}>
+                    <Link href="/account/orders" className="flex items-center gap-2 px-4 py-2 text-sm text-[var(--text-secondary)] hover:text-[#C9A84C] hover:bg-[#C9A84C]/5" onClick={() => setUserMenuOpen(false)}>
                       <Package className="h-4 w-4" /> My Orders
                     </Link>
                     <Link href="/messages" className="flex items-center gap-2 px-4 py-2 text-sm text-[var(--text-secondary)] hover:text-[#C9A84C] hover:bg-[#C9A84C]/5" onClick={() => setUserMenuOpen(false)}>

@@ -32,7 +32,7 @@ export default function TrackingPage() {
       <div className="bg-[#C9A84C]/10 border border-[#C9A84C]/30 rounded-2xl p-6 text-center space-y-3">
         <p className="font-semibold text-[var(--text-primary)] text-lg">View your orders</p>
         <p className="text-sm text-[var(--text-secondary)]">Sign in to see real-time status updates for all your orders.</p>
-        <Link href="/orders"
+        <Link href="/account/orders"
           className="inline-flex items-center gap-2 bg-[#C9A84C] text-black font-bold px-6 py-2.5 rounded-full hover:bg-[#F0C040] transition-colors text-sm">
           <Package className="h-4 w-4" /> Go to My Orders
         </Link>

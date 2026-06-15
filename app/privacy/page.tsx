@@ -1,12 +1,12 @@
 export const dynamic = 'force-dynamic'
-export const metadata = { title: 'Privacy Policy â zip.tt' }
+export const metadata = { title: 'Privacy Policy — zip.tt' }
 
 export default function PrivacyPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
       <div>
         <h1 className="text-3xl font-black text-[var(--text-primary)] mb-2">Privacy Policy</h1>
-        <p className="text-sm text-[var(--text-secondary)]">Last updated: January 2025</p>
+        <p className="text-sm text-[var(--text-secondary)]">Last updated: June 2026</p>
       </div>
 
       {[
@@ -16,7 +16,7 @@ export default function PrivacyPage() {
         },
         {
           title: '2. Information We Collect',
-          body: 'We collect information you provide directly when you create an account (name, email address, phone number, delivery address), place an order (order details, payment method type â we do not store card numbers), or contact our support team. We also collect basic usage data such as pages visited, browser type, and device type to improve the platform.',
+          body: 'We collect information you provide directly when you create an account (name, email address, phone number, delivery address), place an order (order details, payment method type — we do not store card numbers), or contact our support team. We also collect basic usage data such as pages visited, browser type, and device type to improve the platform.',
         },
         {
           title: '3. How We Use Your Information',
