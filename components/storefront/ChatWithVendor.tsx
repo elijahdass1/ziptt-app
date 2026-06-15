@@ -182,7 +182,7 @@ export function ChatWithVendor({
             </div>
             <button
               onClick={() => setOpen(false)}
-              className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              className="min-h-11 min-w-11 -mr-2 flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
               aria-label="Close chat"
             >
               <X className="h-4 w-4" />
@@ -236,7 +236,7 @@ export function ChatWithVendor({
             <button
               type="submit"
               disabled={!draft.trim() || sending}
-              className="bg-[#C9A84C] text-black hover:bg-[#b8963f] disabled:opacity-40 disabled:cursor-not-allowed h-9 w-9 rounded-full flex items-center justify-center shrink-0 transition-colors"
+              className="bg-[#C9A84C] text-black hover:bg-[#b8963f] disabled:opacity-40 disabled:cursor-not-allowed min-h-11 min-w-11 rounded-full flex items-center justify-center shrink-0 transition-colors"
               aria-label="Send"
             >
               <Send className="h-4 w-4" />

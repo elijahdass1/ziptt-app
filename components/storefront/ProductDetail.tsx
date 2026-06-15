@@ -148,12 +148,12 @@ export function ProductDetail({ product }: { product: Product }) {
               <span className="text-sm font-medium text-[var(--text-primary)]">Quantity:</span>
               <div className="flex items-center border border-[#C9A84C]/20 rounded-lg overflow-hidden">
                 <button onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="p-2 hover:bg-[var(--bg-card)] transition-colors text-[var(--text-primary)]">
+                  className="p-2 min-h-11 min-w-11 flex items-center justify-center hover:bg-[var(--bg-card)] transition-colors text-[var(--text-primary)]">
                   <Minus className="h-4 w-4" />
                 </button>
                 <span className="px-4 py-2 text-sm font-semibold min-w-[3rem] text-center text-[var(--text-primary)]">{quantity}</span>
                 <button onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
-                  className="p-2 hover:bg-[var(--bg-card)] transition-colors text-[var(--text-primary)]">
+                  className="p-2 min-h-11 min-w-11 flex items-center justify-center hover:bg-[var(--bg-card)] transition-colors text-[var(--text-primary)]">
                   <Plus className="h-4 w-4" />
                 </button>
               </div>

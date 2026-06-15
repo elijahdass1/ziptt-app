@@ -107,14 +107,18 @@ export function HeroSpotlight({ items, intervalMs = 4000 }: Props) {
         {/* Slide indicators — clickable so visitors can manually pin
             a slide if they want. Sit just below the price line. */}
         {items.length > 1 && (
-          <div className="absolute bottom-3 right-3 flex gap-1.5">
+          <div className="absolute bottom-0 right-2 flex gap-0.5">
             {items.map((_, i) => (
+              // 44px-tall transparent hit area (WCAG tap target); the
+              // visual dot stays small and anchored near the bottom.
               <button
                 key={i}
                 aria-label={`Show product ${i + 1}`}
                 onClick={() => { setIdx(i); setPaused(true) }}
-                className={`h-1.5 rounded-full transition-all ${i === idx ? 'w-5 bg-[#C9A84C]' : 'w-1.5 bg-[#C9A84C]/30 hover:bg-[#C9A84C]/60'}`}
-              />
+                className="min-h-11 flex items-end pb-3 px-1.5 group"
+              >
+                <span className={`block h-1.5 rounded-full transition-all ${i === idx ? 'w-5 bg-[#C9A84C]' : 'w-1.5 bg-[#C9A84C]/30 group-hover:bg-[#C9A84C]/60'}`} />
+              </button>
             ))}
           </div>
         )}

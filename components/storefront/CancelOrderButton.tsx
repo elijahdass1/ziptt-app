@@ -46,7 +46,7 @@ export function CancelOrderButton({ orderId, orderNumber }: Props) {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-1 text-xs text-red-400 hover:text-red-300 font-medium border border-red-400/40 rounded px-2 py-1 hover:bg-red-500/10 transition-colors"
+        className="inline-flex items-center gap-1 text-xs text-red-400 hover:text-red-300 font-medium border border-red-400/40 rounded px-3 min-h-11 hover:bg-red-500/10 transition-colors"
       >
         <X className="h-3.5 w-3.5" />
         Cancel order
