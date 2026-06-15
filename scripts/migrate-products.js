@@ -3,7 +3,7 @@ const Database = require('better-sqlite3')
 const { Pool } = require('pg')
 const path = require('path')
 
-const NEON_URL = 'postgresql://neondb_owner:npg_9GgIpNu2aUvH@ep-quiet-paper-am2rt5xh-pooler.c-5.us-east-1.aws.neon.tech/neondb?sslmode=require'
+const NEON_URL = process.env.DATABASE_URL
 
 const sqlite = new Database(path.join(__dirname, '..', 'prisma', 'dev.db'), { readonly: true })
 const pool = new Pool({

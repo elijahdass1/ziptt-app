@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs'
 import { randomUUID } from 'crypto'
 
 const pool = new Pool({
-  connectionString: 'postgresql://neondb_owner:npg_9GgIpNu2aUvH@ep-quiet-paper-am2rt5xh-pooler.c-5.us-east-1.aws.neon.tech/neondb?sslmode=require',
+  connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }
 })
 
