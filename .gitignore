@@ -1,7 +1,24 @@
 node_modules/
 .next/
+out/
 prisma/dev.db
+*.db
+*.sqlite
 *.tsbuildinfo
 .env.local
+.env*.local
 .claude/
-.claude/
+.vercel/
+
+# next-pwa generated service worker + workbox runtime
+public/sw.js
+public/sw.js.map
+public/workbox-*.js
+public/workbox-*.js.map
+public/worker-*.js
+public/fallback-*.js
+
+# Capacitor native projects (generated)
+/ios/
+/android/
+.DS_Store
