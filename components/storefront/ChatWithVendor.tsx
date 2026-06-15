@@ -50,8 +50,6 @@ export function ChatWithVendor({
   // Track latest message timestamp for incremental polling.
   const sinceRef = useRef<string | null>(null)
 
-  if (isOwnStore) return null
-
   // Open + bootstrap conversation. Idempotent on backend so reopening is fine.
   const handleOpen = async () => {
     if (!isSignedIn) {
@@ -152,6 +150,10 @@ export function ChatWithVendor({
       setSending(false)
     }
   }
+
+  // A vendor viewing their own store shouldn't see a "chat with vendor"
+  // widget. Guard placed AFTER all hooks so hook order stays stable.
+  if (isOwnStore) return null
 
   return (
     <>

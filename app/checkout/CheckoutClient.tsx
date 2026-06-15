@@ -76,21 +76,8 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
       }
       const { orders } = await res.json()
 
-      if (form.paymentMethod === 'WIPAY') {
-        const wipayRes = await fetch('/api/payments/wipay', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ orderId: orders[0].id, total: grandTotal, description: 'zip.tt Order' }),
-        })
-        if (!wipayRes.ok) throw new Error('WiPay payment initiation failed')
-        const { paymentUrl } = await wipayRes.json()
-        clearCart()
-        window.location.href = paymentUrl
-        return
-      }
-
       clearCart()
-      router.push(`/orders?success=true`)
+      router.push(`/account/orders?success=true`)
       toast({ title: 'Order placed!', description: `Your order has been confirmed. Order #${orders[0].orderNumber}` })
     } catch (err: any) {
       toast({ title: err.message || 'Failed to place order', description: 'Please try again.', variant: 'destructive' })
