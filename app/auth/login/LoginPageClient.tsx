@@ -170,34 +170,6 @@ export function LoginPageClient() {
               Join zip.tt free
             </Link>
           </p>
-
-          {/* Test accounts */}
-          <div style={{ borderTop: `1px solid ${inputBorder}`, marginTop: '20px', paddingTop: '16px' }}>
-            <p style={{ fontSize: '11px', color: muted, textAlign: 'center', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-              Test Accounts
-            </p>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-              {[
-                { label: 'Customer', email: 'customer@zip.tt', pass: 'customer123' },
-                { label: 'Vendor', email: 'info@trinitechhub.tt', pass: 'TechHub2026' },
-                { label: 'Admin', email: 'elijah.dass1@gmail.com', pass: 'TridentAdmin2026!' },
-              ].map(acc => (
-                <button
-                  key={acc.label}
-                  onClick={() => { setEmail(acc.email); setPassword(acc.pass) }}
-                  style={{
-                    border: `1px solid ${inputBorder}`, borderRadius: '8px', padding: '7px 10px',
-                    background: inputBg, color: muted, fontSize: '12px', cursor: 'pointer',
-                    textAlign: 'left'
-                  }}
-                  onMouseEnter={e => (e.currentTarget.style.borderColor = gold)}
-                  onMouseLeave={e => (e.currentTarget.style.borderColor = inputBorder)}
-                >
-                  {acc.label}
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     </div>
