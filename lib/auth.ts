@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
         const isValid = await bcrypt.compare(credentials.password, user.password)
         if (!isValid) return null
 
-        if (user.status === 'BANNED') {
+        if (user.status === 'BANNED' || user.deletedAt) {
           throw new Error('Your account has been suspended.')
         }
 
@@ -46,20 +46,36 @@ export const authOptions: NextAuthOptions = {
   ],
   session: { strategy: 'jwt' },
   callbacks: {
+    async signIn({ user }) {
+      // Gate every provider (Google included — authorize() above only
+      // covers the credentials provider) against banned/removed accounts.
+      const dbUser = await prisma.user.findUnique({
+        where: { id: (user as any).id },
+        select: { status: true, deletedAt: true },
+      })
+      if (dbUser && (dbUser.status === 'BANNED' || dbUser.deletedAt)) {
+        return false
+      }
+      return true
+    },
     async jwt({ token, user }) {
       if (user) {
         token.role = (user as any).role
         token.id = user.id
       }
-      // Always refresh role from DB
+      // Always refresh role + ban/removal state from DB so an
+      // already-issued session dies the moment an admin acts.
       if (token.id) {
         const dbUser = await prisma.user.findUnique({
           where: { id: token.id as string },
-          select: { role: true, status: true },
+          select: { role: true, status: true, deletedAt: true },
         })
-        if (dbUser) {
-          token.role = dbUser.role
+        if (!dbUser || dbUser.status === 'BANNED' || dbUser.deletedAt) {
+          // Throwing here makes next-auth fail to resolve the session,
+          // effectively forcing the banned/removed user out.
+          throw new Error('Account suspended')
         }
+        token.role = dbUser.role
       }
       return token
     },

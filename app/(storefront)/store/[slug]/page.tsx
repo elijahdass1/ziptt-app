@@ -97,7 +97,7 @@ export default async function VendorStorePage({ params, searchParams }: PageProp
       _count: { select: { products: { where: { status: 'ACTIVE' } } } },
     },
   })
-  if (!vendor) notFound()
+  if (!vendor || vendor.status !== 'APPROVED') notFound()
 
   const session = await getServerSession(authOptions)
   const isOwnStore = !!session && vendor.userId === session.user.id
