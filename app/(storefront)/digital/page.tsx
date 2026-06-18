@@ -7,7 +7,7 @@
 // mojibake `â¡`, `ðº`, `ð»`. Switched to Lucide React icons
 // everywhere — they're SVG components so encoding can never break
 // them.
-export const dynamic = 'force-dynamic'
+export const revalidate = 600
 
 import prisma from '@/lib/prisma'
 import Link from 'next/link'

@@ -12,7 +12,7 @@
 //
 // Tabs are server-rendered via ?tab= query so deep-linking + SSR work
 // without client state. Filters/pagination only apply on the All tab.
-export const dynamic = 'force-dynamic'
+export const revalidate = 600
 
 import { notFound } from 'next/navigation'
 import Link from 'next/link'

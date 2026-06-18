@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic'
+export const revalidate = 86400
 import Link from 'next/link'
 import { Truck, Clock, MapPin, Phone } from 'lucide-react'
 

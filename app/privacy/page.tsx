@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic'
+export const revalidate = 86400
 export const metadata = { title: 'Privacy Policy — zip.tt' }
 
 export default function PrivacyPage() {

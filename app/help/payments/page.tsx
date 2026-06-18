@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic'
+export const revalidate = 86400
 import { CreditCard, Banknote, Building2, ShieldCheck } from 'lucide-react'
 
 export const metadata = { title: 'Payment Options â zip.tt' }

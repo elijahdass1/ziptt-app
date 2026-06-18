@@ -4,7 +4,7 @@
 // Sort: most products | highest rated | newest joined.
 // Each card shows cover photo (or banner fallback), logo, name, rating,
 // product count, region — clickable into the Facebook-style profile.
-export const dynamic = 'force-dynamic'
+export const revalidate = 600
 
 import Link from 'next/link'
 import { Search, Store, Star, MapPin, Package, BadgeCheck } from 'lucide-react'

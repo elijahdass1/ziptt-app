@@ -9,7 +9,7 @@
 // Data fetchers all exclude any product whose images JSON still
 // contains "/api/product-img" — keeps the home page on real photos
 // regardless of how new SKUs land.
-export const dynamic = 'force-dynamic'
+export const revalidate = 300
 
 import Link from 'next/link'
 import {

@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic'
+export const revalidate = 86400
 import { Mail, MessageSquare, Clock, Phone } from 'lucide-react'
 
 export const metadata = { title: 'Contact Us â zip.tt' }

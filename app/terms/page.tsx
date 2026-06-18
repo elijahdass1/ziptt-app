@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic'
+export const revalidate = 86400
 export const metadata = { title: 'Terms of Service — zip.tt' }
 
 export default function TermsPage() {

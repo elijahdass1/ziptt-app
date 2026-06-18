@@ -22,7 +22,7 @@ const nextConfig = {
     remotePatterns: [
       { protocol: 'https', hostname: '**' },
     ],
-    unoptimized: true,
+    minimumCacheTTL: 2678400,
   },
   experimental: {
     serverComponentsExternalPackages: ['@prisma/client', 'prisma'],

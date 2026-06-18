@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic'
+export const revalidate = 600
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { getServerSession } from 'next-auth'
