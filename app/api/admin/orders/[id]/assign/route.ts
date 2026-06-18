@@ -1,17 +1,14 @@
 export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
+import { requireAdmin } from '@/lib/admin-guard'
 import prisma from '@/lib/prisma'
 
 // POST /api/admin/orders/[id]/assign  body: { driverId: string | null }
 // Admin assigns or unassigns a driver. Passing null clears the assignment
 // and reverts status to PROCESSING (so it goes back into the available queue).
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
-  const session = await getServerSession(authOptions)
-  if (!session || session.user.role !== 'ADMIN') {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-  }
+  const guard = await requireAdmin()
+  if (!guard.ok) return guard.response
 
   let body: { driverId?: string | null }
   try {

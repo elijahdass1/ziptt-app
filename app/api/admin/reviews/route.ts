@@ -1,14 +1,11 @@
 export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
+import { requireAdmin } from '@/lib/admin-guard'
 import prisma from '@/lib/prisma'
 
 export async function GET(_req: NextRequest) {
-  const session = await getServerSession(authOptions)
-  if (!session || session.user.role !== 'ADMIN') {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-  }
+  const guard = await requireAdmin()
+  if (!guard.ok) return guard.response
 
   const reviews = await prisma.review.findMany({
     where: { status: 'PENDING' },
@@ -23,10 +20,8 @@ export async function GET(_req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
-  const session = await getServerSession(authOptions)
-  if (!session || session.user.role !== 'ADMIN') {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-  }
+  const guard = await requireAdmin()
+  if (!guard.ok) return guard.response
 
   const { id, status } = await req.json()
   if (!id || !['APPROVED', 'REJECTED'].includes(status)) {
