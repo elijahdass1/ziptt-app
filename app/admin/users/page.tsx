@@ -86,7 +86,7 @@ export default async function AdminUsersPage({
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-[var(--bg-card)] bg-[var(--bg-primary)]">
-                {['User', 'Phone', 'Role', 'Status', 'ID Status', 'Orders', 'Risk Score', 'Joined', 'Store', 'Actions'].map((h, i) => (
+                {['User', 'Phone', 'Role', 'Status', 'ID Status', 'Orders', 'Risk', 'Joined', 'Store', 'Actions'].map((h, i) => (
                   <th key={h} className={`px-5 py-3 text-xs font-medium text-[#555] uppercase tracking-wide ${i === 9 ? 'text-right' : 'text-left'}`}>
                     {h}
                   </th>
@@ -144,6 +144,11 @@ export default async function AdminUsersPage({
                     }`}>
                       {user.riskScore}
                     </span>
+                    {user.flagReason && (
+                      <p className="text-[10px] text-red-400/80 mt-0.5 max-w-[160px] truncate" title={user.flagReason}>
+                        {user.flagReason}
+                      </p>
+                    )}
                   </td>
                   <td className="px-5 py-3 text-[#555] text-xs">{formatDate(user.createdAt)}</td>
                   <td className="px-5 py-3 text-[#555] text-xs">
@@ -152,7 +157,7 @@ export default async function AdminUsersPage({
                     ) : 'â'}
                   </td>
                   <td className="px-5 py-3 text-right">
-                    <AdminUserActions userId={user.id} currentStatus={user.status} />
+                    <AdminUserActions userId={user.id} currentStatus={user.status} deletedAt={user.deletedAt ? user.deletedAt.toISOString() : null} />
                   </td>
                 </tr>
               ))}
