@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     if (!product || !product.isActive) return Response.json({ error: 'Product not found.' }, { status: 404 })
 
     const code = await prisma.digitalCode.findFirst({ where: { digitalProductId, isUsed: false } })
-    if (!code) return Response.json({ error: 'Out of stock â check back soon or contact support@zip.tt' }, { status: 400 })
+    if (!code) return Response.json({ error: 'Out of stock — check back soon or contact support@zip.tt' }, { status: 400 })
 
     const commission = product.price * 0.15
     const vendorEarnings = product.price * 0.85

@@ -20,7 +20,7 @@ export default async function DigitalProductPage({ params }: { params: { slug: s
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: '40px 24px' }}>
         {/* Breadcrumb */}
         <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '32px' }}>
-          <a href="/" style={{ color: 'var(--text-secondary)' }}>Home</a> âº <a href="/digital" style={{ color: 'var(--text-secondary)' }}>Digital</a> âº <span style={{ color: '#C9A84C' }}>{product.name}</span>
+          <a href="/" style={{ color: 'var(--text-secondary)' }}>Home</a> › <a href="/digital" style={{ color: 'var(--text-secondary)' }}>Digital</a> › <span style={{ color: '#C9A84C' }}>{product.name}</span>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '48px', alignItems: 'start' }}>
@@ -28,12 +28,12 @@ export default async function DigitalProductPage({ params }: { params: { slug: s
           <div>
             <div style={{ position: 'relative', height: '280px', background: 'var(--bg-card)', borderRadius: '12px', overflow: 'hidden', marginBottom: '24px' }}>
               {product.thumbnail && <Image src={product.thumbnail} alt={product.name} fill style={{ objectFit: 'cover' }} />}
-              <span style={{ position: 'absolute', top: '16px', left: '16px', background: '#C9A84C', color: 'var(--bg-primary)', fontSize: '12px', fontWeight: 'bold', padding: '4px 10px', borderRadius: '4px' }}>â¡ INSTANT DELIVERY</span>
+              <span style={{ position: 'absolute', top: '16px', left: '16px', background: '#C9A84C', color: 'var(--bg-primary)', fontSize: '12px', fontWeight: 'bold', padding: '4px 10px', borderRadius: '4px' }}>⚡ INSTANT DELIVERY</span>
             </div>
             {/* How it works */}
             <div style={{ background: 'var(--bg-secondary)', border: '1px solid #1A1A1A', borderRadius: '12px', padding: '24px' }}>
               <h3 style={{ marginBottom: '16px', fontSize: '16px' }}>How it works</h3>
-              {['Click Buy Now and complete payment', 'Receive your code instantly on your orders page', 'Follow the redemption instructions', 'Enjoy your subscription! ð'].map((step, i) => (
+              {['Click Buy Now and complete payment', 'Receive your code instantly on your orders page', 'Follow the redemption instructions', 'Enjoy your subscription! 🎉'].map((step, i) => (
                 <div key={i} style={{ display: 'flex', gap: '12px', marginBottom: '12px', fontSize: '14px', color: 'var(--text-secondary)' }}>
                   <span style={{ color: '#C9A84C', fontWeight: 'bold', minWidth: '20px' }}>{i + 1}.</span>
                   <span>{step}</span>
@@ -54,11 +54,11 @@ export default async function DigitalProductPage({ params }: { params: { slug: s
               )}
             </div>
             <p style={{ fontSize: '14px', color: product._count.codes < 5 ? '#ef4444' : 'var(--text-secondary)', marginBottom: '24px' }}>
-              {product._count.codes > 0 ? `â ${product._count.codes} codes in stock` : 'â Out of stock'}
+              {product._count.codes > 0 ? `✅ ${product._count.codes} codes in stock` : '❌ Out of stock'}
             </p>
             {/* Non-refundable notice */}
             <div style={{ background: '#1A1000', border: '1px solid #5a4000', borderRadius: '8px', padding: '16px', marginBottom: '24px', fontSize: '13px', color: '#C9A84C' }}>
-              â ï¸ Digital products cannot be refunded once the code has been revealed. Please confirm you need this service before purchasing.
+              ⚠️ Digital products cannot be refunded once the code has been revealed. Please confirm you need this service before purchasing.
             </div>
             {/* Instructions */}
             {product.instructions && (

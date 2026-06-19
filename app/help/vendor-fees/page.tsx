@@ -2,7 +2,7 @@ export const revalidate = 86400
 import Link from 'next/link'
 import { DollarSign, Calendar, Percent, CheckCircle } from 'lucide-react'
 
-export const metadata = { title: 'Fees & Commission â zip.tt' }
+export const metadata = { title: 'Fees & Commission — zip.tt' }
 
 export default function VendorFeesPage() {
   return (
@@ -16,7 +16,7 @@ export default function VendorFeesPage() {
           <h1 className="text-3xl font-black text-[var(--text-primary)]">Fees & Commission</h1>
         </div>
         <p className="text-[var(--text-secondary)] leading-relaxed">
-          Simple, transparent pricing. You only pay when you sell â no monthly fees, no listing fees, no surprises.
+          Simple, transparent pricing. You only pay when you sell — no monthly fees, no listing fees, no surprises.
         </p>
       </div>
 
@@ -73,17 +73,17 @@ export default function VendorFeesPage() {
           <Calendar className="h-5 w-5 text-[#C9A84C]" /> Payout Schedule
         </h2>
         <div className="bg-[var(--bg-secondary)] border border-[#C9A84C]/15 rounded-2xl p-5 space-y-3 text-sm text-[var(--text-secondary)]">
-          <p>â¢ Payouts are processed every <span className="text-[var(--text-primary)] font-semibold">Friday</span> for all orders fulfilled and delivered that week.</p>
-          <p>â¢ Funds are transferred directly to your registered bank account or WiPay wallet.</p>
-          <p>â¢ Orders must be in <span className="text-[var(--text-primary)]">Delivered</span> status by Wednesday midnight to qualify for that week's payout.</p>
-          <p>â¢ A payout statement is emailed to you every Friday detailing each transaction.</p>
-          <p>â¢ Minimum payout amount: <span className="text-[var(--text-primary)] font-semibold">TTD $50</span>. Balances below this roll over to the following week.</p>
+          <p>• Payouts are processed every <span className="text-[var(--text-primary)] font-semibold">Friday</span> for all orders fulfilled and delivered that week.</p>
+          <p>• Funds are transferred directly to your registered bank account or WiPay wallet.</p>
+          <p>• Orders must be in <span className="text-[var(--text-primary)]">Delivered</span> status by Wednesday midnight to qualify for that week's payout.</p>
+          <p>• A payout statement is emailed to you every Friday detailing each transaction.</p>
+          <p>• Minimum payout amount: <span className="text-[var(--text-primary)] font-semibold">TTD $50</span>. Balances below this roll over to the following week.</p>
         </div>
       </div>
 
       {/* No hidden fees */}
       <div className="bg-[#C9A84C]/10 border border-[#C9A84C]/30 rounded-2xl p-5">
-        <p className="font-semibold text-[var(--text-primary)] mb-3">â No Hidden Fees â Ever</p>
+        <p className="font-semibold text-[var(--text-primary)] mb-3">✅ No Hidden Fees — Ever</p>
         <div className="grid sm:grid-cols-2 gap-2 text-sm text-[var(--text-secondary)]">
           {['No monthly subscription', 'No listing fee', 'No setup fee', 'No withdrawal fee', 'No featured listing upsell', 'No per-photo charges'].map((item) => (
             <div key={item} className="flex items-center gap-2">
@@ -97,7 +97,7 @@ export default function VendorFeesPage() {
       <div className="text-center">
         <Link href="/vendor/register"
           className="inline-flex items-center gap-2 bg-[#C9A84C] text-black font-bold px-8 py-3 rounded-full hover:bg-[#F0C040] transition-colors">
-          Start Selling Free â
+          Start Selling Free →
         </Link>
       </div>
     </div>

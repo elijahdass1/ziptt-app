@@ -2,7 +2,7 @@ export const revalidate = 86400
 import Link from 'next/link'
 import { RotateCcw, CheckCircle, XCircle, Clock } from 'lucide-react'
 
-export const metadata = { title: 'Returns & Refunds â zip.tt' }
+export const metadata = { title: 'Returns & Refunds — zip.tt' }
 
 export default function ReturnsPage() {
   return (
@@ -37,10 +37,10 @@ export default function ReturnsPage() {
             <p className="font-semibold text-[var(--text-primary)]">Eligible for return</p>
           </div>
           <ul className="space-y-2 text-sm text-[var(--text-secondary)]">
-            <li>â¢ Item arrived damaged or defective</li>
-            <li>â¢ Wrong item received</li>
-            <li>â¢ Item significantly different from description</li>
-            <li>â¢ Unopened items in original packaging (within 7 days)</li>
+            <li>• Item arrived damaged or defective</li>
+            <li>• Wrong item received</li>
+            <li>• Item significantly different from description</li>
+            <li>• Unopened items in original packaging (within 7 days)</li>
           </ul>
         </div>
         <div className="bg-[var(--bg-secondary)] border border-red-500/20 rounded-2xl p-5">
@@ -49,11 +49,11 @@ export default function ReturnsPage() {
             <p className="font-semibold text-[var(--text-primary)]">Not eligible</p>
           </div>
           <ul className="space-y-2 text-sm text-[var(--text-secondary)]">
-            <li>â¢ Items returned after 7 days</li>
-            <li>â¢ Used or opened consumable items</li>
-            <li>â¢ Items damaged by the buyer</li>
-            <li>â¢ Digital products or download codes</li>
-            <li>â¢ Custom or personalised items</li>
+            <li>• Items returned after 7 days</li>
+            <li>• Used or opened consumable items</li>
+            <li>• Items damaged by the buyer</li>
+            <li>• Digital products or download codes</li>
+            <li>• Custom or personalised items</li>
           </ul>
         </div>
       </div>
@@ -63,11 +63,11 @@ export default function ReturnsPage() {
         <h2 className="text-xl font-bold text-[var(--text-primary)] mb-4">How to Request a Return</h2>
         <ol className="space-y-4">
           {[
-            { step: '1', title: 'Go to My Orders', desc: 'Sign in and navigate to My Account â Orders. Find the order containing the item you want to return.' },
+            { step: '1', title: 'Go to My Orders', desc: 'Sign in and navigate to My Account → Orders. Find the order containing the item you want to return.' },
             { step: '2', title: 'Click "Request Return"', desc: 'Select the item and choose your return reason. Upload a photo if the item is damaged or incorrect.' },
             { step: '3', title: 'Vendor reviews your request', desc: 'The vendor has 48 hours to approve or dispute your return request.' },
             { step: '4', title: 'Ship the item back', desc: 'Once approved, you\'ll receive return shipping instructions. For damaged/wrong items, the vendor covers return shipping.' },
-            { step: '5', title: 'Refund processed', desc: 'Once the vendor receives and inspects the item, your refund is processed within 5â7 business days.' },
+            { step: '5', title: 'Refund processed', desc: 'Once the vendor receives and inspects the item, your refund is processed within 5–7 business days.' },
           ].map((item) => (
             <li key={item.step} className="flex gap-4">
               <div className="h-8 w-8 rounded-full bg-[#C9A84C] text-black text-sm font-black flex items-center justify-center shrink-0">{item.step}</div>
@@ -83,9 +83,9 @@ export default function ReturnsPage() {
       {/* Refund timeline */}
       <div className="bg-[var(--bg-secondary)] border border-[#C9A84C]/15 rounded-2xl p-5 space-y-2 text-sm text-[var(--text-secondary)]">
         <p className="font-semibold text-[var(--text-primary)] mb-2">Refund Timeline</p>
-        <p>â¢ <span className="text-[var(--text-primary)]">Cash on Delivery orders:</span> Refund issued via WiPay or online bank transfer within 5â7 business days.</p>
-        <p>â¢ <span className="text-[var(--text-primary)]">Card/Linx payments:</span> Refund returned to your original payment method within 5â7 business days.</p>
-        <p>â¢ <span className="text-[var(--text-primary)]">Online banking:</span> Refund sent directly to your bank account within 5â7 business days.</p>
+        <p>• <span className="text-[var(--text-primary)]">Cash on Delivery orders:</span> Refund issued via WiPay or online bank transfer within 5–7 business days.</p>
+        <p>• <span className="text-[var(--text-primary)]">Card/Linx payments:</span> Refund returned to your original payment method within 5–7 business days.</p>
+        <p>• <span className="text-[var(--text-primary)]">Online banking:</span> Refund sent directly to your bank account within 5–7 business days.</p>
       </div>
 
       <div className="text-center pt-2">

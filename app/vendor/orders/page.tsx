@@ -35,7 +35,7 @@ export default async function VendorOrdersPage() {
 
       {orders.length === 0 ? (
         <div className="card p-12 text-center">
-          <div className="text-5xl mb-4">ð¦</div>
+          <div className="text-5xl mb-4">📦</div>
           <h2 className="text-lg font-semibold text-gray-900">No orders yet</h2>
           <p className="text-gray-500">When customers place orders, they'll appear here.</p>
         </div>
@@ -63,7 +63,7 @@ export default async function VendorOrdersPage() {
                           className="w-12 h-12 rounded-lg object-cover bg-gray-100 shrink-0" />
                         <div>
                           <p className="text-sm font-medium text-gray-900">{item.product.name}</p>
-                          <p className="text-xs text-gray-500">Qty: {item.quantity} Ã {formatTTD(item.price)}</p>
+                          <p className="text-xs text-gray-500">Qty: {item.quantity} × {formatTTD(item.price)}</p>
                         </div>
                       </div>
                     ))}

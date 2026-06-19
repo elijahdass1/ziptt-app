@@ -1,21 +1,21 @@
 export const revalidate = 86400
 import { CreditCard, Banknote, Building2, ShieldCheck } from 'lucide-react'
 
-export const metadata = { title: 'Payment Options â zip.tt' }
+export const metadata = { title: 'Payment Options — zip.tt' }
 
 export default function PaymentsPage() {
   const methods = [
     {
       icon: Banknote,
-      emoji: 'ðµ',
+      emoji: '💵',
       title: 'Cash on Delivery',
       subtitle: 'Pay when you receive',
-      desc: 'Our most popular payment method. Pay in cash when the courier delivers your order â no card or bank account needed. Available on all orders across our delivery zones.',
+      desc: 'Our most popular payment method. Pay in cash when the courier delivers your order — no card or bank account needed. Available on all orders across our delivery zones.',
       notes: ['Pay in TTD cash at your door', 'No minimum order amount', 'Available on all delivery areas'],
     },
     {
       icon: CreditCard,
-      emoji: 'ð³',
+      emoji: '💳',
       title: 'Linx Card',
       subtitle: 'Local debit card',
       desc: 'Pay securely online using your Linx debit card. Secure checkout — your card details are never stored by zip.tt.',
@@ -23,7 +23,7 @@ export default function PaymentsPage() {
     },
     {
       icon: Building2,
-      emoji: 'ð¦',
+      emoji: '🏦',
       title: 'Online Banking',
       subtitle: 'Direct bank transfer',
       desc: 'Transfer directly from your online banking account. Once your transfer is confirmed, your order is processed immediately.',
@@ -42,7 +42,7 @@ export default function PaymentsPage() {
           <h1 className="text-3xl font-black text-[var(--text-primary)]">Payment Options</h1>
         </div>
         <p className="text-[var(--text-secondary)] leading-relaxed">
-          zip.tt offers three convenient ways to pay â all secure, all local.
+          zip.tt offers three convenient ways to pay — all secure, all local.
         </p>
       </div>
 

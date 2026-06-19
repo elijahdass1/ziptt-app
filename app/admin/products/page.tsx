@@ -73,7 +73,7 @@ export default async function AdminProductsPage({
           <input
             name="q"
             defaultValue={searchParams.q}
-            placeholder="Search product or vendorâ¦"
+            placeholder="Search product or vendor…"
             className="w-full pl-9 pr-4 py-2 text-sm bg-[var(--bg-primary)] border border-[#333] text-[var(--text-primary)] focus:border-[#C9A84C] focus:outline-none rounded placeholder:text-[#555]"
           />
         </div>
@@ -143,7 +143,7 @@ export default async function AdminProductsPage({
                         </div>
                       </td>
                       <td className="px-5 py-3 text-[#888]">{product.vendor.storeName}</td>
-                      <td className="px-5 py-3 text-xs text-[#888]">{product.category?.name ?? 'â'}</td>
+                      <td className="px-5 py-3 text-xs text-[#888]">{product.category?.name ?? '—'}</td>
                       <td className="px-5 py-3 font-medium text-[var(--text-primary)]">{formatTTD(product.price)}</td>
                       <td className="px-5 py-3 text-[#888]">{product.stock}</td>
                       <td className="px-5 py-3">

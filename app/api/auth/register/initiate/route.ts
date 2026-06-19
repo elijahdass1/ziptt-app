@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
         })
       } catch (smsError) {
         console.error('SMS failed:', smsError)
-        // Don't fail â OTP still printed to console
+        // Don't fail — OTP still printed to console
       }
     }
 

@@ -103,12 +103,12 @@ export default async function AdminVerificationsPage({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <p className="font-medium text-[var(--text-primary)]">{user.name ?? 'â'}</p>
+                        <p className="font-medium text-[var(--text-primary)]">{user.name ?? '—'}</p>
                         <p className="text-xs text-[#555]">{user.email}</p>
                         {user.phone && <p className="text-xs text-[#555]">{user.phone}</p>}
                         <div className="flex items-center gap-3 mt-2">
                           <span className="text-xs text-[var(--text-secondary)]">
-                            Doc: <span className="text-[var(--text-primary)]">{user.idDocumentType ?? 'â'}</span>
+                            Doc: <span className="text-[var(--text-primary)]">{user.idDocumentType ?? '—'}</span>
                           </span>
                           <span className="text-xs text-[var(--text-secondary)]">
                             Orders: <span className="text-[var(--text-primary)]">{user.totalOrders}</span>

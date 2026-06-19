@@ -97,7 +97,7 @@ export default async function AdminDisputesPage({
                     {STATUS_LABEL[dispute.status] ?? dispute.status}
                   </span>
                   <span className="text-xs text-[#555]">#{dispute.id.slice(0, 8).toUpperCase()}</span>
-                  <span className="text-xs text-[#555]">â¢ {formatDate(dispute.createdAt)}</span>
+                  <span className="text-xs text-[#555]">• {formatDate(dispute.createdAt)}</span>
                 </div>
 
                 <h3 className="font-semibold text-[var(--text-primary)] mb-1">{dispute.subject}</h3>

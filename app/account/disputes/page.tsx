@@ -59,7 +59,7 @@ export default async function DisputesPage({
 
         {disputes.length === 0 ? (
           <div className="bg-[var(--bg-secondary)] border border-[var(--bg-card)] rounded-xl p-12 text-center">
-            <p className="text-4xl mb-3">ð</p>
+            <p className="text-4xl mb-3">📋</p>
             <p className="text-[var(--text-primary)] font-semibold mb-1">No disputes opened yet</p>
             <p className="text-[#888] text-sm">
               If you have an issue with an order, open a dispute above.
@@ -91,7 +91,7 @@ export default async function DisputesPage({
                       {dispute.subject}
                     </p>
                     <p className="text-xs text-[#888] mb-2">
-                      Order #{dispute.order.orderNumber.slice(-8).toUpperCase()} â¢{' '}
+                      Order #{dispute.order.orderNumber.slice(-8).toUpperCase()} •{' '}
                       {dispute.vendor.storeName}
                     </p>
 

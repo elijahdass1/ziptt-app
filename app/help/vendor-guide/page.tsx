@@ -2,7 +2,7 @@ export const revalidate = 86400
 import Link from 'next/link'
 import { Store, Package, Camera, TrendingUp, Star, ArrowRight } from 'lucide-react'
 
-export const metadata = { title: 'Seller Guide â zip.tt' }
+export const metadata = { title: 'Seller Guide — zip.tt' }
 
 export default function VendorGuidePage() {
   const steps = [
@@ -10,25 +10,25 @@ export default function VendorGuidePage() {
       step: '01',
       icon: Store,
       title: 'Create Your Store',
-      desc: 'Sign up at /vendor/register. Fill in your store name, description, and location. Upload a logo (recommended: 400Ã400px square image). Your application is reviewed within 1â2 business days.',
+      desc: 'Sign up at /vendor/register. Fill in your store name, description, and location. Upload a logo (recommended: 400×400px square image). Your application is reviewed within 1–2 business days.',
     },
     {
       step: '02',
       icon: Package,
       title: 'List Your Products',
-      desc: 'Go to Vendor Dashboard â Products â Add New. Fill in product name, description, price in TTD, stock quantity, and category. The better your description, the more you sell.',
+      desc: 'Go to Vendor Dashboard → Products → Add New. Fill in product name, description, price in TTD, stock quantity, and category. The better your description, the more you sell.',
     },
     {
       step: '03',
       icon: Camera,
       title: 'Add Great Photos',
-      desc: 'Products with clear, well-lit photos get significantly more clicks. Use natural light. Show the product from multiple angles. Minimum recommended size: 800Ã800px. No watermarks.',
+      desc: 'Products with clear, well-lit photos get significantly more clicks. Use natural light. Show the product from multiple angles. Minimum recommended size: 800×800px. No watermarks.',
     },
     {
       step: '04',
       icon: TrendingUp,
       title: 'Manage Orders',
-      desc: 'When a customer places an order, you\'ll get an email notification. Go to Vendor Dashboard â Orders to confirm, process, and mark items as shipped. Respond within 24 hours to avoid cancellations.',
+      desc: 'When a customer places an order, you\'ll get an email notification. Go to Vendor Dashboard → Orders to confirm, process, and mark items as shipped. Respond within 24 hours to avoid cancellations.',
     },
     {
       step: '05',
@@ -69,7 +69,7 @@ export default function VendorGuidePage() {
 
       {/* Steps */}
       <div>
-        <h2 className="text-xl font-bold text-[var(--text-primary)] mb-6">Getting Started â Step by Step</h2>
+        <h2 className="text-xl font-bold text-[var(--text-primary)] mb-6">Getting Started — Step by Step</h2>
         <div className="space-y-5">
           {steps.map((s) => (
             <div key={s.step} className="bg-[var(--bg-secondary)] border border-[#C9A84C]/15 rounded-2xl p-5 flex gap-5">
@@ -92,18 +92,18 @@ export default function VendorGuidePage() {
 
       {/* Tips */}
       <div>
-        <h2 className="text-xl font-bold text-[var(--text-primary)] mb-4">Pro Tips ð¹ð¹</h2>
+        <h2 className="text-xl font-bold text-[var(--text-primary)] mb-4">Pro Tips 🇹🇹</h2>
         <div className="space-y-3 text-sm text-[var(--text-secondary)]">
           {[
-            'Set competitive prices â browse similar products on zip.tt to gauge the market.',
-            'Carnival season (JanuaryâFebruary) is the busiest time of year. Stock up and list early.',
+            'Set competitive prices — browse similar products on zip.tt to gauge the market.',
+            'Carnival season (January–February) is the busiest time of year. Stock up and list early.',
             'Respond to customer messages within a few hours. Fast responses build trust.',
-            'Offer Cash on Delivery â it\'s the most popular payment method in T&T.',
+            'Offer Cash on Delivery — it\'s the most popular payment method in T&T.',
             'Keep stock counts accurate to avoid overselling and order cancellations.',
-            'Feature your best-selling products â featured items appear on the zip.tt homepage.',
+            'Feature your best-selling products — featured items appear on the zip.tt homepage.',
           ].map((tip) => (
             <div key={tip} className="flex items-start gap-3">
-              <span className="text-[#C9A84C] mt-0.5 shrink-0">â</span>
+              <span className="text-[#C9A84C] mt-0.5 shrink-0">→</span>
               <p>{tip}</p>
             </div>
           ))}
@@ -114,11 +114,11 @@ export default function VendorGuidePage() {
       <div className="bg-[var(--bg-secondary)] border border-red-500/20 rounded-2xl p-5 text-sm">
         <p className="font-semibold text-[var(--text-primary)] mb-3">Vendor Rules</p>
         <div className="space-y-2 text-[var(--text-secondary)]">
-          <p>â¢ All listings must be accurate â misrepresenting products results in account suspension.</p>
-          <p>â¢ No counterfeit, illegal, or prohibited items (firearms, drugs, etc.).</p>
-          <p>â¢ Orders must be confirmed within 24 hours of placement.</p>
-          <p>â¢ Vendors are responsible for accurate stock counts to prevent overselling.</p>
-          <p>â¢ Disputes must be responded to within 48 hours of being raised.</p>
+          <p>• All listings must be accurate — misrepresenting products results in account suspension.</p>
+          <p>• No counterfeit, illegal, or prohibited items (firearms, drugs, etc.).</p>
+          <p>• Orders must be confirmed within 24 hours of placement.</p>
+          <p>• Vendors are responsible for accurate stock counts to prevent overselling.</p>
+          <p>• Disputes must be responded to within 48 hours of being raised.</p>
         </div>
       </div>
 

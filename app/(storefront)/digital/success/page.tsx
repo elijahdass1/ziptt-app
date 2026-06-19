@@ -22,7 +22,7 @@ export default async function DigitalSuccessPage({ searchParams }: { searchParam
   return (
     <div style={{ background: 'var(--bg-primary)', minHeight: '100vh', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 24px' }}>
       <div style={{ maxWidth: '500px', width: '100%', textAlign: 'center' }}>
-        <div style={{ fontSize: '64px', marginBottom: '16px' }}>ð</div>
+        <div style={{ fontSize: '64px', marginBottom: '16px' }}>🎉</div>
         <h1 style={{ fontFamily: 'Georgia, serif', fontSize: '32px', marginBottom: '8px' }}>Purchase Successful!</h1>
         <p style={{ color: 'var(--text-secondary)', marginBottom: '40px' }}>{order.product.name}</p>
 
@@ -42,10 +42,10 @@ export default async function DigitalSuccessPage({ searchParams }: { searchParam
         )}
 
         <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '24px' }}>
-          ð¾ Your code is also saved in <a href="/orders/digital" style={{ color: '#C9A84C' }}>My Digital Orders</a>
+          💾 Your code is also saved in <a href="/orders/digital" style={{ color: '#C9A84C' }}>My Digital Orders</a>
         </p>
         <a href="/digital" style={{ display: 'inline-block', background: '#C9A84C', color: 'var(--bg-primary)', padding: '12px 32px', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold' }}>
-          Shop more digital products â
+          Shop more digital products →
         </a>
       </div>
     </div>

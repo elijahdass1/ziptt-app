@@ -102,7 +102,7 @@ export async function POST(req: NextRequest) {
     // Update user role
     await prisma.user.update({ where: { id: session.user.id }, data: { role: 'VENDOR' } })
 
-    console.log(`\nðª VENDOR APPLICATION: ${storeName} â ${session.user.email ?? session.user.id}\n`)
+    console.log(`\n🏪 VENDOR APPLICATION: ${storeName} — ${session.user.email ?? session.user.id}\n`)
 
     return NextResponse.json(vendor, { status: 201 })
   } catch (error) {
