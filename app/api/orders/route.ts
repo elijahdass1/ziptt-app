@@ -81,12 +81,6 @@ export async function POST(req: NextRequest) {
     )
   }
   const instructionsClean = typeof instructions === 'string' ? instructions.trim() : ''
-  if (instructionsClean.length < 3) {
-    return NextResponse.json(
-      { error: 'Delivery instructions are required so the driver can find you' },
-      { status: 400 }
-    )
-  }
   if (instructionsClean.length > 500) {
     return NextResponse.json(
       { error: 'Delivery instructions are too long (500 character max)' },
@@ -254,7 +248,7 @@ export async function POST(req: NextRequest) {
             total,
             notes: notes ?? null,
             phone: phoneClean,
-            instructions: instructionsClean,
+            instructions: instructionsClean || null,
             ipAddress: ip,
             userAgent: ua,
             deviceFingerprint: fingerprint,

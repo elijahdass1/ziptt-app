@@ -33,8 +33,22 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
     city: '',
     region: 'Port of Spain' as (typeof DELIVERY_REGIONS)[number],
     notes: '',
+    phone: '',
+    instructions: '',
     paymentMethod: ENABLED_PAYMENT_METHODS[0] as 'CASH_ON_DELIVERY' | 'LINX' | 'ONLINE_BANKING',
   })
+  const [phoneError, setPhoneError] = useState('')
+
+  // Accepts 868XXXXXXX, 1868XXXXXXX, +1868XXXXXXX, +1 868 XXX XXXX, etc.
+  // Mirrors the server-side check in app/api/orders/route.ts.
+  const isValidTTPhone = (value: string) => {
+    const digits = value.replace(/\D/g, '')
+    return (
+      digits.length === 7 ||
+      (digits.length === 10 && digits.startsWith('868')) ||
+      (digits.length === 11 && digits.startsWith('1868'))
+    )
+  }
 
   useEffect(() => {
     const payment = searchParams.get('payment')
@@ -55,6 +69,12 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
       toast({ title: 'Please fill in your delivery address', variant: 'destructive' })
       return
     }
+    if (!isValidTTPhone(form.phone)) {
+      setStep('address')
+      setPhoneError('Enter a valid Trinidad & Tobago number, e.g. +1 868 XXX XXXX')
+      toast({ title: 'Please enter a valid phone number', variant: 'destructive' })
+      return
+    }
     setLoading(true)
     try {
       const res = await fetch('/api/orders', {
@@ -69,6 +89,8 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
           })),
           paymentMethod: form.paymentMethod,
           notes: `Deliver to: ${form.street}, ${form.city}, ${form.region}. ${form.notes}`,
+          phone: form.phone,
+          instructions: form.instructions,
         }),
       })
       if (!res.ok) {
@@ -225,6 +247,22 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
 
                       <div>
                         <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5 uppercase tracking-wide">
+                          WhatsApp / Phone Number *
+                        </label>
+                        <input
+                          value={form.phone}
+                          onChange={(e) => {
+                            setForm({ ...form, phone: e.target.value })
+                            if (phoneError) setPhoneError('')
+                          }}
+                          placeholder="+1 868 XXX XXXX"
+                          className="w-full bg-[var(--bg-card)] border border-[#C9A84C]/20 rounded-xl px-3 py-2.5 text-sm text-[var(--text-primary)] placeholder-[#555] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent"
+                        />
+                        {phoneError && <p className="text-xs text-red-400 mt-1.5">{phoneError}</p>}
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5 uppercase tracking-wide">
                           Delivery Notes (optional)
                         </label>
                         <textarea
@@ -236,8 +274,28 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
                         />
                       </div>
 
+                      <div>
+                        <label className="block text-xs font-medium text-[var(--text-secondary)] mb-1.5 uppercase tracking-wide">
+                          Instructions for the Driver (optional)
+                        </label>
+                        <textarea
+                          value={form.instructions}
+                          onChange={(e) => setForm({ ...form, instructions: e.target.value })}
+                          rows={2}
+                          maxLength={500}
+                          placeholder="e.g. Call when you arrive, blue gate at the back..."
+                          className="w-full bg-[var(--bg-card)] border border-[#C9A84C]/20 rounded-xl px-3 py-2.5 text-sm text-[var(--text-primary)] placeholder-[#555] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent resize-none"
+                        />
+                      </div>
+
                       <button
-                        onClick={() => setStep('payment')}
+                        onClick={() => {
+                          if (!isValidTTPhone(form.phone)) {
+                            setPhoneError('Enter a valid Trinidad & Tobago number, e.g. +1 868 XXX XXXX')
+                            return
+                          }
+                          setStep('payment')
+                        }}
                         className="w-full py-3 bg-[#C9A84C] hover:bg-[#F0C040] text-black font-bold rounded-xl transition-colors"
                       >
                         Continue to Payment →
