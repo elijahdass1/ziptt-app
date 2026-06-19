@@ -2,6 +2,13 @@
 // reviewer User row — never touches vendors/products/categories/addresses.
 // Safe to re-run: each run regenerates the password and resets it on the
 // existing row, so the printed credentials always match what's in the DB.
+import dotenv from 'dotenv'
+import path from 'path'
+// Plain ts-node scripts don't get Next.js's automatic .env loading, so load
+// it ourselves. .env.local takes precedence, same as Next's own convention.
+dotenv.config({ path: path.resolve(__dirname, '../.env') })
+dotenv.config({ path: path.resolve(__dirname, '../.env.local'), override: true })
+
 import { PrismaClient } from '@prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { Pool } from 'pg'
