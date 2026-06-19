@@ -11,6 +11,11 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? '',
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
+      // Google verifies email ownership before issuing a token, so linking
+      // a Google sign-in to an existing email/password User with the same
+      // address carries no account-takeover risk. Without this, NextAuth
+      // refuses the link and bounces with OAuthAccountNotLinked.
+      allowDangerousEmailAccountLinking: true,
     }),
     CredentialsProvider({
       name: 'credentials',
