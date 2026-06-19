@@ -62,7 +62,7 @@ export default async function AdminUsersPage({
           <input
             name="q"
             defaultValue={searchParams.q}
-            placeholder="Search name or emailâ¦"
+            placeholder="Search name or email…"
             className="w-full pl-9 pr-4 py-2 text-sm bg-[var(--bg-card)] border border-[#333] text-[var(--text-primary)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C9A84C] placeholder-[#555]"
           />
         </div>
@@ -99,7 +99,7 @@ export default async function AdminUsersPage({
               ) : users.map((user) => (
                 <tr key={user.id} className="border-b border-[var(--bg-card)] hover:bg-[var(--bg-primary)] transition-colors">
                   <td className="px-5 py-3">
-                    <p className="font-medium text-[var(--text-primary)]">{user.name ?? 'â'}</p>
+                    <p className="font-medium text-[var(--text-primary)]">{user.name ?? '—'}</p>
                     <p className="text-xs text-[#555]">{user.email}</p>
                   </td>
                   <td className="px-5 py-3">
@@ -113,7 +113,7 @@ export default async function AdminUsersPage({
                         )}
                       </div>
                     ) : (
-                      <span className="text-[#555] text-xs">â</span>
+                      <span className="text-[#555] text-xs">—</span>
                     )}
                   </td>
                   <td className="px-5 py-3">
@@ -154,7 +154,7 @@ export default async function AdminUsersPage({
                   <td className="px-5 py-3 text-[#555] text-xs">
                     {user.vendor ? (
                       <span>{user.vendor.storeName} <span className="text-[#444]">({user.vendor.status})</span></span>
-                    ) : 'â'}
+                    ) : '—'}
                   </td>
                   <td className="px-5 py-3 text-right">
                     <AdminUserActions userId={user.id} currentStatus={user.status} deletedAt={user.deletedAt ? user.deletedAt.toISOString() : null} />
