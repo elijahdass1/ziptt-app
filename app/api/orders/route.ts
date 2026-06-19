@@ -109,14 +109,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid item quantity' }, { status: 400 })
     }
   }
-  // While the Tunapuna–Piarco–Trincity pilot is running we only honor
-  // Cash on Delivery — see lib/paymentMethods.ts for the canonical
-  // list. Anything else gets coerced server-side so a stale client or
-  // a direct API caller can't sneak through a disabled method.
-  const { ENABLED_METHODS } = await import('@/lib/paymentMethods')
-  const finalPaymentMethod = paymentMethod && ENABLED_METHODS.has(paymentMethod as 'CASH_ON_DELIVERY')
-    ? paymentMethod
-    : 'CASH_ON_DELIVERY'
+  // ENABLED_PAYMENT_METHODS in lib/paymentMethods.ts is the single
+  // source of truth — see that file to re-enable a method. Reject
+  // (don't silently coerce) so a stale client or a direct API caller
+  // can't sneak through a disabled method.
+  const { ENABLED_PAYMENT_METHODS, isEnabledPaymentMethod } = await import('@/lib/paymentMethods')
+  if (paymentMethod && !isEnabledPaymentMethod(paymentMethod)) {
+    return NextResponse.json({ error: 'Unsupported payment method' }, { status: 400 })
+  }
+  const finalPaymentMethod = paymentMethod ?? ENABLED_PAYMENT_METHODS[0]
 
   // De-duplicate productIds (collapse repeats by summing quantity).
   // Prevents ambiguous double-decrement and lets us do a single atomic update per product.

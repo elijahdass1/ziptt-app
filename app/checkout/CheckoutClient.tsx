@@ -10,6 +10,7 @@ import { Footer } from '@/components/layout/Footer'
 import { toast } from '@/components/ui/use-toast'
 import { TrinidadDeliveryMap } from '@/components/storefront/TrinidadDeliveryMap'
 import { IdVerificationGate } from '@/components/checkout/IdVerificationGate'
+import { ENABLED_PAYMENT_METHODS, isEnabledPaymentMethod } from '@/lib/paymentMethods'
 import Link from 'next/link'
 import { MapPin, Shield, Clock, Lock } from 'lucide-react'
 
@@ -32,7 +33,7 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
     city: '',
     region: 'Port of Spain' as (typeof DELIVERY_REGIONS)[number],
     notes: '',
-    paymentMethod: 'CASH_ON_DELIVERY' as 'CASH_ON_DELIVERY' | 'LINX' | 'ONLINE_BANKING',
+    paymentMethod: ENABLED_PAYMENT_METHODS[0] as 'CASH_ON_DELIVERY' | 'LINX' | 'ONLINE_BANKING',
   })
 
   useEffect(() => {
@@ -250,6 +251,9 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
                   <div className="bg-[var(--bg-secondary)] border border-[#C9A84C]/15 rounded-2xl p-5 space-y-4">
                     <h2 className="text-base font-bold text-[var(--text-primary)]">Payment Method</h2>
                     <div className="space-y-3">
+                      {/* Linx and Online Banking stay defined here but are hidden because
+                          they're not in ENABLED_PAYMENT_METHODS (lib/paymentMethods.ts) —
+                          add the key there to bring one back, no other change needed. */}
                       {[
                         {
                           value: 'CASH_ON_DELIVERY',
@@ -260,7 +264,7 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
                         },
                         { value: 'LINX', label: 'Linx Card', desc: 'Local debit card payment', icon: 'LINX', badge: null },
                         { value: 'ONLINE_BANKING', label: 'Online Banking', desc: 'Scotiabank, RBC, Republic Bank etc.', icon: 'BANK', badge: null },
-                      ].map((method) => (
+                      ].filter((method) => isEnabledPaymentMethod(method.value)).map((method) => (
                         <label
                           key={method.value}
                           className={`flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition-colors ${
@@ -321,7 +325,11 @@ export function CheckoutClient({ userIdVerified, userTotalOrders }: Props) {
 
                     <div className="bg-[var(--bg-primary)] border border-[#1E1E1E] rounded-xl p-4 space-y-1 text-sm">
                       <p className="font-semibold text-[#C9A84C] text-xs uppercase tracking-wide">Payment</p>
-                      <p className="text-[var(--text-primary)]">{form.paymentMethod.replace(/_/g, ' ')}</p>
+                      <p className="text-[var(--text-primary)]">
+                        {form.paymentMethod === 'CASH_ON_DELIVERY'
+                          ? "You'll pay with cash on delivery."
+                          : form.paymentMethod.replace(/_/g, ' ')}
+                      </p>
                     </div>
 
                     <div className="space-y-3">
