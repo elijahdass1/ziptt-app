@@ -209,9 +209,6 @@ model Order {
   deliveryFee       Float    @default(0)
   total             Float
   notes             String?
-  // NEEDS `npx prisma db push` — app/api/orders/route.ts already writes
-  // these two fields on every order create but the columns don't exist
-  // yet, so every order create is currently failing at the DB layer.
   phone             String?
   instructions      String?
   trackingNumber    String?
@@ -226,12 +223,17 @@ model Order {
   deliveryConfirmedAt DateTime?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+  assignedAt        DateTime?
+  driverId          String?
 
   customer User       @relation(fields: [customerId], references: [id])
   vendor   Vendor     @relation(fields: [vendorId], references: [id])
   address  Address?   @relation(fields: [addressId], references: [id])
   items    OrderItem[]
   disputes Dispute[]
+
+  @@index([driverId])
+  @@index([status])
 }
 
 model OrderItem {
