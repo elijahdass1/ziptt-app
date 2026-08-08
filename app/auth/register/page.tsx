@@ -23,6 +23,7 @@ export default function RegisterPage() {
   const [agreed, setAgreed] = useState(false)
 
   // Step 2 OTP
+  const [otpChannel, setOtpChannel] = useState<'sms' | 'email' | 'console'>('console')
   const [otp, setOtp] = useState(['', '', '', '', '', ''])
   const otpRefs = useRef<(HTMLInputElement | null)[]>([])
 
@@ -69,6 +70,7 @@ export default function RegisterPage() {
         toast({ title: data.error || 'Failed to send code', variant: 'destructive' })
         return
       }
+      setOtpChannel(data.channel ?? 'console')
       setStep(2)
       setResendCountdown(60)
     } finally {
@@ -130,6 +132,8 @@ export default function RegisterPage() {
         body: JSON.stringify({ name, email, phone: phoneDigits, password }),
       })
       if (res.ok) {
+        const data = await res.json()
+        setOtpChannel(data.channel ?? 'console')
         toast({ title: 'New code sent!' })
         setResendCountdown(60)
         setOtp(['', '', '', '', '', ''])
@@ -236,10 +240,17 @@ export default function RegisterPage() {
           {/* Step 2 */}
           {step === 2 && (
             <>
-              <h1 className="text-xl font-bold text-[var(--text-primary)] mb-1">Verify your phone</h1>
+              <h1 className="text-xl font-bold text-[var(--text-primary)] mb-1">
+                {otpChannel === 'sms' ? 'Verify your phone' : 'Check your email'}
+              </h1>
               <p className="text-sm text-[var(--text-secondary)] mb-6">
-                We sent a 6-digit code to <span className="text-[#C9A84C] font-medium">+1 (868) {phone}</span>.<br/>
-                Check your terminal for the code in dev mode.
+                {otpChannel === 'sms' ? (
+                  <>We sent a 6-digit code to <span className="text-[#C9A84C] font-medium">+1 (868) {phone}</span>.</>
+                ) : otpChannel === 'email' ? (
+                  <>We sent a 6-digit code to <span className="text-[#C9A84C] font-medium">{email}</span>. Check your inbox (and spam folder).</>
+                ) : (
+                  <>Check the server console for your verification code (dev mode).</>
+                )}
               </p>
               <form onSubmit={handleVerifyOtp} className="space-y-6">
                 <div className="flex gap-2 justify-center">

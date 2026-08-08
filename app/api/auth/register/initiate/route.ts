@@ -4,6 +4,7 @@ import { z } from 'zod'
 import prisma from '@/lib/prisma'
 import { rateLimit } from '@/lib/rateLimit'
 import { cookies } from 'next/headers'
+import { sendEmail } from '@/lib/email'
 
 const schema = z.object({
   name: z.string().min(2).max(100),
@@ -46,13 +47,15 @@ export async function POST(req: NextRequest) {
       data: { phone: cleanPhone, code, expiresAt },
     })
 
-    // DEV: log to console
+    // Always log to console for dev/debug
     console.log(`\n[zip.tt OTP] Code for ${cleanPhone}: ${code} (expires in 10 min)\n`)
 
     // Store registration data in cookie for step 2
     const regData = Buffer.from(JSON.stringify({ name, email, phone: cleanPhone, password })).toString('base64')
     const cookieStore = cookies()
     cookieStore.set('zip_reg', regData, { httpOnly: true, maxAge: 600, path: '/' })
+
+    let channel: 'sms' | 'email' | 'console' = 'console'
 
     // If Twilio configured, send real SMS
     if (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN) {
@@ -65,13 +68,32 @@ export async function POST(req: NextRequest) {
           from: process.env.TWILIO_FROM_NUMBER ?? '',
           to: `+1868${cleanPhone}`,
         })
+        channel = 'sms'
       } catch (smsError) {
         console.error('SMS failed:', smsError)
-        // Don't fail — OTP still printed to console
       }
     }
 
-    return Response.json({ success: true, message: 'Verification code sent' })
+    // If SMS not sent, fall back to email via Resend so the code actually
+    // reaches the user — without this, an unconfigured Twilio silently
+    // strands every signup at the OTP step with no way to receive the code.
+    if (channel !== 'sms') {
+      const emailResult = await sendEmail({
+        to: email,
+        subject: 'Your zip.tt verification code',
+        html: `<div style="font-family:sans-serif;max-width:480px;margin:0 auto">
+          <h2 style="color:#C9A84C">zip.tt verification</h2>
+          <p>Hi ${name},</p>
+          <p>Your verification code is:</p>
+          <div style="font-size:36px;font-weight:bold;letter-spacing:8px;text-align:center;padding:24px 0;color:#0A0A0A;background:#f5f5f5;border-radius:8px;margin:16px 0">${code}</div>
+          <p style="color:#666">This code expires in 10 minutes. Do not share it with anyone.</p>
+          <p style="color:#999;font-size:12px">If you did not request this, you can safely ignore this email.</p>
+        </div>`,
+      })
+      if (emailResult.ok) channel = 'email'
+    }
+
+    return Response.json({ success: true, message: 'Verification code sent', channel })
   } catch (error) {
     console.error('[zip.tt API Error]:', error)
     return Response.json({ error: 'Something went wrong. Please try again.' }, { status: 500 })
