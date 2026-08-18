@@ -22,7 +22,16 @@ export function LoginPageClient() {
     try {
       const result = await signIn('credentials', { email, password, redirect: false })
       if (result?.error) {
-        toast({ title: 'Invalid email or password', variant: 'destructive' })
+        // Roughly a quarter of accounts are OAuth-only (signed up with Google,
+        // so they have no password). Without this hint they hit a dead-end
+        // "invalid password" and assume login is broken — the #1 support
+        // confusion. We don't reveal *which* emails are OAuth-only (that would
+        // enable account enumeration), just nudge everyone toward the button.
+        toast({
+          title: 'Invalid email or password',
+          description: 'If you signed up with Google, use "Continue with Google" above instead.',
+          variant: 'destructive',
+        })
       } else {
         router.push(callbackUrl)
         router.refresh()
