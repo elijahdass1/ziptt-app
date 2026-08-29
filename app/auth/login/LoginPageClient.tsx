@@ -154,9 +154,14 @@ export function LoginPageClient() {
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '13px', color: muted, marginBottom: '6px', fontWeight: '500' }}>
-                Password
-              </label>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+                <label style={{ fontSize: '13px', color: muted, fontWeight: '500' }}>
+                  Password
+                </label>
+                <Link href="/auth/forgot" style={{ fontSize: '12px', color: gold, textDecoration: 'none' }}>
+                  Forgot password?
+                </Link>
+              </div>
               <div style={{ position: 'relative' }}>
                 <input
                   type={showPass ? 'text' : 'password'}

@@ -81,6 +81,7 @@ model User {
   addresses     Address[]
   disputes      Dispute[]      @relation("CustomerDisputes")
   otpCodes      OtpCode[]
+  passwordResetTokens PasswordResetToken[]
   digitalOrders     DigitalOrder[]   @relation("CustomerDigitalOrders")
   subscription      ZipSubscription?
   conversations     Conversation[]   @relation("CustomerConversations")
@@ -323,6 +324,20 @@ model OtpCode {
   deliveredByEmail Boolean @default(false)
 
   @@index([phone])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // SHA-256 of the token that was emailed — never the raw token. A DB leak
+  // therefore can't be replayed to reset anyone's password.
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
 }
 
 model DigitalProduct {
