@@ -149,4 +149,47 @@ export const authOptions: NextAuthOptions = {
     signIn: '/auth/login',
     error: '/auth/error',
   },
+  // Real auth logging. An OAuth failure used to surface only as a bare 302 in
+  // the Vercel logs with no reason attached, which cost multiple debugging
+  // cycles. `logger.error` receives every internal failure code
+  // (SIGNIN_OAUTH_ERROR, OAUTH_CALLBACK_ERROR, CALLBACK_OAUTH_ERROR,
+  // SIGNIN_OAUTH_ERROR, adapter errors, …) with its cause; the `events` below
+  // narrate the success path (which provider signed in, whether an account was
+  // linked or a user created) so a broken sign-in can be told apart from a
+  // silent CSRF bounce (that one shows up as GET /api/auth/signin?csrf=true and
+  // never reaches these events).
+  logger: {
+    error(code, metadata) {
+      const detail =
+        metadata instanceof Error
+          ? metadata.message
+          : (metadata as { error?: Error })?.error?.message ??
+            (() => {
+              try {
+                return JSON.stringify(metadata)
+              } catch {
+                return String(metadata)
+              }
+            })()
+      console.error(`[next-auth][error][${code}] ${detail}`)
+    },
+    warn(code) {
+      console.warn(`[next-auth][warn][${code}]`)
+    },
+  },
+  events: {
+    async signIn({ user, account, isNewUser }) {
+      console.info(
+        `[next-auth][signIn] provider=${account?.provider ?? 'credentials'} email=${user?.email} newUser=${isNewUser ?? false}`
+      )
+    },
+    async linkAccount({ user, account }) {
+      console.info(
+        `[next-auth][linkAccount] provider=${account?.provider} email=${user?.email}`
+      )
+    },
+    async createUser({ user }) {
+      console.info(`[next-auth][createUser] email=${user?.email}`)
+    },
+  },
 }
