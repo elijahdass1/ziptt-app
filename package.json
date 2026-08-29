@@ -11,6 +11,7 @@
     "db:push": "prisma db push",
     "db:seed": "ts-node prisma/seed.ts",
     "seed:reviewer": "ts-node prisma/seed-reviewer.ts",
+    "reset-password": "ts-node scripts/reset-password.ts",
     "clear:fake-trust": "ts-node scripts/clear-fake-trust.ts",
     "db:studio": "prisma studio",
     "test": "echo \"Error: no test specified\" && exit 1"
