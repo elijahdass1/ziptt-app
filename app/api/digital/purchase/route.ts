@@ -60,7 +60,12 @@ export async function POST(req: NextRequest) {
       data: { soldCount: { increment: 1 } }
     })
 
-    console.log('[digital]', product.name, '->', user.email, ':', code.code)
+    // Never log the delivered code in production — it's the secret the buyer
+    // paid for, and Vercel runtime logs are readable. Dev only, and even then
+    // without the code value.
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('[digital] delivered', product.name, '->', user.email)
+    }
 
     if (user.email) {
       void (async () => {
