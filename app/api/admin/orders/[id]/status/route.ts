@@ -8,6 +8,7 @@ import prisma from '@/lib/prisma'
 // the codebase (which stores status as a free-form string).
 const ALLOWED = new Set([
   'PENDING',
+  'CONFIRMED',
   'PROCESSING',
   'OUT_FOR_DELIVERY',
   'DELIVERED',

@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { formatTTD } from '@/lib/utils'
 import { toast } from '@/components/ui/use-toast'
-import { Phone, Truck, RefreshCcw, Search, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Phone, Truck, RefreshCcw, Search, ChevronLeft, ChevronRight, CheckCircle } from 'lucide-react'
 
 type AdminOrder = {
   id: string
@@ -30,6 +30,7 @@ type Vendor = { id: string; storeName: string; status: string }
 
 const STATUS_OPTIONS = [
   'PENDING',
+  'CONFIRMED',
   'PROCESSING',
   'OUT_FOR_DELIVERY',
   'DELIVERED',
@@ -333,6 +334,18 @@ export function AdminOrdersClient() {
 
               {/* Controls */}
               <div className="space-y-3 lg:border-l lg:border-gray-200 lg:pl-4">
+                {/* Confirm — one-click accept for a brand-new order. Only shown
+                    while PENDING; once confirmed the status controls below drive
+                    the rest of the flow. */}
+                {o.status === 'PENDING' && (
+                  <button
+                    onClick={() => setStatus(o.id, 'CONFIRMED')}
+                    disabled={busyId === o.id}
+                    className="w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-lg transition-colors disabled:opacity-50"
+                  >
+                    <CheckCircle size={14} /> Confirm order
+                  </button>
+                )}
                 <div>
                   <label className="block text-xs font-medium text-gray-500 mb-1 flex items-center gap-1">
                     <Truck size={11} /> Driver
@@ -465,6 +478,8 @@ function statusPill(status: string) {
   switch (status) {
     case 'PENDING':
       return `${base} bg-yellow-50 border-yellow-200 text-yellow-700`
+    case 'CONFIRMED':
+      return `${base} bg-teal-50 border-teal-200 text-teal-700`
     case 'PROCESSING':
       return `${base} bg-blue-50 border-blue-200 text-blue-700`
     case 'OUT_FOR_DELIVERY':
