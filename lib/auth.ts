@@ -87,10 +87,20 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user }) {
       // Gate every provider (Google included — authorize() above only
       // covers the credentials provider) against banned/removed accounts.
-      const dbUser = await prisma.user.findUnique({
-        where: { id: (user as any).id },
-        select: { status: true, deletedAt: true },
-      })
+      let dbUser
+      try {
+        dbUser = await prisma.user.findUnique({
+          where: { id: (user as any).id },
+          select: { status: true, deletedAt: true },
+        })
+      } catch (err) {
+        // Fail open on a transient DB failure (e.g. a Neon serverless cold
+        // start) rather than dropping the sign-in — same policy as the jwt
+        // callback below. A genuinely banned user is still caught on the
+        // next request once the DB is warm, via the jwt role refresh.
+        console.warn('[auth] signIn ban check skipped (transient DB error):', (err as Error)?.message)
+        return true
+      }
       if (dbUser && (dbUser.status === 'BANNED' || dbUser.deletedAt)) {
         return false
       }
