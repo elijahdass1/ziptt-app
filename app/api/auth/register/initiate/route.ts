@@ -32,11 +32,17 @@ export async function POST(req: NextRequest) {
     // Clean phone to digits only for storage
     const cleanPhone = phone.replace(/\D/g, '').replace(/^1/, '')
 
-    // Rate limit: 3 sends per phone per hour, counted in the DB so the ceiling
-    // survives serverless instance churn (an in-memory Map resets per Lambda).
+    // Rate limit: 3 sends per hour, counted in the DB so the ceiling survives
+    // serverless instance churn (an in-memory Map resets per Lambda). Key on
+    // BOTH phone and email — the code is delivered to email, so limiting on the
+    // attacker-controlled phone alone would let someone vary the phone and spam
+    // a victim's inbox with codes.
     const windowStart = new Date(Date.now() - 3_600_000)
     const recentSends = await prisma.otpCode.count({
-      where: { phone: cleanPhone, createdAt: { gt: windowStart } },
+      where: {
+        createdAt: { gt: windowStart },
+        OR: [{ phone: cleanPhone }, { regEmail: email }],
+      },
     })
     if (recentSends >= 3) {
       return Response.json({ error: 'Too many attempts. Try again in an hour.' }, { status: 429 })
