@@ -1,6 +1,7 @@
 export const revalidate = 300
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
+import { liveVendorProductWhere } from '@/lib/vendorVisibility'
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
@@ -22,6 +23,7 @@ export async function GET(req: NextRequest) {
       ],
     }),
     ...(category && { category: { slug: category } }),
+    ...liveVendorProductWhere,
     price: { gte: minPrice, lte: maxPrice },
   }
 

@@ -5,6 +5,7 @@ import { ProductFilters } from '@/components/storefront/ProductFilters'
 import { ProductGrid } from '@/components/storefront/ProductGrid'
 import prisma from '@/lib/prisma'
 import { safeQuery } from '@/lib/safeQuery'
+import { LIVE_VENDOR_STATUSES, liveVendorWhere } from '@/lib/vendorVisibility'
 
 interface PageProps {
   searchParams: { q?: string; category?: string; vendor?: string; minPrice?: string; maxPrice?: string; sort?: string; page?: string }
@@ -31,7 +32,10 @@ async function getProducts(searchParams: PageProps['searchParams']) {
       ],
     }),
     ...(category && { category: { slug: category } }),
-    ...(vendorSlug && { vendor: { slug: vendorSlug } }),
+    // The vendor must be live (excludes suspended/removed), and — if the page is
+    // filtered to one vendor — match that slug. Combined into a single `vendor`
+    // key so the two conditions don't overwrite each other.
+    vendor: { status: { in: [...LIVE_VENDOR_STATUSES] }, ...(vendorSlug && { slug: vendorSlug }) },
     price: { gte: minPrice, lte: maxPrice },
   }
 
@@ -58,11 +62,11 @@ async function getProducts(searchParams: PageProps['searchParams']) {
       }),
       prisma.product.count({ where }),
       prisma.category.findMany({
-        where: { products: { some: { status: 'ACTIVE' } } },
+        where: { products: { some: { status: 'ACTIVE', vendor: liveVendorWhere } } },
         orderBy: { name: 'asc' },
       }),
       prisma.vendor.findMany({
-        where: { status: 'APPROVED', products: { some: { status: 'ACTIVE' } } },
+        where: { ...liveVendorWhere, products: { some: { status: 'ACTIVE' } } },
         select: { storeName: true, slug: true },
         orderBy: { storeName: 'asc' },
       }),

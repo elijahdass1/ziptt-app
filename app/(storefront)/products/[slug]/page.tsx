@@ -8,12 +8,16 @@ import { ProductDetail } from '@/components/storefront/ProductDetail'
 import { ProductCard } from '@/components/storefront/ProductCard'
 import { ReviewSection } from '@/components/storefront/ReviewSection'
 import { firstImage } from '@/lib/parseImages'
+import { liveVendorProductWhere } from '@/lib/vendorVisibility'
 
 interface PageProps { params: { slug: string } }
 
 async function getProduct(slug: string) {
-  return prisma.product.findUnique({
-    where: { slug, status: 'ACTIVE' },
+  // findFirst (not findUnique) so we can add the live-vendor relation filter —
+  // a product whose vendor is suspended/removed must 404, not render as buyable.
+  // slug is unique, so this still returns at most one row.
+  return prisma.product.findFirst({
+    where: { slug, status: 'ACTIVE', ...liveVendorProductWhere },
     include: {
       vendor: true,
       category: true,
@@ -70,7 +74,7 @@ export default async function ProductPage({ params }: PageProps) {
   const [reviews, related] = await Promise.all([
     getReviews(product.id),
     prisma.product.findMany({
-      where: { categoryId: product.categoryId, status: 'ACTIVE', NOT: { id: product.id } },
+      where: { categoryId: product.categoryId, status: 'ACTIVE', NOT: { id: product.id }, ...liveVendorProductWhere },
       take: 4,
       include: { category: { select: { name: true, slug: true } }, vendor: { select: { storeName: true, slug: true } } },
     }),

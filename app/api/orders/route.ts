@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { rateLimit } from '@/lib/rateLimit'
 import prisma from '@/lib/prisma'
+import { LIVE_VENDOR_STATUSES } from '@/lib/vendorVisibility'
 
 // Shape of a single cart item the client POSTs.
 // NOTE: any `price` field on this object is IGNORED — server recomputes
@@ -162,8 +163,9 @@ export async function POST(req: NextRequest) {
     }
 
     // Verify product + vendor status. ACTIVE products only.
-    // Vendors: APPROVED or ACTIVE both treated as ok (storefront uses both).
-    const VENDOR_OK = new Set(['APPROVED', 'ACTIVE'])
+    // Vendors: only live statuses can be ordered from — shared with the
+    // storefront visibility rule so this can't drift (see lib/vendorVisibility).
+    const VENDOR_OK = new Set<string>(LIVE_VENDOR_STATUSES)
     for (const p of products) {
       if (p.status !== 'ACTIVE') {
         return NextResponse.json(

@@ -10,6 +10,7 @@ import Link from 'next/link'
 import { Search, Store, Star, MapPin, Package, BadgeCheck } from 'lucide-react'
 import prisma from '@/lib/prisma'
 import { safeQuery } from '@/lib/safeQuery'
+import { LIVE_VENDOR_STATUSES } from '@/lib/vendorVisibility'
 
 interface PageProps {
   searchParams: { q?: string; region?: string; sort?: string }
@@ -29,7 +30,7 @@ export default async function VendorsDirectoryPage({ searchParams }: PageProps) 
     : { totalSales: 'desc' } // 'products' default — sort by sales as a proxy
 
   const where: any = {
-    status: 'APPROVED',
+    status: { in: [...LIVE_VENDOR_STATUSES] },
     ...(q && { storeName: { contains: q, mode: 'insensitive' } }),
     ...(region && { region }),
   }
@@ -47,7 +48,7 @@ export default async function VendorsDirectoryPage({ searchParams }: PageProps) 
     }), [], 'vendors:list'),
     // Distinct regions across active vendors — used for the region pills.
     safeQuery(() => prisma.vendor.findMany({
-      where: { status: 'APPROVED', region: { not: null } },
+      where: { status: { in: [...LIVE_VENDOR_STATUSES] }, region: { not: null } },
       select: { region: true },
       distinct: ['region'],
     }), [], 'vendors:regions'),

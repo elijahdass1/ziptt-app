@@ -26,6 +26,7 @@ import prisma from '@/lib/prisma'
 import { ProductCard } from '@/components/storefront/ProductCard'
 import { VendorReviewSection } from '@/components/storefront/VendorReviewSection'
 import { ChatWithVendor } from '@/components/storefront/ChatWithVendor'
+import { isLiveVendorStatus } from '@/lib/vendorVisibility'
 
 interface PageProps {
   params: { slug: string }
@@ -97,7 +98,10 @@ export default async function VendorStorePage({ params, searchParams }: PageProp
       _count: { select: { products: { where: { status: 'ACTIVE' } } } },
     },
   })
-  if (!vendor || vendor.status !== 'APPROVED') notFound()
+  // Hide suspended/removed/pending vendors, but keep both live states
+  // (APPROVED and ACTIVE) visible — filtering on APPROVED alone wrongly 404'd
+  // ACTIVE vendors' storefronts.
+  if (!vendor || !isLiveVendorStatus(vendor.status)) notFound()
 
   const session = await getServerSession(authOptions)
   const isOwnStore = !!session && vendor.userId === session.user.id
