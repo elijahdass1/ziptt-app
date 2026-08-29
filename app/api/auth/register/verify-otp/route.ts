@@ -2,14 +2,20 @@ export const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import { z } from 'zod'
 import prisma from '@/lib/prisma'
-import { rateLimit } from '@/lib/rateLimit'
-import { cookies } from 'next/headers'
-import bcrypt from 'bcryptjs'
 
 const schema = z.object({
   phone: z.string(),
   code: z.string().length(6),
 })
+
+// Generic failure so a caller can't distinguish "no such pending signup",
+// "wrong code", and "expired" from one another.
+const INVALID = Response.json(
+  { error: 'Invalid or expired code. Please try again.' },
+  { status: 400 }
+)
+
+const MAX_ATTEMPTS = 5
 
 export async function POST(req: NextRequest) {
   try {
@@ -20,65 +26,68 @@ export async function POST(req: NextRequest) {
     }
     const { phone, code } = parsed.data
 
-    // Rate limit: 5 attempts per phone per hour
-    const rl = rateLimit(`otp-verify:${phone}`, 5, 3_600_000)
-    if (!rl.allowed) {
+    // All live pending registrations for this phone (newest first). Each row
+    // carries its own reg data; a resend just adds a newer row.
+    const pending = await prisma.otpCode.findMany({
+      where: {
+        phone,
+        used: false,
+        expiresAt: { gt: new Date() },
+        regEmail: { not: null },
+      },
+      orderBy: { createdAt: 'desc' },
+    })
+
+    if (pending.length === 0) return INVALID
+
+    // Enforce the attempt ceiling in the DB (not an in-memory Map, which resets
+    // on every cold/other serverless instance) so a 6-digit code can't be
+    // brute-forced. The newest row is the attempt counter.
+    const counter = pending[0]
+    if (counter.attempts >= MAX_ATTEMPTS) {
       return Response.json({ error: 'Too many attempts. Try again later.' }, { status: 429 })
     }
 
-    // Find valid OTP
-    const otp = await prisma.otpCode.findFirst({
-      where: {
-        phone,
-        code,
-        used: false,
-        expiresAt: { gt: new Date() },
-      },
-    })
-
+    // Match against any live code for this phone (covers resends).
+    const otp = pending.find((row) => row.code === code)
     if (!otp) {
-      return Response.json({ error: 'Invalid or expired code. Please try again.' }, { status: 400 })
+      await prisma.otpCode.update({
+        where: { id: counter.id },
+        data: { attempts: { increment: 1 } },
+      })
+      return INVALID
     }
 
-    // Mark OTP used
-    await prisma.otpCode.update({ where: { id: otp.id }, data: { used: true } })
+    if (!otp.regEmail || !otp.regName || !otp.regPassword) return INVALID
 
-    // Get registration data from cookie
-    const cookieStore = cookies()
-    const regCookie = cookieStore.get('zip_reg')
-    if (!regCookie) {
-      return Response.json({ error: 'Registration session expired. Please start again.' }, { status: 400 })
-    }
-
-    let regData: { name: string; email: string; phone: string; password: string }
-    try {
-      regData = JSON.parse(Buffer.from(regCookie.value, 'base64').toString())
-    } catch {
-      return Response.json({ error: 'Registration session corrupted. Please start again.' }, { status: 400 })
-    }
-
-    // Check email still available
-    const existing = await prisma.user.findUnique({ where: { email: regData.email } })
+    // Email must still be free (guards a race where two signups used the same
+    // address). Generic response so this can't be used to enumerate either.
+    const existing = await prisma.user.findUnique({ where: { email: otp.regEmail } })
     if (existing) {
-      return Response.json({ error: 'An account with this email already exists.' }, { status: 400 })
+      await prisma.otpCode.deleteMany({ where: { phone } })
+      return INVALID
     }
 
-    // Create user
-    const hashedPassword = await bcrypt.hash(regData.password, 12)
+    // Create the account from the server-side pending registration. The
+    // password is already a bcrypt hash from initiate. emailVerified is only
+    // stamped when the code was genuinely delivered to that email inbox — an
+    // SMS-delivered code proves the phone, not the address, so setting it there
+    // would let an attacker who owns the phone claim a victim's email and, via
+    // allowDangerousEmailAccountLinking, later fuse it with the victim's Google.
     await prisma.user.create({
       data: {
-        name: regData.name,
-        email: regData.email,
-        password: hashedPassword,
-        phone: regData.phone,
-        phoneVerified: true,
+        name: otp.regName,
+        email: otp.regEmail,
+        password: otp.regPassword,
+        phone: otp.phone,
+        phoneVerified: !otp.deliveredByEmail,
         role: 'CUSTOMER',
-        emailVerified: new Date(),
+        emailVerified: otp.deliveredByEmail ? new Date() : null,
       },
     })
 
-    // Clear registration cookie
-    cookieStore.delete('zip_reg')
+    // Consume every pending row for this phone so used codes don't linger.
+    await prisma.otpCode.deleteMany({ where: { phone } })
 
     return Response.json({ success: true, redirect: '/' })
   } catch (error) {

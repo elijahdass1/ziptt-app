@@ -304,10 +304,25 @@ model OtpCode {
   phone     String
   code      String
   used      Boolean  @default(false)
+  // Failed verification attempts against this code. The verify route
+  // increments and enforces this in the DB, so the brute-force ceiling
+  // survives serverless instance churn (an in-memory Map does not).
+  attempts  Int      @default(0)
   expiresAt DateTime
   createdAt DateTime @default(now())
   userId    String?
   user      User?    @relation(fields: [userId], references: [id])
+
+  // Pending registration held server-side instead of in a client cookie.
+  // regPassword is a bcrypt hash — never plaintext. deliveredByEmail records
+  // whether the code actually reached the user's email inbox, so verify only
+  // stamps emailVerified when the email address was genuinely proven.
+  regName          String?
+  regEmail         String?
+  regPassword      String?
+  deliveredByEmail Boolean @default(false)
+
+  @@index([phone])
 }
 
 model DigitalProduct {
