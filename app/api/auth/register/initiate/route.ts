@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
+import { randomInt } from 'crypto'
 import { z } from 'zod'
 import prisma from '@/lib/prisma'
 import { rateLimit } from '@/lib/rateLimit'
@@ -38,8 +39,9 @@ export async function POST(req: NextRequest) {
     // Clean phone to digits only for storage
     const cleanPhone = phone.replace(/\D/g, '').replace(/^1/, '')
 
-    // Generate OTP
-    const code = String(Math.floor(100000 + Math.random() * 900000))
+    // Generate OTP with a CSPRNG — Math.random() is predictable from
+    // enough observed outputs, which for a 6-digit login code is unsafe.
+    const code = String(randomInt(100000, 1000000))
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000)
 
     // Store OTP
@@ -47,8 +49,12 @@ export async function POST(req: NextRequest) {
       data: { phone: cleanPhone, code, expiresAt },
     })
 
-    // Always log to console for dev/debug
-    console.log(`\n[zip.tt OTP] Code for ${cleanPhone}: ${code} (expires in 10 min)\n`)
+    // Log the code to the server console for local dev only. NEVER in
+    // production — Vercel runtime logs are readable and this would leak a
+    // live credential next to the phone number it belongs to.
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`\n[zip.tt OTP] Code for ${cleanPhone}: ${code} (expires in 10 min)\n`)
+    }
 
     // Store registration data in cookie for step 2
     const regData = Buffer.from(JSON.stringify({ name, email, phone: cleanPhone, password })).toString('base64')
