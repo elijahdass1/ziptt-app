@@ -9,6 +9,7 @@ export const revalidate = 600
 import Link from 'next/link'
 import { Search, Store, Star, MapPin, Package, BadgeCheck } from 'lucide-react'
 import prisma from '@/lib/prisma'
+import { safeQuery } from '@/lib/safeQuery'
 
 interface PageProps {
   searchParams: { q?: string; region?: string; sort?: string }
@@ -33,21 +34,23 @@ export default async function VendorsDirectoryPage({ searchParams }: PageProps) 
     ...(region && { region }),
   }
 
+  // Wrapped so a DB timeout renders the empty "no sellers found" state below
+  // instead of 500ing this high-traffic page.
   const [vendors, regions] = await Promise.all([
-    prisma.vendor.findMany({
+    safeQuery(() => prisma.vendor.findMany({
       where,
       orderBy,
       take: 60,
       include: {
         _count: { select: { products: { where: { status: 'ACTIVE' } } } },
       },
-    }),
+    }), [], 'vendors:list'),
     // Distinct regions across active vendors — used for the region pills.
-    prisma.vendor.findMany({
+    safeQuery(() => prisma.vendor.findMany({
       where: { status: 'APPROVED', region: { not: null } },
       select: { region: true },
       distinct: ['region'],
-    }),
+    }), [], 'vendors:regions'),
   ])
 
   const buildUrl = (overrides: Record<string, string | undefined>) => {

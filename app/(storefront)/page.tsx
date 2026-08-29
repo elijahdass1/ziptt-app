@@ -18,6 +18,7 @@ import {
   TrendingUp, Tag, Clock, Crown, type LucideIcon,
 } from 'lucide-react'
 import prisma from '@/lib/prisma'
+import { safeQuery } from '@/lib/safeQuery'
 import { ProductCard } from '@/components/storefront/ProductCard'
 import { ProductRail } from '@/components/storefront/ProductRail'
 import { CategoryQuadCard } from '@/components/storefront/CategoryQuadCard'
@@ -170,16 +171,21 @@ const HERO_PILLS: { icon: LucideIcon; color: string; label: string; href: string
 ]
 
 export default async function HomePage() {
+  // Each fetch is wrapped so one failing query (or a DB blip) degrades that
+  // section to empty rather than 500ing the whole homepage. Sections with no
+  // data are already conditionally hidden below.
   const [categories, trending, featured, deals, newArrivals, vendors, allVendors, digitalProducts] =
     await Promise.all([
-      getCategoriesWithSamples(),
-      getTrendingProducts(),
-      getFeaturedProducts(),
-      getDealsProducts(),
-      getNewArrivals(),
-      getFeaturedVendors(),
-      getAllVendorsForMarquee(),
-      process.env.NEXT_PUBLIC_PLATFORM === 'ios' ? Promise.resolve([]) : getFeaturedDigitalProducts(),
+      safeQuery(getCategoriesWithSamples, [], 'home:categories'),
+      safeQuery(getTrendingProducts, [], 'home:trending'),
+      safeQuery(getFeaturedProducts, [], 'home:featured'),
+      safeQuery(getDealsProducts, [], 'home:deals'),
+      safeQuery(getNewArrivals, [], 'home:newArrivals'),
+      safeQuery(getFeaturedVendors, [], 'home:vendors'),
+      safeQuery(getAllVendorsForMarquee, [], 'home:marquee'),
+      process.env.NEXT_PUBLIC_PLATFORM === 'ios'
+        ? Promise.resolve([])
+        : safeQuery(getFeaturedDigitalProducts, [], 'home:digital'),
     ])
 
   const band1 = categories.slice(0, 4)

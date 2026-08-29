@@ -4,6 +4,7 @@ import { Sparkles } from 'lucide-react'
 import { ProductFilters } from '@/components/storefront/ProductFilters'
 import { ProductGrid } from '@/components/storefront/ProductGrid'
 import prisma from '@/lib/prisma'
+import { safeQuery } from '@/lib/safeQuery'
 
 interface PageProps {
   searchParams: { q?: string; category?: string; vendor?: string; minPrice?: string; maxPrice?: string; sort?: string; page?: string }
@@ -42,29 +43,32 @@ async function getProducts(searchParams: PageProps['searchParams']) {
     : sort === 'popular' ? { soldCount: 'desc' }
     : { featured: 'desc' }
 
-  const [products, total, categories, vendors] = await Promise.all([
-    prisma.product.findMany({
-      where, orderBy,
-      skip: (page - 1) * limit,
-      take: limit,
-      include: {
-        category: { select: { name: true, slug: true } },
-        vendor: { select: { storeName: true, slug: true } },
-      },
-    }),
-    prisma.product.count({ where }),
-    prisma.category.findMany({
-      where: { products: { some: { status: 'ACTIVE' } } },
-      orderBy: { name: 'asc' },
-    }),
-    prisma.vendor.findMany({
-      where: { status: 'APPROVED', products: { some: { status: 'ACTIVE' } } },
-      select: { storeName: true, slug: true },
-      orderBy: { storeName: 'asc' },
-    }),
-  ])
-
-  return { products, total, pages: Math.ceil(total / limit), categories, vendors }
+  // Wrapped so a DB blip degrades to an empty product grid instead of 500ing.
+  const empty = { products: [], total: 0, pages: 0, categories: [], vendors: [] }
+  return safeQuery(async () => {
+    const [products, total, categories, vendors] = await Promise.all([
+      prisma.product.findMany({
+        where, orderBy,
+        skip: (page - 1) * limit,
+        take: limit,
+        include: {
+          category: { select: { name: true, slug: true } },
+          vendor: { select: { storeName: true, slug: true } },
+        },
+      }),
+      prisma.product.count({ where }),
+      prisma.category.findMany({
+        where: { products: { some: { status: 'ACTIVE' } } },
+        orderBy: { name: 'asc' },
+      }),
+      prisma.vendor.findMany({
+        where: { status: 'APPROVED', products: { some: { status: 'ACTIVE' } } },
+        select: { storeName: true, slug: true },
+        orderBy: { storeName: 'asc' },
+      }),
+    ])
+    return { products, total, pages: Math.ceil(total / limit), categories, vendors }
+  }, empty, 'products:list')
 }
 
 export default async function ProductsPage({ searchParams }: PageProps) {
