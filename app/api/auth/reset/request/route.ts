@@ -15,6 +15,10 @@ const GENERIC = Response.json({
 })
 
 const TOKEN_TTL_MS = 60 * 60 * 1000 // 1 hour
+// Max reset emails per account per window. Enforced in the DB (not the
+// in-memory rateLimit Map, which resets per Lambda) so this endpoint can't be
+// used to bomb a victim's inbox by hammering it across serverless instances.
+const MAX_RESETS_PER_WINDOW = 3
 
 export async function POST(req: NextRequest) {
   try {
@@ -30,8 +34,26 @@ export async function POST(req: NextRequest) {
     // OAuth-only accounts (no password) sign in with Google/Apple; sending them
     // a reset link would be confusing and pointless.
     if (user && user.password) {
-      // Invalidate any outstanding tokens for this user before issuing a new one.
-      await prisma.passwordResetToken.deleteMany({ where: { userId: user.id } })
+      const windowStart = new Date(Date.now() - TOKEN_TTL_MS)
+
+      // Rate limit: count this account's tokens issued in the window (used or
+      // not). At the ceiling, return the same generic response without sending
+      // — indistinguishable from any other request, and no email goes out.
+      const recentCount = await prisma.passwordResetToken.count({
+        where: { userId: user.id, createdAt: { gt: windowStart } },
+      })
+      if (recentCount >= MAX_RESETS_PER_WINDOW) return GENERIC
+
+      // Invalidate still-live tokens (mark used) so only the newest link works,
+      // while keeping the rows for the rate-limit count above. Then sweep rows
+      // older than the window so they don't accumulate.
+      await prisma.passwordResetToken.updateMany({
+        where: { userId: user.id, usedAt: null },
+        data: { usedAt: new Date() },
+      })
+      await prisma.passwordResetToken.deleteMany({
+        where: { userId: user.id, createdAt: { lt: windowStart } },
+      })
 
       const rawToken = randomBytes(32).toString('hex')
       const tokenHash = createHash('sha256').update(rawToken).digest('hex')
