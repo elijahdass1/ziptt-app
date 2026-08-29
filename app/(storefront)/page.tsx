@@ -15,7 +15,7 @@ import Link from 'next/link'
 import {
   ArrowRight, Star, Store, MapPin,
   Zap, Home, Sparkles, Flame, Gamepad2, Wine,
-  TrendingUp, Tag, Clock, Crown, type LucideIcon,
+  TrendingUp, Tag, Crown, type LucideIcon,
 } from 'lucide-react'
 import prisma from '@/lib/prisma'
 import { safeQuery } from '@/lib/safeQuery'
@@ -24,7 +24,10 @@ import { ProductRail } from '@/components/storefront/ProductRail'
 import { CategoryQuadCard } from '@/components/storefront/CategoryQuadCard'
 import { PromoTicker } from '@/components/storefront/PromoTicker'
 import { HeroSpotlight } from '@/components/storefront/HeroSpotlight'
+import { PromoBanner } from '@/components/storefront/PromoBanner'
 import { VendorMarquee } from '@/components/storefront/VendorMarquee'
+import { getActivePromos, EMPTY_PROMOS } from '@/lib/promos'
+import { liveVendorProductWhere, liveVendorWhere } from '@/lib/vendorVisibility'
 import { formatTTD } from '@/lib/utils'
 
 // Slug → accent color (used for the top stripe on each quad card and
@@ -63,11 +66,11 @@ const REAL_PHOTOS = { NOT: { images: { contains: '/api/product-img' } } } as con
 
 async function getCategoriesWithSamples() {
   const cats = await prisma.category.findMany({
-    where: { products: { some: { status: 'ACTIVE' } } },
+    where: { products: { some: { status: 'ACTIVE', vendor: liveVendorWhere } } },
     include: {
-      _count: { select: { products: { where: { status: 'ACTIVE' } } } },
+      _count: { select: { products: { where: { status: 'ACTIVE', vendor: liveVendorWhere } } } },
       products: {
-        where: { status: 'ACTIVE', ...REAL_PHOTOS },
+        where: { status: 'ACTIVE', ...REAL_PHOTOS, ...liveVendorProductWhere },
         orderBy: [{ soldCount: 'desc' }, { createdAt: 'desc' }],
         take: 8,
         select: { id: true, slug: true, name: true, images: true },
@@ -85,7 +88,7 @@ async function getTrendingProducts() {
   // photos. Falls back to featured if soldCount is all-zero (seed data
   // bootstrap).
   return prisma.product.findMany({
-    where: { status: 'ACTIVE', ...REAL_PHOTOS },
+    where: { status: 'ACTIVE', ...REAL_PHOTOS, ...liveVendorProductWhere },
     take: 12,
     include: {
       category: { select: { name: true, slug: true } },
@@ -97,7 +100,7 @@ async function getTrendingProducts() {
 
 async function getFeaturedProducts() {
   return prisma.product.findMany({
-    where: { status: 'ACTIVE', featured: true, ...REAL_PHOTOS },
+    where: { status: 'ACTIVE', featured: true, ...REAL_PHOTOS, ...liveVendorProductWhere },
     take: 12,
     include: {
       category: { select: { name: true, slug: true } },
@@ -109,7 +112,7 @@ async function getFeaturedProducts() {
 
 async function getDealsProducts() {
   const rows = await prisma.product.findMany({
-    where: { status: 'ACTIVE', comparePrice: { not: null, gt: 0 }, ...REAL_PHOTOS },
+    where: { status: 'ACTIVE', comparePrice: { not: null, gt: 0 }, ...REAL_PHOTOS, ...liveVendorProductWhere },
     take: 50,
     include: {
       category: { select: { name: true, slug: true } },
@@ -124,7 +127,7 @@ async function getDealsProducts() {
 
 async function getNewArrivals() {
   return prisma.product.findMany({
-    where: { status: 'ACTIVE', ...REAL_PHOTOS },
+    where: { status: 'ACTIVE', ...REAL_PHOTOS, ...liveVendorProductWhere },
     take: 12,
     include: {
       category: { select: { name: true, slug: true } },
@@ -136,7 +139,7 @@ async function getNewArrivals() {
 
 async function getFeaturedVendors() {
   return prisma.vendor.findMany({
-    where: { status: 'APPROVED' },
+    where: liveVendorWhere,
     take: 6,
     orderBy: { totalSales: 'desc' },
     include: { _count: { select: { products: true } } },
@@ -147,7 +150,7 @@ async function getAllVendorsForMarquee() {
   // Used for the always-on vendor logo strip — pulls every approved
   // vendor and lets the marquee handle wrapping.
   return prisma.vendor.findMany({
-    where: { status: 'APPROVED' },
+    where: liveVendorWhere,
     select: { storeName: true, slug: true, logo: true },
     orderBy: { storeName: 'asc' },
   })
@@ -174,7 +177,7 @@ export default async function HomePage() {
   // Each fetch is wrapped so one failing query (or a DB blip) degrades that
   // section to empty rather than 500ing the whole homepage. Sections with no
   // data are already conditionally hidden below.
-  const [categories, trending, featured, deals, newArrivals, vendors, allVendors, digitalProducts] =
+  const [categories, trending, featured, deals, newArrivals, vendors, allVendors, digitalProducts, promos] =
     await Promise.all([
       safeQuery(getCategoriesWithSamples, [], 'home:categories'),
       safeQuery(getTrendingProducts, [], 'home:trending'),
@@ -186,7 +189,11 @@ export default async function HomePage() {
       process.env.NEXT_PUBLIC_PLATFORM === 'ios'
         ? Promise.resolve([])
         : safeQuery(getFeaturedDigitalProducts, [], 'home:digital'),
+      // Admin-managed homepage ad content (ticker / hero / mid-page banner).
+      // Falls back to EMPTY_PROMOS → hardcoded defaults if the table is missing.
+      safeQuery(getActivePromos, EMPTY_PROMOS, 'home:promos'),
     ])
+  const heroPromo = promos.hero
 
   const band1 = categories.slice(0, 4)
   const band2 = categories.slice(4, 8)
@@ -198,7 +205,7 @@ export default async function HomePage() {
   return (
     <div className="space-y-10 md:space-y-14 pb-16">
       {/* PROMO TICKER — animated, infinite-scroll lower-third strip */}
-      <PromoTicker />
+      <PromoTicker items={promos.ticker} />
 
       {/* HERO — bigger and livelier. Drifting radial glow + pulse dot
           on the eyebrow + product spotlight card on the right + a
@@ -232,23 +239,35 @@ export default async function HomePage() {
             <div className="space-y-4 max-w-2xl">
               <div className="inline-flex items-center gap-2 bg-[#C9A84C]/10 border border-[#C9A84C]/30 text-[#C9A84C] text-xs font-bold px-3 py-1.5 rounded-full tracking-wide">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#C9A84C] ziptt-pulse-gold" />
-                Trinidad &amp; Tobago&apos;s #1 Marketplace
+                {heroPromo?.eyebrow ?? "Trinidad & Tobago's #1 Marketplace"}
               </div>
-              <h1 className="text-4xl md:text-6xl font-black leading-[1.05] text-[var(--text-primary)]">
-                Shop Local.<br />
-                <span className="gold-shimmer">Ship Fast.</span><br />
-                Live Good.
-              </h1>
+              {heroPromo?.title ? (
+                <h1 className="text-4xl md:text-6xl font-black leading-[1.05] text-[var(--text-primary)]">
+                  {heroPromo.title}
+                  {heroPromo.titleAccent && (
+                    <>
+                      <br />
+                      <span className="gold-shimmer">{heroPromo.titleAccent}</span>
+                    </>
+                  )}
+                </h1>
+              ) : (
+                <h1 className="text-4xl md:text-6xl font-black leading-[1.05] text-[var(--text-primary)]">
+                  Shop Local.<br />
+                  <span className="gold-shimmer">Ship Fast.</span><br />
+                  Live Good.
+                </h1>
+              )}
               <p className="text-base text-[var(--text-secondary)] leading-relaxed max-w-lg">
-                Thousands of products from local vendors — shadow beni to Samsung phones.
-                Free delivery on orders over TTD $500.
+                {heroPromo?.subtitle ??
+                  'Thousands of products from local vendors — shadow beni to Samsung phones. Free delivery on orders over TTD $500.'}
               </p>
               <div className="flex flex-wrap gap-3 pt-1">
-                <Link href="/products" className="btn-primary flex items-center gap-2 px-6 py-3 rounded-full text-sm shadow-lg shadow-[#C9A84C]/20">
-                  Browse all <ArrowRight className="h-4 w-4" />
+                <Link href={heroPromo?.ctaHref ?? '/products'} className="btn-primary flex items-center gap-2 px-6 py-3 rounded-full text-sm shadow-lg shadow-[#C9A84C]/20">
+                  {heroPromo?.ctaLabel ?? 'Browse all'} <ArrowRight className="h-4 w-4" />
                 </Link>
-                <Link href="/vendor/register" className="btn-secondary flex items-center gap-2 px-6 py-3 rounded-full text-sm">
-                  Sell on zip.tt
+                <Link href={heroPromo?.cta2Href ?? '/vendor/register'} className="btn-secondary flex items-center gap-2 px-6 py-3 rounded-full text-sm">
+                  {heroPromo?.cta2Label ?? 'Sell on zip.tt'}
                 </Link>
               </div>
               {/* Hero category pills — bigger, more colorful, snap below
@@ -352,35 +371,9 @@ export default async function HomePage() {
         products={featured}
       />
 
-      {/* MID-PAGE PROMO BANNER — full-bleed diagonal-stripe poster
-          look. Big copy, double CTA, plenty of contrast. */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-[var(--bg-primary)] via-[var(--bg-secondary)] to-[var(--bg-primary)] border-y border-[#C9A84C]/20">
-        <div className="absolute inset-0 ziptt-stripes pointer-events-none" />
-        <div className="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-[#D62828]/10 blur-3xl pointer-events-none" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14 relative z-10">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="space-y-2 max-w-2xl">
-              <div className="inline-flex items-center gap-2 text-[#D62828] text-xs font-black tracking-[2px]">
-                <Clock className="h-3.5 w-3.5" /> CARNIVAL SEASON
-              </div>
-              <h2 className="text-3xl md:text-4xl font-black text-[var(--text-primary)] leading-tight">
-                Get <span className="gold-shimmer">Carnival-ready</span> in days, not weeks.
-              </h2>
-              <p className="text-sm md:text-base text-[var(--text-secondary)]">
-                Costumes, mas boots, body glitter, makeup kits — local vendors, nationwide delivery.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <Link href="/products?category=carnival" className="btn-primary px-6 py-3 rounded-full text-sm flex items-center gap-2 shadow-lg shadow-[#C9A84C]/25">
-                Shop Carnival <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link href="/products?category=rum-spirits" className="btn-secondary px-6 py-3 rounded-full text-sm">
-                Caribbean spirits
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* MID-PAGE PROMO BANNER — admin-managed (slot=BANNER), falls back to the
+          hardcoded "Carnival Season" poster when none is active. */}
+      <PromoBanner promo={promos.banner} />
 
       {/* CATEGORY QUAD CARDS — band 2 */}
       {band2.length > 0 && (

@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import {
-  LayoutDashboard, Users, Store, Package, ShieldAlert, Star, LogOut, ChevronRight, BadgeCheck, ShoppingBag,
+  LayoutDashboard, Users, Store, Package, ShieldAlert, Star, LogOut, ChevronRight, BadgeCheck, ShoppingBag, Megaphone,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -19,6 +19,7 @@ const navItems = [
   { href: '/admin/products', label: 'Products', icon: Package },
   { href: '/admin/disputes', label: 'Disputes', icon: ShieldAlert },
   { href: '/admin/reviews', label: 'Reviews', icon: Star },
+  { href: '/admin/promos', label: 'Homepage Ads', icon: Megaphone },
 ]
 
 export function AdminSidebar() {

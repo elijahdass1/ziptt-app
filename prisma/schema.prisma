@@ -434,3 +434,31 @@ model Message {
   conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   sender       User         @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
 }
+
+// Admin-managed homepage advertising / promotional content. One flexible row
+// shape serves every ad slot on the homepage, keyed by `slot`:
+//   - TICKER : each active row is one scrolling line (icon + title)
+//   - BANNER : the mid-page poster (eyebrow, title, subtitle, up to 2 CTAs, accent)
+//   - HERO   : the hero block (eyebrow, title + titleAccent second line, subtitle, CTAs)
+// The homepage falls back to hardcoded defaults when a slot has no active row,
+// so an empty table (or a pre-`db push` deploy) renders exactly as before.
+model Promo {
+  id          String   @id @default(cuid())
+  slot        String   // 'TICKER' | 'BANNER' | 'HERO'
+  active      Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  eyebrow     String?
+  title       String?
+  titleAccent String?  // second headline line, rendered with the gold shimmer (HERO)
+  subtitle    String?
+  icon        String?  // lucide icon name (TICKER line / eyebrow) — see lib/promoIcons
+  accent      String?  // hex color for the eyebrow / accents
+  ctaLabel    String?
+  ctaHref     String?
+  cta2Label   String?
+  cta2Href    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([slot, active])
+}
