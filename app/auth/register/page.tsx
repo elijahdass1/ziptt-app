@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { Loader2, Eye, EyeOff, CheckCircle } from 'lucide-react'
 import { toast } from '@/components/ui/use-toast'
+import { MIN_PASSWORD_LENGTH, PASSWORD_POLICY_HINT, checkPassword } from '@/lib/passwordPolicy'
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -48,6 +49,11 @@ export default function RegisterPage() {
     e.preventDefault()
     if (password !== confirmPassword) {
       toast({ title: 'Passwords do not match', variant: 'destructive' })
+      return
+    }
+    const pwCheck = checkPassword(password)
+    if (!pwCheck.ok) {
+      toast({ title: pwCheck.error, variant: 'destructive' })
       return
     }
     if (phoneDigits.length < 7) {
@@ -203,8 +209,8 @@ export default function RegisterPage() {
                 <div>
                   <label className="block text-sm font-medium text-[var(--text-primary)] mb-1">Password</label>
                   <div className="relative">
-                    <input type={showPass ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)} required minLength={8}
-                      placeholder="Min 8 chars, at least 1 number"
+                    <input type={showPass ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)} required minLength={MIN_PASSWORD_LENGTH}
+                      placeholder={PASSWORD_POLICY_HINT}
                       className="w-full bg-[var(--bg-card)] border border-[#C9A84C]/20 rounded-xl px-4 pr-10 py-2.5 text-sm text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[#C9A84C] focus:border-transparent" />
                     <button type="button" onClick={() => setShowPass(!showPass)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-secondary)] hover:text-[#C9A84C]">

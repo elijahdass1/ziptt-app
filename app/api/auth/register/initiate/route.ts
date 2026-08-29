@@ -5,12 +5,13 @@ import bcrypt from 'bcryptjs'
 import { z } from 'zod'
 import prisma from '@/lib/prisma'
 import { sendEmail } from '@/lib/email'
+import { passwordSchema } from '@/lib/passwordPolicy'
 
 const schema = z.object({
   name: z.string().min(2).max(100),
   email: z.string().email(),
   phone: z.string().regex(/^(\+?1?-?868-?)?\d{3}-?\d{4}$/, 'Invalid TT phone number'),
-  password: z.string().min(8).regex(/\d/, 'Must contain at least one number'),
+  password: passwordSchema,
 })
 
 // Uniform response the client always gets once input validation passes, so an
