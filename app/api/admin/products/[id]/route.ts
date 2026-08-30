@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/admin-guard'
 import prisma from '@/lib/prisma'
+import { revalidateStorefront } from '@/lib/revalidateStorefront'
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
   const guard = await requireAdmin()
@@ -15,6 +16,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       return NextResponse.json({ error: 'Invalid status' }, { status: 400 })
     }
     const product = await prisma.product.update({ where: { id: params.id }, data: { status: body.status } })
+    revalidateStorefront({ productSlug: product.slug })
     return NextResponse.json(product)
   }
 
@@ -45,6 +47,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     if (body.featured !== undefined) data.featured = body.featured
 
     const product = await prisma.product.update({ where: { id: params.id }, data })
+    revalidateStorefront({ productSlug: product.slug })
     return NextResponse.json(product)
   } catch (e: any) {
     console.error(e)
@@ -57,5 +60,6 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
   if (!guard.ok) return guard.response
 
   await prisma.product.delete({ where: { id: params.id } })
+  revalidateStorefront()
   return NextResponse.json({ ok: true })
 }

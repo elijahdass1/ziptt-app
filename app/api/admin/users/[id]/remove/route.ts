@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/admin-guard'
 import prisma from '@/lib/prisma'
+import { revalidateStorefront } from '@/lib/revalidateStorefront'
 
 // POST /api/admin/users/[id]/remove
 //
@@ -43,6 +44,8 @@ export async function POST(_req: NextRequest, { params }: { params: { id: string
       where: { vendorId: target.vendor.id },
       data: { status: 'ARCHIVED' },
     })
+    // Their store + products just left the public storefront.
+    revalidateStorefront()
   }
 
   await prisma.adminAuditLog.create({

@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import prisma from '@/lib/prisma'
+import { revalidateStorefront } from '@/lib/revalidateStorefront'
 
 async function getVendorProduct(productId: string, userId: string) {
   const vendor = await prisma.vendor.findUnique({ where: { userId } })
@@ -41,6 +42,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   }
 
   const updated = await prisma.product.update({ where: { id: params.id }, data })
+  revalidateStorefront({ productSlug: updated.slug })
   return NextResponse.json(updated)
 }
 
@@ -52,5 +54,6 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
   if (!product) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
   await prisma.product.update({ where: { id: params.id }, data: { status: 'ARCHIVED' } })
+  revalidateStorefront({ productSlug: product.slug })
   return NextResponse.json({ success: true })
 }

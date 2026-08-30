@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/admin-guard'
 import prisma from '@/lib/prisma'
+import { revalidateStorefront } from '@/lib/revalidateStorefront'
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
   const guard = await requireAdmin()
@@ -15,7 +16,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   const vendor = await prisma.vendor.update({
     where: { id: params.id },
     data: { status },
-    select: { id: true, userId: true, status: true },
+    select: { id: true, userId: true, status: true, slug: true },
   })
 
   // When approved: set user role to VENDOR
@@ -32,5 +33,8 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     })
   }
 
+  // A vendor's status flip shows/hides them + all their products across the
+  // storefront, so invalidate the full public surface.
+  revalidateStorefront({ vendorSlug: vendor.slug })
   return NextResponse.json(vendor)
 }

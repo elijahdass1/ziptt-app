@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/admin-guard'
 import prisma from '@/lib/prisma'
 import { PROMO_SLOTS, sanitizePromo } from '@/lib/promos'
+import { revalidateHome } from '@/lib/revalidateStorefront'
 
 export async function GET() {
   const guard = await requireAdmin()
@@ -34,5 +35,6 @@ export async function POST(req: NextRequest) {
       ...sanitizePromo(body),
     },
   })
+  revalidateHome()
   return NextResponse.json(promo, { status: 201 })
 }

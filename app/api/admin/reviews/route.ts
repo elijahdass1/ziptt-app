@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/admin-guard'
 import prisma from '@/lib/prisma'
+import { revalidateStorefront } from '@/lib/revalidateStorefront'
 
 export async function GET(_req: NextRequest) {
   const guard = await requireAdmin()
@@ -47,6 +48,8 @@ export async function PATCH(req: NextRequest) {
       where: { id: review.productId },
       data: { rating: avgRating, reviewCount: approvedReviews.length },
     })
+    // Approving a review changes the product's displayed rating/review count.
+    revalidateStorefront()
   }
 
   return NextResponse.json(review)

@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/admin-guard'
 import prisma from '@/lib/prisma'
+import { revalidateStorefront } from '@/lib/revalidateStorefront'
 
 export async function POST(req: NextRequest) {
   const guard = await requireAdmin()
@@ -36,6 +37,7 @@ export async function POST(req: NextRequest) {
       },
     })
 
+    revalidateStorefront({ productSlug: product.slug })
     return NextResponse.json(product, { status: 201 })
   } catch (e: any) {
     console.error(e)

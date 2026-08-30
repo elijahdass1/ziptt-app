@@ -16,6 +16,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import prisma from '@/lib/prisma'
 import { parseImages } from '@/lib/parseImages'
+import { revalidateStorefront } from '@/lib/revalidateStorefront'
 
 export async function POST(
   req: NextRequest,
@@ -60,6 +61,7 @@ export async function POST(
     select: { id: true, images: true },
   })
 
+  revalidateStorefront({ productSlug: product.slug })
   return NextResponse.json({
     id: updated.id,
     images: parseImages(updated.images),
