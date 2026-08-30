@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from '@/components/ui/use-toast'
 import { CheckCircle, XCircle, AlertTriangle, Loader2 } from 'lucide-react'
+import { isLiveVendorStatus } from '@/lib/vendorVisibility'
 
 interface Props {
   vendorId: string
@@ -62,7 +63,9 @@ export function VendorActions({ vendorId, currentStatus, storeName }: Props) {
           </button>
         </>
       )}
-      {currentStatus === 'APPROVED' && (
+      {/* Both live states (APPROVED and ACTIVE) can be suspended. Keying only
+          on APPROVED left ACTIVE vendors with no action button at all. */}
+      {isLiveVendorStatus(currentStatus) && (
         <button
           onClick={() => update('SUSPENDED')}
           className="inline-flex items-center gap-1 text-xs text-yellow-400 hover:text-yellow-300 font-medium transition-colors"

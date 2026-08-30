@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic'
 import prisma from '@/lib/prisma'
 import { formatDate } from '@/lib/utils'
 import { VendorActions } from '@/components/admin/VendorActions'
+import { isLiveVendorStatus } from '@/lib/vendorVisibility'
 
 const STATUS_COLOR: Record<string, string> = {
   PENDING: 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30',
@@ -34,9 +35,12 @@ export default async function AdminVendorsPage({
     orderBy: { createdAt: 'desc' }
   })
 
-  // Filter in component
+  // Filter in component. "Approved" covers both live states (APPROVED + ACTIVE)
+  // so ACTIVE vendors aren't stranded under "All" only.
   const filteredVendors = activeTab === 'All'
     ? vendors
+    : activeTab === 'Approved'
+    ? vendors.filter(v => isLiveVendorStatus(v.status))
     : vendors.filter(v => v.status === activeTab.toUpperCase())
 
   const total = filteredVendors.length
