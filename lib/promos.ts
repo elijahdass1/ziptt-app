@@ -1,8 +1,8 @@
 import prisma from './prisma'
 import { LIVE_VENDOR_STATUSES } from './vendorVisibility'
 
-// The two product-based homepage ad slots the admin controls.
-export const AD_PRODUCT_SLOTS = ['HERO_SPOTLIGHT', 'FEATURED'] as const
+// The product-based homepage ad slots the admin controls.
+export const AD_PRODUCT_SLOTS = ['TRENDING', 'HERO_SPOTLIGHT', 'FEATURED'] as const
 
 // Row shape the homepage/admin consume. Mirrors the Prisma `Promo` model but
 // declared explicitly so components don't need the generated type.
@@ -34,7 +34,7 @@ export const EMPTY_PROMOS: ActivePromos = { ticker: [], banner: null, hero: null
 // Valid slots the admin API accepts. HERO_SPOTLIGHT/FEATURED are the current
 // product-based ad slots; the TICKER/BANNER/HERO text slots are legacy but kept
 // accepted so any existing rows still validate.
-export const PROMO_SLOTS = ['HERO_SPOTLIGHT', 'FEATURED', 'TICKER', 'BANNER', 'HERO'] as const
+export const PROMO_SLOTS = ['TRENDING', 'HERO_SPOTLIGHT', 'FEATURED', 'TICKER', 'BANNER', 'HERO'] as const
 
 // Text columns an admin request may write. Kept here (not in the route file)
 // because Next.js route modules may only export HTTP handlers + config.
@@ -86,10 +86,10 @@ export async function getAdProducts() {
     include: { product: { include: AD_PRODUCT_INCLUDE } },
   })
   const pick = (slot: string) => rows.filter((r) => r.slot === slot).map((r) => r.product!).filter(Boolean)
-  return { heroSpotlight: pick('HERO_SPOTLIGHT'), featured: pick('FEATURED') }
+  return { trending: pick('TRENDING'), heroSpotlight: pick('HERO_SPOTLIGHT'), featured: pick('FEATURED') }
 }
 
-export const EMPTY_AD_PRODUCTS = { heroSpotlight: [] as any[], featured: [] as any[] }
+export const EMPTY_AD_PRODUCTS = { trending: [] as any[], heroSpotlight: [] as any[], featured: [] as any[] }
 
 export async function getActivePromos(): Promise<ActivePromos> {
   const rows = (await prisma.promo.findMany({

@@ -202,10 +202,14 @@ export default async function HomePage() {
   const band2 = categories.slice(4, 8)
   const band3 = categories.slice(8, 12)
 
+  // Trending rail ("Hot off the shelves"): admin-selected products if any, else
+  // the automatic soldCount-based set.
+  const trendingList = adProducts.trending.length > 0 ? adProducts.trending : trending
+
   // Hero spotlight: admin-selected products if any, else the top-5 trending.
   const spotlightItems = adProducts.heroSpotlight.length > 0
     ? adProducts.heroSpotlight.slice(0, 8)
-    : trending.slice(0, 5)
+    : trendingList.slice(0, 5)
 
   // Featured rail: admin-selected products if any, else the auto featured set.
   const featuredList = adProducts.featured.length > 0 ? adProducts.featured : featured
@@ -313,7 +317,7 @@ export default async function HomePage() {
 
       {/* TRENDING NOW rail — top sellers across the whole catalog,
           flagged with a pulsing red dot in the heading. */}
-      {trending.length > 0 && (
+      {trendingList.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-end justify-between mb-4">
             <div>
@@ -332,7 +336,7 @@ export default async function HomePage() {
           </div>
           <div className="overflow-x-auto scrollbar-thin -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 pb-2">
             <div className="flex gap-4 snap-x snap-mandatory">
-              {trending.map((p) => (
+              {trendingList.map((p) => (
                 <div key={p.id} className="snap-start shrink-0 w-[180px] sm:w-[200px] md:w-[220px]">
                   <ProductCard product={p} />
                 </div>

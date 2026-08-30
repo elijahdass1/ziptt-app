@@ -26,6 +26,11 @@ export type Promo = {
 // The homepage ad spaces the admin fills with products.
 const SECTIONS: { slot: string; label: string; desc: string }[] = [
   {
+    slot: 'TRENDING',
+    label: 'Trending Now',
+    desc: 'The "Hot off the shelves" rail near the top of the homepage. Empty = automatic (best sellers).',
+  },
+  {
     slot: 'HERO_SPOTLIGHT',
     label: 'Hero Spotlight',
     desc: 'The big rotating product card at the top of the homepage. Empty = automatic (top trending).',
