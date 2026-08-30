@@ -142,6 +142,12 @@ model Vendor {
   chargebackCount   Int       @default(0)
   bankName          String?
   bankAccountName   String?
+  // These three columns already exist in the live DB but were absent from this
+  // schema (drift). Declared here so `prisma db push` preserves them instead of
+  // dropping them (reviewCount holds real data). See app/(storefront)/store.
+  bio               String?
+  coverImage        String?
+  reviewCount       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
