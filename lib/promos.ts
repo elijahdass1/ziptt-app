@@ -1,4 +1,8 @@
 import prisma from './prisma'
+import { LIVE_VENDOR_STATUSES } from './vendorVisibility'
+
+// The two product-based homepage ad slots the admin controls.
+export const AD_PRODUCT_SLOTS = ['HERO_SPOTLIGHT', 'FEATURED'] as const
 
 // Row shape the homepage/admin consume. Mirrors the Prisma `Promo` model but
 // declared explicitly so components don't need the generated type.
@@ -27,11 +31,15 @@ export type ActivePromos = {
 
 export const EMPTY_PROMOS: ActivePromos = { ticker: [], banner: null, hero: null }
 
-export const PROMO_SLOTS = ['TICKER', 'BANNER', 'HERO'] as const
+// Valid slots the admin API accepts. HERO_SPOTLIGHT/FEATURED are the current
+// product-based ad slots; the TICKER/BANNER/HERO text slots are legacy but kept
+// accepted so any existing rows still validate.
+export const PROMO_SLOTS = ['HERO_SPOTLIGHT', 'FEATURED', 'TICKER', 'BANNER', 'HERO'] as const
 
 // Text columns an admin request may write. Kept here (not in the route file)
 // because Next.js route modules may only export HTTP handlers + config.
 const PROMO_TEXT_FIELDS = [
+  'productId',
   'eyebrow', 'title', 'titleAccent', 'subtitle', 'icon', 'accent',
   'ctaLabel', 'ctaHref', 'cta2Label', 'cta2Href',
 ] as const
@@ -57,6 +65,32 @@ export function sanitizePromo(body: Record<string, unknown>) {
 // Fetch the active promos grouped by homepage slot. Call inside safeQuery on the
 // homepage so a missing table (pre-`db push`) or DB blip falls back to
 // EMPTY_PROMOS and the page renders its hardcoded defaults.
+// The relations a homepage product card / hero spotlight needs.
+const AD_PRODUCT_INCLUDE = {
+  category: { select: { name: true, slug: true } },
+  vendor: { select: { storeName: true, slug: true } },
+} as const
+
+// Load the admin-selected products for the two product ad slots, in the admin's
+// chosen order. Filtered to purchasable products (ACTIVE + live vendor) so a
+// product that's picked and later hidden/suspended silently drops out of the ad.
+export async function getAdProducts() {
+  const rows = await prisma.promo.findMany({
+    where: {
+      active: true,
+      slot: { in: [...AD_PRODUCT_SLOTS] },
+      productId: { not: null },
+      product: { status: 'ACTIVE', vendor: { status: { in: LIVE_VENDOR_STATUSES } } },
+    },
+    orderBy: [{ sortOrder: 'asc' }, { createdAt: 'asc' }],
+    include: { product: { include: AD_PRODUCT_INCLUDE } },
+  })
+  const pick = (slot: string) => rows.filter((r) => r.slot === slot).map((r) => r.product!).filter(Boolean)
+  return { heroSpotlight: pick('HERO_SPOTLIGHT'), featured: pick('FEATURED') }
+}
+
+export const EMPTY_AD_PRODUCTS = { heroSpotlight: [] as any[], featured: [] as any[] }
+
 export async function getActivePromos(): Promise<ActivePromos> {
   const rows = (await prisma.promo.findMany({
     where: { active: true },

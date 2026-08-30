@@ -26,7 +26,7 @@ import { PromoTicker } from '@/components/storefront/PromoTicker'
 import { HeroSpotlight } from '@/components/storefront/HeroSpotlight'
 import { PromoBanner } from '@/components/storefront/PromoBanner'
 import { VendorMarquee } from '@/components/storefront/VendorMarquee'
-import { getActivePromos, EMPTY_PROMOS } from '@/lib/promos'
+import { getActivePromos, EMPTY_PROMOS, getAdProducts, EMPTY_AD_PRODUCTS } from '@/lib/promos'
 import { liveVendorProductWhere, liveVendorWhere } from '@/lib/vendorVisibility'
 import { formatTTD } from '@/lib/utils'
 
@@ -177,7 +177,7 @@ export default async function HomePage() {
   // Each fetch is wrapped so one failing query (or a DB blip) degrades that
   // section to empty rather than 500ing the whole homepage. Sections with no
   // data are already conditionally hidden below.
-  const [categories, trending, featured, deals, newArrivals, vendors, allVendors, digitalProducts, promos] =
+  const [categories, trending, featured, deals, newArrivals, vendors, allVendors, digitalProducts, promos, adProducts] =
     await Promise.all([
       safeQuery(getCategoriesWithSamples, [], 'home:categories'),
       safeQuery(getTrendingProducts, [], 'home:trending'),
@@ -192,6 +192,9 @@ export default async function HomePage() {
       // Admin-managed homepage ad content (ticker / hero / mid-page banner).
       // Falls back to EMPTY_PROMOS → hardcoded defaults if the table is missing.
       safeQuery(getActivePromos, EMPTY_PROMOS, 'home:promos'),
+      // Admin-selected products for the two product ad slots (hero spotlight +
+      // featured rail). Empty → fall back to the automatic selection below.
+      safeQuery(getAdProducts, EMPTY_AD_PRODUCTS, 'home:adProducts'),
     ])
   const heroPromo = promos.hero
 
@@ -199,8 +202,13 @@ export default async function HomePage() {
   const band2 = categories.slice(4, 8)
   const band3 = categories.slice(8, 12)
 
-  // Top 5 trending products feed the auto-rotating spotlight tile.
-  const spotlightItems = trending.slice(0, 5)
+  // Hero spotlight: admin-selected products if any, else the top-5 trending.
+  const spotlightItems = adProducts.heroSpotlight.length > 0
+    ? adProducts.heroSpotlight.slice(0, 8)
+    : trending.slice(0, 5)
+
+  // Featured rail: admin-selected products if any, else the auto featured set.
+  const featuredList = adProducts.featured.length > 0 ? adProducts.featured : featured
 
   return (
     <div className="space-y-10 md:space-y-14 pb-16">
@@ -368,7 +376,7 @@ export default async function HomePage() {
         title="Featured Products"
         subtitle="Handpicked by our team"
         href="/products?sort=featured"
-        products={featured}
+        products={featuredList}
       />
 
       {/* MID-PAGE PROMO BANNER — admin-managed (slot=BANNER), falls back to the

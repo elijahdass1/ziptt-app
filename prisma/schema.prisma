@@ -201,6 +201,7 @@ model Product {
   orderItems OrderItem[]
   reviews    Review[]
   cartItems  CartItem[]
+  adPromos   Promo[]
 }
 
 model Order {
@@ -441,30 +442,33 @@ model Message {
   sender       User         @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
 }
 
-// Admin-managed homepage advertising / promotional content. One flexible row
-// shape serves every ad slot on the homepage, keyed by `slot`:
-//   - TICKER : each active row is one scrolling line (icon + title)
-//   - BANNER : the mid-page poster (eyebrow, title, subtitle, up to 2 CTAs, accent)
-//   - HERO   : the hero block (eyebrow, title + titleAccent second line, subtitle, CTAs)
-// The homepage falls back to hardcoded defaults when a slot has no active row,
-// so an empty table (or a pre-`db push` deploy) renders exactly as before.
+// Admin-managed homepage ad slots. Each active row places one product into a
+// homepage slot (keyed by `slot`):
+//   - HERO_SPOTLIGHT : products cycled in the hero's rotating spotlight card
+//   - FEATURED       : products shown in the "Featured Products" rail
+// The homepage falls back to its automatic selection when a slot has no active
+// rows. `productId` is what the admin picks; the legacy text columns
+// (eyebrow/title/…) are retained, nullable, from the earlier text-promo design.
 model Promo {
   id          String   @id @default(cuid())
-  slot        String   // 'TICKER' | 'BANNER' | 'HERO'
+  slot        String   // 'HERO_SPOTLIGHT' | 'FEATURED'
   active      Boolean  @default(true)
   sortOrder   Int      @default(0)
+  productId   String?
   eyebrow     String?
   title       String?
-  titleAccent String?  // second headline line, rendered with the gold shimmer (HERO)
+  titleAccent String?
   subtitle    String?
-  icon        String?  // lucide icon name (TICKER line / eyebrow) — see lib/promoIcons
-  accent      String?  // hex color for the eyebrow / accents
+  icon        String?
+  accent      String?
   ctaLabel    String?
   ctaHref     String?
   cta2Label   String?
   cta2Href    String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  product Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@index([slot, active])
 }

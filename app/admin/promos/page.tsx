@@ -9,11 +9,15 @@ export default async function AdminPromosPage() {
   const promos = (await safeQuery(
     () =>
       prisma.promo.findMany({
+        where: { slot: { in: ['HERO_SPOTLIGHT', 'FEATURED'] } },
         orderBy: [{ slot: 'asc' }, { sortOrder: 'asc' }, { createdAt: 'asc' }],
+        include: {
+          product: { select: { id: true, name: true, slug: true, images: true, price: true } },
+        },
       }),
     [],
     'admin:promos'
-  )) as Promo[]
+  )) as unknown as Promo[]
 
   return (
     <div className="bg-[var(--bg-primary)] min-h-full">
@@ -22,8 +26,8 @@ export default async function AdminPromosPage() {
           Homepage Ads
         </h1>
         <p className="text-sm text-[#888] mt-1">
-          Control the promotional content on the homepage — the hero, the mid-page banner, and the scrolling ticker.
-          Each slot falls back to the built-in default when nothing here is active.
+          Pick the products shown in the homepage ad spaces. Search and add products to each section; leave a section
+          empty to fall back to the automatic selection.
         </p>
       </div>
       <PromoManager initialPromos={promos} />

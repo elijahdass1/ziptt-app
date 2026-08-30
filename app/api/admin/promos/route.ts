@@ -10,6 +10,9 @@ export async function GET() {
 
   const promos = await prisma.promo.findMany({
     orderBy: [{ slot: 'asc' }, { sortOrder: 'asc' }, { createdAt: 'asc' }],
+    include: {
+      product: { select: { id: true, name: true, slug: true, images: true, price: true } },
+    },
   })
   return NextResponse.json(promos)
 }
