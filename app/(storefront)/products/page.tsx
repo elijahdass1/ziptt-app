@@ -6,6 +6,7 @@ import { ProductGrid } from '@/components/storefront/ProductGrid'
 import prisma from '@/lib/prisma'
 import { safeQuery } from '@/lib/safeQuery'
 import { LIVE_VENDOR_STATUSES, liveVendorWhere } from '@/lib/vendorVisibility'
+import { categorySlugsFor } from '@/lib/categories'
 
 interface PageProps {
   searchParams: { q?: string; category?: string; vendor?: string; minPrice?: string; maxPrice?: string; sort?: string; page?: string }
@@ -31,7 +32,7 @@ async function getProducts(searchParams: PageProps['searchParams']) {
         { tags: { contains: q, mode: 'insensitive' } },
       ],
     }),
-    ...(category && { category: { slug: category } }),
+    ...(category && { category: { slug: { in: categorySlugsFor(category) } } }),
     // The vendor must be live (excludes suspended/removed), and — if the page is
     // filtered to one vendor — match that slug. Combined into a single `vendor`
     // key so the two conditions don't overwrite each other.
