@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 640" width="1600" height="640" preserveAspectRatio="xMidYMid slice" role="img" aria-label="zip.tt marketplace">
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0A0A0F"/>
+      <stop offset="0.55" stop-color="#12100A"/>
+      <stop offset="1" stop-color="#1B1608"/>
+    </linearGradient>
+    <radialGradient id="glowGold" cx="0.72" cy="0.30" r="0.55">
+      <stop offset="0" stop-color="#C9A84C" stop-opacity="0.55"/>
+      <stop offset="0.5" stop-color="#C9A84C" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#C9A84C" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowRed" cx="0.5" cy="0.95" r="0.5">
+      <stop offset="0" stop-color="#D62828" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#D62828" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#C9A84C" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#C9A84C" stop-opacity="0.04"/>
+    </linearGradient>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="26"/>
+    </filter>
+  </defs>
+
+  <!-- base + glows -->
+  <rect width="1600" height="640" fill="url(#base)"/>
+  <rect width="1600" height="640" fill="url(#glowGold)"/>
+  <rect width="1600" height="640" fill="url(#glowRed)"/>
+
+  <!-- diagonal accent stripes (very subtle) -->
+  <g stroke="#C9A84C" stroke-opacity="0.06" stroke-width="26">
+    <line x1="1100" y1="-100" x2="1750" y2="550"/>
+    <line x1="1200" y1="-100" x2="1850" y2="550"/>
+    <line x1="1300" y1="-100" x2="1950" y2="550"/>
+  </g>
+
+  <!-- floating marketplace tiles, clustered centre-right (the bare gap) -->
+  <g>
+    <!-- each tile: rounded square with a gold outline + a product blob + price pill -->
+    <g transform="translate(690 250) rotate(-8)" opacity="0.9">
+      <rect x="-70" y="-70" width="140" height="140" rx="20" fill="url(#tile)" stroke="#C9A84C" stroke-opacity="0.55" stroke-width="1.5"/>
+      <circle cx="0" cy="-12" r="34" fill="#C9A84C" fill-opacity="0.35"/>
+      <rect x="-42" y="40" width="60" height="16" rx="8" fill="#C9A84C" fill-opacity="0.7"/>
+    </g>
+    <g transform="translate(900 180) rotate(6)" opacity="0.95">
+      <rect x="-58" y="-58" width="116" height="116" rx="18" fill="url(#tile)" stroke="#C9A84C" stroke-opacity="0.6" stroke-width="1.5"/>
+      <circle cx="0" cy="-8" r="28" fill="#F0C040" fill-opacity="0.35"/>
+      <rect x="-34" y="34" width="48" height="14" rx="7" fill="#C9A84C" fill-opacity="0.7"/>
+    </g>
+    <g transform="translate(1080 300) rotate(-5)" opacity="0.85">
+      <rect x="-80" y="-80" width="160" height="160" rx="22" fill="url(#tile)" stroke="#C9A84C" stroke-opacity="0.5" stroke-width="1.5"/>
+      <circle cx="0" cy="-14" r="40" fill="#C9A84C" fill-opacity="0.3"/>
+      <rect x="-48" y="46" width="70" height="18" rx="9" fill="#D62828" fill-opacity="0.55"/>
+    </g>
+    <g transform="translate(820 400) rotate(10)" opacity="0.8">
+      <rect x="-50" y="-50" width="100" height="100" rx="16" fill="url(#tile)" stroke="#C9A84C" stroke-opacity="0.5" stroke-width="1.5"/>
+      <circle cx="0" cy="-6" r="24" fill="#C9A84C" fill-opacity="0.3"/>
+      <rect x="-30" y="30" width="42" height="13" rx="6" fill="#C9A84C" fill-opacity="0.6"/>
+    </g>
+    <g transform="translate(1260 200) rotate(4)" opacity="0.75">
+      <rect x="-46" y="-46" width="92" height="92" rx="15" fill="url(#tile)" stroke="#C9A84C" stroke-opacity="0.45" stroke-width="1.5"/>
+      <circle cx="0" cy="-6" r="22" fill="#F0C040" fill-opacity="0.28"/>
+      <rect x="-28" y="28" width="40" height="12" rx="6" fill="#C9A84C" fill-opacity="0.6"/>
+    </g>
+    <g transform="translate(1230 430) rotate(-9)" opacity="0.7">
+      <rect x="-40" y="-40" width="80" height="80" rx="14" fill="url(#tile)" stroke="#C9A84C" stroke-opacity="0.4" stroke-width="1.5"/>
+      <circle cx="0" cy="-4" r="20" fill="#C9A84C" fill-opacity="0.28"/>
+    </g>
+  </g>
+
+  <!-- sparkles -->
+  <g fill="#F0C040">
+    <circle cx="640" cy="140" r="2.5" opacity="0.8"/>
+    <circle cx="1010" cy="90"  r="2"   opacity="0.7"/>
+    <circle cx="1180" cy="130" r="3"   opacity="0.85"/>
+    <circle cx="760" cy="520"  r="2.5" opacity="0.7"/>
+    <circle cx="1360" cy="330" r="2"   opacity="0.7"/>
+    <circle cx="980" cy="470"  r="2.5" opacity="0.75"/>
+    <circle cx="1440" cy="150" r="2"   opacity="0.6"/>
+    <circle cx="560" cy="330"  r="2"   opacity="0.5"/>
+  </g>
+</svg>
