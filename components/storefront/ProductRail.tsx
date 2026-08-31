@@ -16,14 +16,24 @@ interface Props {
   subtitle?: string
   href?: string
   products: Product[]
+  // Optional eyebrow label above the title (e.g. "FEATURED") with a pulsing
+  // dot, so curated rails read as premium showcase spaces.
+  eyebrow?: string
+  eyebrowColor?: string
 }
 
-export function ProductRail({ title, subtitle, href, products }: Props) {
+export function ProductRail({ title, subtitle, href, products, eyebrow, eyebrowColor = '#C9A84C' }: Props) {
   if (products.length === 0) return null
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex items-end justify-between mb-4">
         <div>
+          {eyebrow && (
+            <div className="inline-flex items-center gap-2 mb-1">
+              <span className="h-2 w-2 rounded-full ziptt-pulse-gold" style={{ background: eyebrowColor }} />
+              <span className="text-[11px] font-black tracking-[2.5px]" style={{ color: eyebrowColor }}>{eyebrow}</span>
+            </div>
+          )}
           <h2 className="text-xl md:text-2xl font-bold text-[var(--text-primary)]">{title}</h2>
           {subtitle && <p className="text-sm text-[var(--text-secondary)] mt-0.5">{subtitle}</p>}
         </div>

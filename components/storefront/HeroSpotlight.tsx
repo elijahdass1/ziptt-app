@@ -54,8 +54,8 @@ export function HeroSpotlight({ items, intervalMs = 4000 }: Props) {
       <div className="absolute -inset-1 rounded-2xl ziptt-conic-ring opacity-60 blur-md group-hover:opacity-90 transition-opacity" />
       <div className="relative bg-[var(--bg-secondary)] rounded-2xl overflow-hidden border border-[#C9A84C]/30">
         <div className="absolute top-3 left-3 z-20 inline-flex items-center gap-1.5 bg-[var(--bg-primary)]/85 backdrop-blur px-2.5 py-1 rounded-full border border-[#C9A84C]/30">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#D62828] ziptt-pulse-red" />
-          <span className="text-[10px] font-bold tracking-wide text-[var(--text-primary)]">TRENDING</span>
+          <span className="h-1.5 w-1.5 rounded-full bg-[#C9A84C] ziptt-pulse-gold" />
+          <span className="text-[10px] font-bold tracking-wide text-[var(--text-primary)]">SPOTLIGHT</span>
         </div>
 
         {/* Stack each item absolute and crossfade between them. The

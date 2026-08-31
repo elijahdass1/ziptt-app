@@ -23,24 +23,111 @@ export type Promo = {
   product: PromoProduct | null
 }
 
-// The homepage ad spaces the admin fills with products.
-const SECTIONS: { slot: string; label: string; desc: string }[] = [
-  {
-    slot: 'TRENDING',
-    label: 'Trending Now',
-    desc: 'The "Hot off the shelves" rail near the top of the homepage. Empty = automatic (best sellers).',
-  },
+// The homepage ad spaces the admin fills with products. Ordered top-to-bottom
+// as they appear on the homepage, numbered + colour-coded to match the map.
+const SECTIONS: { slot: string; num: number; color: string; label: string; where: string; empty: string }[] = [
   {
     slot: 'HERO_SPOTLIGHT',
+    num: 1,
+    color: '#C9A84C',
     label: 'Hero Spotlight',
-    desc: 'The big rotating product card at the top of the homepage. Empty = automatic (top trending).',
+    where: 'The big rotating product card at the top-right of the homepage.',
+    empty: 'top trending products',
+  },
+  {
+    slot: 'TRENDING',
+    num: 2,
+    color: '#D62828',
+    label: 'Trending Now',
+    where: 'The “Trending Now — Hot off the shelves” row just under the hero.',
+    empty: 'the current best sellers',
   },
   {
     slot: 'FEATURED',
+    num: 3,
+    color: '#4A9EFF',
     label: 'Featured Products',
-    desc: 'The "Featured Products" rail. Empty = automatic (products flagged as featured).',
+    where: 'The “Featured Products” row further down the page.',
+    empty: 'products flagged as featured',
   },
 ]
+
+// A small stylised wireframe of the homepage, with each editable ad zone
+// highlighted + numbered so it's obvious what each section below controls.
+function HomepageMap() {
+  const zone = (n: number, color: string, label: string) => (
+    <div className="flex items-center gap-1.5">
+      <span
+        className="inline-flex items-center justify-center h-4 w-4 rounded-full text-[10px] font-bold text-black"
+        style={{ background: color }}
+      >
+        {n}
+      </span>
+      <span className="text-[11px] text-[var(--text-secondary)]">{label}</span>
+    </div>
+  )
+  const badge = (n: number, color: string) => (
+    <span
+      className="absolute -top-1.5 -left-1.5 h-4 w-4 rounded-full text-[10px] font-bold text-black flex items-center justify-center shadow"
+      style={{ background: color }}
+    >
+      {n}
+    </span>
+  )
+  return (
+    <div className="bg-[var(--bg-secondary)] border border-[var(--bg-card)] rounded-xl p-5 mb-6">
+      <p className="text-sm font-medium text-[var(--text-primary)] mb-3">Where each section shows on your homepage</p>
+      <div className="flex flex-col lg:flex-row gap-5">
+        {/* Wireframe */}
+        <div className="w-full lg:w-[340px] shrink-0 rounded-lg border border-[var(--bg-card)] bg-[var(--bg-primary)] p-3 space-y-2">
+          {/* nav */}
+          <div className="h-3 rounded bg-[var(--bg-card)]" />
+          {/* hero row */}
+          <div className="flex gap-2">
+            <div className="flex-1 space-y-1.5 py-1">
+              <div className="h-4 w-3/4 rounded bg-[var(--bg-card)]" />
+              <div className="h-2 w-1/2 rounded bg-[var(--bg-card)]" />
+              <div className="h-3 w-16 rounded-full" style={{ background: '#C9A84C' }} />
+            </div>
+            <div className="relative h-16 w-14 rounded-md" style={{ background: '#C9A84C', opacity: 0.85 }}>
+              {badge(1, '#C9A84C')}
+            </div>
+          </div>
+          {/* trending row */}
+          <div className="relative rounded-md p-1.5" style={{ background: 'rgba(214,40,40,0.14)', border: '1px solid rgba(214,40,40,0.4)' }}>
+            {badge(2, '#D62828')}
+            <div className="flex gap-1.5 pl-1">
+              {[0, 1, 2, 3].map((i) => <div key={i} className="h-9 flex-1 rounded bg-[var(--bg-card)]" />)}
+            </div>
+          </div>
+          {/* category tiles (not editable) */}
+          <div className="flex gap-1.5">
+            {[0, 1, 2, 3].map((i) => <div key={i} className="h-6 flex-1 rounded bg-[var(--bg-card)] opacity-50" />)}
+          </div>
+          {/* featured row */}
+          <div className="relative rounded-md p-1.5" style={{ background: 'rgba(74,158,255,0.12)', border: '1px solid rgba(74,158,255,0.4)' }}>
+            {badge(3, '#4A9EFF')}
+            <div className="flex gap-1.5 pl-1">
+              {[0, 1, 2, 3].map((i) => <div key={i} className="h-9 flex-1 rounded bg-[var(--bg-card)]" />)}
+            </div>
+          </div>
+        </div>
+        {/* Legend */}
+        <div className="flex-1 space-y-2.5 pt-1">
+          {SECTIONS.map((s) => (
+            <div key={s.slot}>
+              {zone(s.num, s.color, s.label)}
+              <p className="text-[11px] text-[#777] ml-6 mt-0.5">{s.where}</p>
+            </div>
+          ))}
+          <p className="text-[11px] text-[#666] pt-1">
+            Leave a section empty and the homepage automatically fills it — nothing looks broken.
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export function PromoManager({ initialPromos }: { initialPromos: Promo[] }) {
   const router = useRouter()
@@ -120,21 +207,37 @@ export function PromoManager({ initialPromos }: { initialPromos: Promo[] }) {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
+      <HomepageMap />
       {SECTIONS.map((section) => {
         const list = forSlot(section.slot)
         return (
-          <section key={section.slot} className="bg-[var(--bg-secondary)] border border-[var(--bg-card)] rounded-xl p-5">
+          <section
+            key={section.slot}
+            className="bg-[var(--bg-secondary)] border border-[var(--bg-card)] rounded-xl p-5"
+            style={{ borderLeft: `3px solid ${section.color}` }}
+          >
             <div className="mb-4">
-              <h2 className="text-lg font-semibold text-[var(--text-primary)]">{section.label}</h2>
-              <p className="text-xs text-[#888] mt-0.5 max-w-xl">{section.desc}</p>
+              <h2 className="text-lg font-semibold text-[var(--text-primary)] flex items-center gap-2">
+                <span
+                  className="inline-flex items-center justify-center h-5 w-5 rounded-full text-[11px] font-bold text-black"
+                  style={{ background: section.color }}
+                >
+                  {section.num}
+                </span>
+                {section.label}
+              </h2>
+              <p className="text-xs text-[#888] mt-1 max-w-xl">
+                {section.where}{' '}
+                <span className="text-[#666]">Leave empty to auto-fill with {section.empty}.</span>
+              </p>
             </div>
 
             <ProductSearch slot={section.slot} onPick={(p) => addProduct(section.slot, p)} disabled={busy} />
 
             {list.length === 0 ? (
               <p className="text-sm text-[#555] mt-4">
-                No products selected — the homepage uses its automatic selection for this section.
+                No products selected — showing {section.empty} automatically.
               </p>
             ) : (
               <ul className="mt-4 space-y-2">

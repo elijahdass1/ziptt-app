@@ -377,6 +377,7 @@ export default async function HomePage() {
 
       {/* PRODUCT RAIL — Featured */}
       <ProductRail
+        eyebrow="FEATURED"
         title="Featured Products"
         subtitle="Handpicked by our team"
         href="/products?sort=featured"
