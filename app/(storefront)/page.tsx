@@ -15,7 +15,7 @@ import Link from 'next/link'
 import {
   ArrowRight, Star, Store, MapPin,
   Zap, Home, Sparkles, Flame, Gamepad2, Wine,
-  TrendingUp, Tag, Crown, type LucideIcon,
+  TrendingUp, Tag, Crown, Truck, Wallet, ShieldCheck, type LucideIcon,
 } from 'lucide-react'
 import prisma from '@/lib/prisma'
 import { safeQuery } from '@/lib/safeQuery'
@@ -198,9 +198,8 @@ export default async function HomePage() {
     ])
   const heroPromo = promos.hero
 
-  const band1 = categories.slice(0, 4)
-  const band2 = categories.slice(4, 8)
-  const band3 = categories.slice(8, 12)
+  // One consolidated category grid (was three scattered bands) — Amazon-style.
+  const categoryTiles = categories.slice(0, 8)
 
   // Trending rail ("Hot off the shelves"): admin-selected products if any, else
   // the automatic soldCount-based set.
@@ -254,7 +253,7 @@ export default async function HomePage() {
                 {heroPromo?.eyebrow ?? "Trinidad & Tobago's #1 Marketplace"}
               </div>
               {heroPromo?.title ? (
-                <h1 className="text-4xl md:text-6xl font-black leading-[1.05] text-[var(--text-primary)]">
+                <h1 className="text-5xl md:text-7xl font-black leading-[1.02] tracking-tight text-[var(--text-primary)]">
                   {heroPromo.title}
                   {heroPromo.titleAccent && (
                     <>
@@ -264,7 +263,7 @@ export default async function HomePage() {
                   )}
                 </h1>
               ) : (
-                <h1 className="text-4xl md:text-6xl font-black leading-[1.05] text-[var(--text-primary)]">
+                <h1 className="text-5xl md:text-7xl font-black leading-[1.02] tracking-tight text-[var(--text-primary)]">
                   Shop Local.<br />
                   <span className="gold-shimmer">Ship Fast.</span><br />
                   Live Good.
@@ -315,6 +314,32 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* TRUST BAR — value props strip directly under the hero (Amazon-style).
+          Gives the page an immediate, confident "why shop here" beat. */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {[
+            { icon: Truck, title: 'Free delivery', sub: 'On orders over TTD $500', color: '#4CAF82' },
+            { icon: Wallet, title: 'Cash on Delivery', sub: 'Pay when it arrives', color: '#C9A84C' },
+            { icon: Store, title: '100% local vendors', sub: 'Trinbagonian sellers', color: '#4A9EFF' },
+            { icon: ShieldCheck, title: 'Buyer protection', sub: 'Shop with confidence', color: '#D62828' },
+          ].map((v) => {
+            const Icon = v.icon
+            return (
+              <div key={v.title} className="flex items-center gap-3 bg-[var(--bg-secondary)] border border-[#C9A84C]/15 rounded-xl px-4 py-3 ziptt-lift">
+                <span className="h-9 w-9 rounded-full flex items-center justify-center shrink-0" style={{ background: `${v.color}1A`, color: v.color }}>
+                  <Icon className="h-4 w-4" />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-sm font-bold text-[var(--text-primary)] leading-tight truncate">{v.title}</p>
+                  <p className="text-[11px] text-[var(--text-secondary)] truncate">{v.sub}</p>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </section>
+
       {/* TRENDING NOW rail — top sellers across the whole catalog,
           flagged with a pulsing red dot in the heading. */}
       {trendingList.length > 0 && (
@@ -348,8 +373,8 @@ export default async function HomePage() {
 
       <div className="ziptt-divider max-w-5xl mx-auto" />
 
-      {/* CATEGORY QUAD CARDS — band 1 with category-coloured top accents */}
-      {band1.length > 0 && (
+      {/* SHOP BY CATEGORY — one consolidated Amazon-style tile grid (up to 8). */}
+      {categoryTiles.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-end justify-between mb-4">
             <h2 className="text-xl md:text-2xl font-bold text-[var(--text-primary)] flex items-center gap-2">
@@ -361,7 +386,7 @@ export default async function HomePage() {
             </Link>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-            {band1.map((c) => (
+            {categoryTiles.map((c) => (
               <CategoryQuadCard
                 key={c.id}
                 title={CATEGORY_LABEL[c.slug] ?? c.name}
@@ -388,24 +413,6 @@ export default async function HomePage() {
           hardcoded "Carnival Season" poster when none is active. */}
       <PromoBanner promo={promos.banner} />
 
-      {/* CATEGORY QUAD CARDS — band 2 */}
-      {band2.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-            {band2.map((c) => (
-              <CategoryQuadCard
-                key={c.id}
-                title={CATEGORY_LABEL[c.slug] ?? c.name}
-                href={`/products?category=${c.slug}`}
-                cta="See more"
-                products={c.products}
-                accent={CATEGORY_COLOR[c.slug]}
-              />
-            ))}
-          </div>
-        </section>
-      )}
-
       {/* DEALS rail with savings eyebrow */}
       {deals.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -430,24 +437,6 @@ export default async function HomePage() {
                 </div>
               ))}
             </div>
-          </div>
-        </section>
-      )}
-
-      {/* CATEGORY QUAD CARDS — band 3 */}
-      {band3.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-            {band3.map((c) => (
-              <CategoryQuadCard
-                key={c.id}
-                title={CATEGORY_LABEL[c.slug] ?? c.name}
-                href={`/products?category=${c.slug}`}
-                cta="Browse"
-                products={c.products}
-                accent={CATEGORY_COLOR[c.slug]}
-              />
-            ))}
           </div>
         </section>
       )}
