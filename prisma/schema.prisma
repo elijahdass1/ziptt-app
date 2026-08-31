@@ -455,6 +455,7 @@ model Promo {
   active      Boolean  @default(true)
   sortOrder   Int      @default(0)
   productId   String?
+  imageUrl    String?  // background/ad image (used by the HERO_BG slot)
   eyebrow     String?
   title       String?
   titleAccent String?

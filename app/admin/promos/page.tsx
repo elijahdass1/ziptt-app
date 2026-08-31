@@ -9,7 +9,7 @@ export default async function AdminPromosPage() {
   const promos = (await safeQuery(
     () =>
       prisma.promo.findMany({
-        where: { slot: { in: ['TRENDING', 'HERO_SPOTLIGHT', 'FEATURED'] } },
+        where: { slot: { in: ['TRENDING', 'HERO_SPOTLIGHT', 'FEATURED', 'HERO_BG'] } },
         orderBy: [{ slot: 'asc' }, { sortOrder: 'asc' }, { createdAt: 'asc' }],
         include: {
           product: { select: { id: true, name: true, slug: true, images: true, price: true } },

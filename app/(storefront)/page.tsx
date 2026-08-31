@@ -26,7 +26,7 @@ import { PromoTicker } from '@/components/storefront/PromoTicker'
 import { HeroSpotlight } from '@/components/storefront/HeroSpotlight'
 import { PromoBanner } from '@/components/storefront/PromoBanner'
 import { VendorMarquee } from '@/components/storefront/VendorMarquee'
-import { getActivePromos, EMPTY_PROMOS, getAdProducts, EMPTY_AD_PRODUCTS } from '@/lib/promos'
+import { getActivePromos, EMPTY_PROMOS, getAdProducts, EMPTY_AD_PRODUCTS, getHeroBackground } from '@/lib/promos'
 import { liveVendorProductWhere, liveVendorWhere } from '@/lib/vendorVisibility'
 import { formatTTD } from '@/lib/utils'
 
@@ -177,7 +177,7 @@ export default async function HomePage() {
   // Each fetch is wrapped so one failing query (or a DB blip) degrades that
   // section to empty rather than 500ing the whole homepage. Sections with no
   // data are already conditionally hidden below.
-  const [categories, trending, featured, deals, newArrivals, vendors, allVendors, digitalProducts, promos, adProducts] =
+  const [categories, trending, featured, deals, newArrivals, vendors, allVendors, digitalProducts, promos, adProducts, heroBg] =
     await Promise.all([
       safeQuery(getCategoriesWithSamples, [], 'home:categories'),
       safeQuery(getTrendingProducts, [], 'home:trending'),
@@ -195,8 +195,13 @@ export default async function HomePage() {
       // Admin-selected products for the two product ad slots (hero spotlight +
       // featured rail). Empty → fall back to the automatic selection below.
       safeQuery(getAdProducts, EMPTY_AD_PRODUCTS, 'home:adProducts'),
+      // Admin-set hero background image (slot HERO_BG), or null.
+      safeQuery(getHeroBackground, null, 'home:heroBg'),
     ])
   const heroPromo = promos.hero
+  // Over a background image the dark scrim needs light text (both site themes).
+  const heroText = heroBg ? 'text-white' : 'text-[var(--text-primary)]'
+  const heroSub = heroBg ? 'text-white/85' : 'text-[var(--text-secondary)]'
 
   // One consolidated category grid (was three scattered bands) — Amazon-style.
   const categoryTiles = categories.slice(0, 8)
@@ -223,6 +228,18 @@ export default async function HomePage() {
           field of twinkling sparkles to make the dark background feel
           alive instead of flat. */}
       <section className="relative bg-gradient-to-br from-[var(--bg-primary)] via-[var(--bg-secondary)] to-[var(--bg-primary)] border-b border-[#C9A84C]/15 overflow-hidden -mt-10">
+        {/* Admin-set hero background ad image (slot HERO_BG). A left-to-right
+            scrim keeps the headline/CTA side readable while the image shows
+            through behind the spotlight card on the right. */}
+        {heroBg && (
+          <div className="absolute inset-0 z-0" aria-hidden="true">
+            <img src={heroBg} alt="" className="w-full h-full object-cover" />
+            {/* Dark left-to-right scrim so the headline/CTA stay legible over any
+                image while the picture shows through on the right. */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/15" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent" />
+          </div>
+        )}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-1/2 w-[700px] h-[400px] bg-[#C9A84C]/8 rounded-full blur-3xl ziptt-drift" />
           <div className="absolute bottom-0 left-1/4 w-[400px] h-[300px] bg-[#D62828]/6 rounded-full blur-3xl ziptt-drift" style={{ animationDelay: '-9s' }} />
@@ -253,7 +270,7 @@ export default async function HomePage() {
                 {heroPromo?.eyebrow ?? "Trinidad & Tobago's #1 Marketplace"}
               </div>
               {heroPromo?.title ? (
-                <h1 className="text-5xl md:text-7xl font-black leading-[1.02] tracking-tight text-[var(--text-primary)]">
+                <h1 className={`text-5xl md:text-7xl font-black leading-[1.02] tracking-tight ${heroText}`}>
                   {heroPromo.title}
                   {heroPromo.titleAccent && (
                     <>
@@ -263,13 +280,13 @@ export default async function HomePage() {
                   )}
                 </h1>
               ) : (
-                <h1 className="text-5xl md:text-7xl font-black leading-[1.02] tracking-tight text-[var(--text-primary)]">
+                <h1 className={`text-5xl md:text-7xl font-black leading-[1.02] tracking-tight ${heroText}`}>
                   Shop Local.<br />
                   <span className="gold-shimmer">Ship Fast.</span><br />
                   Live Good.
                 </h1>
               )}
-              <p className="text-base text-[var(--text-secondary)] leading-relaxed max-w-lg">
+              <p className={`text-base leading-relaxed max-w-lg ${heroSub}`}>
                 {heroPromo?.subtitle ??
                   'Thousands of products from local vendors — shadow beni to Samsung phones. Free delivery on orders over TTD $500.'}
               </p>

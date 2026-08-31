@@ -34,12 +34,12 @@ export const EMPTY_PROMOS: ActivePromos = { ticker: [], banner: null, hero: null
 // Valid slots the admin API accepts. HERO_SPOTLIGHT/FEATURED are the current
 // product-based ad slots; the TICKER/BANNER/HERO text slots are legacy but kept
 // accepted so any existing rows still validate.
-export const PROMO_SLOTS = ['TRENDING', 'HERO_SPOTLIGHT', 'FEATURED', 'TICKER', 'BANNER', 'HERO'] as const
+export const PROMO_SLOTS = ['TRENDING', 'HERO_SPOTLIGHT', 'FEATURED', 'HERO_BG', 'TICKER', 'BANNER', 'HERO'] as const
 
 // Text columns an admin request may write. Kept here (not in the route file)
 // because Next.js route modules may only export HTTP handlers + config.
 const PROMO_TEXT_FIELDS = [
-  'productId',
+  'productId', 'imageUrl',
   'eyebrow', 'title', 'titleAccent', 'subtitle', 'icon', 'accent',
   'ctaLabel', 'ctaHref', 'cta2Label', 'cta2Href',
 ] as const
@@ -90,6 +90,16 @@ export async function getAdProducts() {
 }
 
 export const EMPTY_AD_PRODUCTS = { trending: [] as any[], heroSpotlight: [] as any[], featured: [] as any[] }
+
+// The admin-set background/ad image for the hero (slot HERO_BG), or null.
+export async function getHeroBackground(): Promise<string | null> {
+  const row = await prisma.promo.findFirst({
+    where: { slot: 'HERO_BG', active: true, imageUrl: { not: null } },
+    orderBy: [{ sortOrder: 'asc' }, { createdAt: 'asc' }],
+    select: { imageUrl: true },
+  })
+  return row?.imageUrl ?? null
+}
 
 export async function getActivePromos(): Promise<ActivePromos> {
   const rows = (await prisma.promo.findMany({

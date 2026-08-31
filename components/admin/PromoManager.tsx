@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { toast } from '@/components/ui/use-toast'
 import { firstImage } from '@/lib/parseImages'
 import { formatTTD } from '@/lib/utils'
-import { Search, Trash2, Loader2, ChevronUp, ChevronDown, Plus } from 'lucide-react'
+import { Search, Trash2, Loader2, ChevronUp, ChevronDown, Plus, Save, Image as ImageIcon } from 'lucide-react'
 
 export type PromoProduct = {
   id: string
@@ -20,6 +20,7 @@ export type Promo = {
   active: boolean
   sortOrder: number
   productId: string | null
+  imageUrl: string | null
   product: PromoProduct | null
 }
 
@@ -114,6 +115,15 @@ function HomepageMap() {
         </div>
         {/* Legend */}
         <div className="flex-1 space-y-2.5 pt-1">
+          <div>
+            <div className="flex items-center gap-1.5">
+              <span className="inline-flex items-center justify-center h-4 w-4 rounded-full" style={{ background: '#7C5CFF' }}>
+                <ImageIcon className="h-2.5 w-2.5 text-white" />
+              </span>
+              <span className="text-[11px] text-[var(--text-secondary)]">Hero Background</span>
+            </div>
+            <p className="text-[11px] text-[#777] ml-6 mt-0.5">A full-width banner image behind the whole hero.</p>
+          </div>
           {SECTIONS.map((s) => (
             <div key={s.slot}>
               {zone(s.num, s.color, s.label)}
@@ -126,6 +136,95 @@ function HomepageMap() {
         </div>
       </div>
     </div>
+  )
+}
+
+// Editor for the hero background image (slot HERO_BG). One image; paste a URL,
+// preview it, save or remove. Distinct from the product-picker sections.
+function HeroBackgroundEditor({ initial }: { initial: Promo | null }) {
+  const router = useRouter()
+  const [url, setUrl] = useState(initial?.imageUrl ?? '')
+  const [rowId, setRowId] = useState<string | null>(initial?.id ?? null)
+  const [saving, setSaving] = useState(false)
+
+  async function save() {
+    const trimmed = url.trim()
+    if (!/^https?:\/\//i.test(trimmed)) {
+      toast({ title: 'Enter an image URL starting with http(s)://', variant: 'destructive' })
+      return
+    }
+    setSaving(true)
+    try {
+      const res = rowId
+        ? await fetch(`/api/admin/promos/${rowId}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ imageUrl: trimmed, active: true }) })
+        : await fetch('/api/admin/promos', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ slot: 'HERO_BG', imageUrl: trimmed, active: true }) })
+      if (!res.ok) throw new Error()
+      const saved = await res.json()
+      setRowId(saved.id)
+      toast({ title: 'Hero background saved' })
+      router.refresh()
+    } catch {
+      toast({ title: 'Failed to save background', variant: 'destructive' })
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  async function remove() {
+    if (!rowId) { setUrl(''); return }
+    setSaving(true)
+    try {
+      const res = await fetch(`/api/admin/promos/${rowId}`, { method: 'DELETE' })
+      if (!res.ok) throw new Error()
+      setRowId(null); setUrl('')
+      toast({ title: 'Hero background removed' })
+      router.refresh()
+    } catch {
+      toast({ title: 'Failed to remove', variant: 'destructive' })
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  return (
+    <section className="bg-[var(--bg-secondary)] border border-[var(--bg-card)] rounded-xl p-5" style={{ borderLeft: '3px solid #7C5CFF' }}>
+      <div className="mb-4">
+        <h2 className="text-lg font-semibold text-[var(--text-primary)] flex items-center gap-2">
+          <span className="inline-flex items-center justify-center h-5 w-5 rounded-full text-white" style={{ background: '#7C5CFF' }}>
+            <ImageIcon className="h-3 w-3" />
+          </span>
+          Hero Background
+        </h2>
+        <p className="text-xs text-[#888] mt-1 max-w-xl">
+          A full-width image behind the hero headline at the very top of the homepage — your big banner ad. Paste an
+          image URL (a wide landscape image works best). Leave empty for the default gradient.
+        </p>
+      </div>
+      {url.trim() !== '' && (
+        <div className="mb-3 rounded-lg overflow-hidden border border-[var(--bg-card)]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={url} alt="" className="w-full h-40 object-cover" />
+        </div>
+      )}
+      <div className="flex gap-2">
+        <input
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+          placeholder="https://…/banner.jpg"
+          className="flex-1 bg-[var(--bg-primary)] border border-[var(--bg-card)] rounded-lg px-3 py-2 text-sm text-[var(--text-primary)] outline-none focus:border-[#C9A84C]/50"
+        />
+        <button onClick={save} disabled={saving}
+          className="inline-flex items-center gap-1.5 text-sm px-4 py-2 rounded-lg bg-[#C9A84C] text-black font-medium hover:bg-[#F0C040] disabled:opacity-60">
+          {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />} Save
+        </button>
+        {rowId && (
+          <button onClick={remove} disabled={saving} title="Remove"
+            className="inline-flex items-center px-3 py-2 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/10">
+            <Trash2 className="h-4 w-4" />
+          </button>
+        )}
+      </div>
+    </section>
   )
 }
 
@@ -209,6 +308,7 @@ export function PromoManager({ initialPromos }: { initialPromos: Promo[] }) {
   return (
     <div className="space-y-6">
       <HomepageMap />
+      <HeroBackgroundEditor initial={rows.find((r) => r.slot === 'HERO_BG') ?? null} />
       {SECTIONS.map((section) => {
         const list = forSlot(section.slot)
         return (
