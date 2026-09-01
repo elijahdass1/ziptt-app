@@ -47,7 +47,7 @@ export function HeroSpotlight({ items, intervalMs = 4000 }: Props) {
   return (
     <div
       ref={containerRef}
-      className="hidden md:block w-[320px] shrink-0 group relative"
+      className="block w-full max-w-sm mx-auto md:w-[320px] md:mx-0 md:max-w-none shrink-0 group relative"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
